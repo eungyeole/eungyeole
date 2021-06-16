@@ -1,5 +1,10 @@
 ### Hi there 👋
 
+### TIL
+[![Velog's GitHub stats](https://velog-readme-stats.vercel.app/api?name=velopert)](https://github.com/eungyeole/velog-readme-stats)
+
+
+
 <!--
 **eungyeole/eungyeole** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
