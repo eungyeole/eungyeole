@@ -21,7 +21,7 @@ const Post: FC<PostProps> = ({
   <PostContainer gap={20} fullWidth direction="column">
     {thumbnailUrl && (
       <ThumbnailWrapper>
-        <Image src={thumbnailUrl} alt={`${title}-썸네일`} />
+        <Image fill src={thumbnailUrl} alt={`${title}-썸네일`} />
       </ThumbnailWrapper>
     )}
     <Flex gap={10} direction="column" fullWidth>
@@ -43,6 +43,11 @@ const ThumbnailWrapper = styled.div`
   overflow: hidden;
   border-radius: 7px;
   transition: 0.2s;
+  position: relative;
+
+  & img {
+    object-fit: cover;
+  }
 `;
 
 const PostContainer = styled(Flex)`

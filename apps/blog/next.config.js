@@ -5,4 +5,9 @@ module.exports = {
   compiler: {
     styledComponents: true,
   },
+  images: {
+    loader: "custom",
+    loaderFile: "./loader.js",
+    domains: ["cdn.eungyeole.xyz"],
+  },
 };

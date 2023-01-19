@@ -15,10 +15,15 @@ const PostList: NextPage = () => {
               {Array(10)
                 .fill(0)
                 .map((_, index) => (
-                  <Post title="이것은 제목" postDate="2022.12.04" key={index} />
+                  <Post
+                    thumbnailUrl="/cdn-test.png"
+                    category="개발"
+                    title="이것은 제목"
+                    postDate="2022.12.04"
+                    key={index}
+                  />
                 ))}
             </Flex>
-            <CategoryContainer>adad</CategoryContainer>
           </Flex>
         </MainInnerContainer>
       </MainContainer>
