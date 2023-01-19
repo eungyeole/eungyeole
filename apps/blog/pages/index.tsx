@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import styled from "styled-components";
-import { Button, device, Flex } from "ui";
+import { device, Flex } from "ui";
 import Header from "../components/Header";
 import Post from "../components/Post";
 
