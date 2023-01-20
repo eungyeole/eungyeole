@@ -9,7 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@lexical/react": "^0.7.6",
     "@vercel/analytics": "^0.1.8",
+    "database": "*",
+    "lexical": "^0.7.6",
     "next": "^13.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

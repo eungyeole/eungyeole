@@ -2,6 +2,7 @@ import { AppProps } from "next/app";
 import Head from "next/head";
 import { GlobalStyle, ThemeProvider } from "ui";
 import { Analytics } from "@vercel/analytics/react";
+import "../assets/fonts.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

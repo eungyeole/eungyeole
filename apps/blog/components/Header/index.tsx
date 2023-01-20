@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FC } from "react";
 import styled, { css } from "styled-components";
 import { device, Flex, Text } from "ui";
@@ -17,14 +18,16 @@ const Header: FC = () => {
           fullWidth
           fullHeight
         >
-          <Flex gap={20}>
-            <Text as="h1" size="large" weight="medium">
-              eungyeole.
-              <Text as="span" size="large" weight="regular">
-                blog
+          <Link href="/">
+            <Flex fullHeight>
+              <Text as="h1" size="large" weight="medium">
+                eungyeole.
+                <Text as="span" size="large" weight="regular">
+                  blog
+                </Text>
               </Text>
-            </Text>
-          </Flex>
+            </Flex>
+          </Link>
           <Flex gap={20}>
             <Text size="small">홈</Text>
             <Text size="small" weight="medium">
@@ -47,7 +50,9 @@ const HeaderContainer = styled.header<{ isScroll: boolean }>`
   top: 0;
   z-index: 99;
 
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.white};
+  /* background-color: ${({ theme, isScroll }) =>
+    isScroll ? theme.colors.white : "transparent"}; */
 
   ${({ isScroll }) =>
     isScroll &&

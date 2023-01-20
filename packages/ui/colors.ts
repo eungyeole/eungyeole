@@ -3,6 +3,9 @@ export const colors = {
   primary: "#5D5FEF",
   secondary: "#6c757d",
 
+  // Whites
+  white: "#ffffff",
+
   // Grays
   gray100: "#f8f9fa",
   gray200: "#e9ecef",

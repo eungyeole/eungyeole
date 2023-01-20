@@ -1,10 +1,14 @@
+import client, { Post } from "database";
 import { NextPage } from "next";
 import styled from "styled-components";
 import { device, Flex } from "ui";
 import Header from "../components/Header";
-import Post from "../components/Post";
+import PostItem from "../components/PostItem";
 
-const PostList: NextPage = () => {
+interface PostListProps {
+  posts: Post[];
+}
+const PostList: NextPage<PostListProps> = ({ posts }) => {
   return (
     <>
       <Header />
@@ -12,17 +16,9 @@ const PostList: NextPage = () => {
         <MainInnerContainer>
           <Flex gap={36} fullWidth>
             <Flex gap={48} direction="column" fullWidth>
-              {Array(10)
-                .fill(0)
-                .map((_, index) => (
-                  <Post
-                    thumbnailUrl="/cdn-test.png"
-                    category="개발"
-                    title="이것은 제목"
-                    postDate="2022.12.04"
-                    key={index}
-                  />
-                ))}
+              {posts.map((post, index) => (
+                <PostItem key={index} {...post} />
+              ))}
             </Flex>
           </Flex>
         </MainInnerContainer>
@@ -32,6 +28,16 @@ const PostList: NextPage = () => {
 };
 
 export default PostList;
+
+export const getServerSideProps = async () => {
+  const posts = await client.post.findMany({ take: 10 });
+
+  return {
+    props: {
+      posts,
+    },
+  };
+};
 
 const Container = styled.div``;
 
