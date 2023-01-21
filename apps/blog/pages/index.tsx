@@ -32,9 +32,13 @@ export default PostList;
 export const getServerSideProps = async () => {
   const posts = await client.post.findMany({ take: 10 });
 
+  console.log(posts);
   return {
     props: {
-      posts,
+      posts: posts.map((post) => ({
+        ...post,
+        createdAt: post.createdAt.toISOString(),
+      })),
     },
   };
 };

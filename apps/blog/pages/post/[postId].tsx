@@ -1,4 +1,5 @@
 import client, { Post } from "database";
+import dayjs from "dayjs";
 import { SerializedEditorState } from "lexical";
 import { GetServerSideProps, NextPage } from "next";
 import Image from "next/image";
@@ -27,7 +28,9 @@ const PostPage: NextPage<PostPageProps> = ({ post }) => {
               >
                 {title}
               </Text>
-              <Text>{createdAt}</Text>
+              <Text color="gray600">
+                작성일: {dayjs(createdAt).format("YYYY.MM.DD")}
+              </Text>
             </Flex>
             {thumbnailUrl && (
               <PostThumbnail>
@@ -41,7 +44,6 @@ const PostPage: NextPage<PostPageProps> = ({ post }) => {
           </Flex>
         </PostContainerInner>
       </PostContainer>
-      {/* {post.title} */}
     </>
   );
 };
@@ -92,7 +94,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   return {
     props: {
-      post,
+      post: {
+        ...post,
+        createdAt: post?.createdAt.toISOString(),
+      },
     },
   };
 };

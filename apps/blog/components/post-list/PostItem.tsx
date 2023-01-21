@@ -1,4 +1,5 @@
 import { Post } from "database";
+import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
@@ -30,7 +31,7 @@ const PostItem: FC<PostItemProps> = ({
           {title}
         </Text>
         {description && <Text size="medium">{description}</Text>}
-        <Text size="small">{createdAt}</Text>
+        <Text size="small">{dayjs(createdAt).format("YYYY.MM.DD")}</Text>
       </Flex>
     </PostContainer>
   </Link>
