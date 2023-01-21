@@ -1,4 +1,5 @@
 import client, { Post } from "database";
+import dayjs from "dayjs";
 import { NextPage } from "next";
 import styled from "styled-components";
 import { Button, device, Flex } from "ui";
@@ -36,7 +37,7 @@ export const getServerSideProps = async () => {
     props: {
       posts: posts.map((post) => ({
         ...post,
-        createdAt: post.createdAt.toISOString(),
+        createdAt: dayjs(post.createdAt).toISOString(),
       })),
     },
   };
