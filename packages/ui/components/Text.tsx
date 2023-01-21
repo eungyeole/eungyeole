@@ -1,26 +1,16 @@
 import { FC, HTMLAttributes, PropsWithChildren } from "react";
 import styled from "styled-components";
-
-export type TextSize =
-  | "xxsmall"
-  | "xsmall"
-  | "small"
-  | "medium"
-  | "large"
-  | "xlarge"
-  | "xxlarge"
-  | "xxxlarge"
-  | "xxxxlarge";
-
-export type TextWeight = "regular" | "medium" | "bold";
+import { Colors } from "../tokens/colors";
+import { TextSize } from "../tokens/fonts/size";
+import { TextWeight } from "../tokens/fonts/weight";
 
 export interface TextProps extends HTMLAttributes<HTMLParagraphElement> {
   as?: "p" | "span" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
   size?: TextSize;
-  color?: string;
+  color?: keyof Colors | (string & {});
 
   weight?: TextWeight;
-  align?: string;
+  align?: "left" | "center" | "right" | "justify" | "initial" | "inherit";
   lineHeight?: string;
   letterSpacing?: string;
   textOverflow?: "ellipsis" | "clip" | "initial" | "inherit";
@@ -32,33 +22,19 @@ export interface TextProps extends HTMLAttributes<HTMLParagraphElement> {
   padding?: string;
 }
 
-const fontSize: Record<TextSize, string> = {
-  xxsmall: "12px",
-  xsmall: "14px",
-  small: "15px",
-  medium: "16px",
-  large: "18px",
-  xlarge: "21px",
-  xxlarge: "24px",
-  xxxlarge: "36px",
-  xxxxlarge: "48px",
-};
-
-const fontWeight: Record<TextWeight, string> = {
-  regular: "400",
-  medium: "600",
-  bold: "700",
-};
-
 export const Text: FC<PropsWithChildren<TextProps>> = (props) => {
   const { children, ...rest } = props;
   return <StyledText {...rest}>{children}</StyledText>;
 };
 
 const StyledText = styled.p<TextProps>`
-  font-size: ${({ size }) => fontSize[size || "medium"]};
-  color: ${(props) => props.color || "black"};
-  font-weight: ${(props) => fontWeight[props.weight || "regular"]};
+  font-size: ${({ size, theme }) => theme.fonts.sizes[size || "medium"]};
+  color: ${({ theme, color }) =>
+    color
+      ? theme.colors[color as keyof Colors] ?? color
+      : theme.colors.gray800};
+  font-weight: ${({ theme, weight }) =>
+    theme.fonts.weights[weight || "regular"]};
 
   text-align: ${(props) => props.align || "left"};
   line-height: ${(props) => props.lineHeight || "1.5"};

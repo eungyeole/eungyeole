@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ThemeProvider as StyledComponentsThemeProvider } from "styled-components";
-import { colors } from "../colors";
+import { colors, fonts } from "../tokens";
 
 export interface ThemeProviderProps {
   children?: React.ReactNode;
@@ -11,6 +11,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     <StyledComponentsThemeProvider
       theme={{
         colors,
+        fonts,
       }}
     >
       {children as string}

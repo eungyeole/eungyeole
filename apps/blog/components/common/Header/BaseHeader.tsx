@@ -4,7 +4,10 @@ import styled, { css } from "styled-components";
 import { device, Flex, Text } from "ui";
 import { useScroll } from "utils";
 
-const Header: FC = () => {
+interface BaseHeaderProps {
+  rightContent?: React.ReactNode;
+}
+const BaseHeader: FC<BaseHeaderProps> = ({ rightContent }) => {
   const { y } = useScroll();
 
   const isScroll = y > 0;
@@ -20,7 +23,7 @@ const Header: FC = () => {
         >
           <Link href="/">
             <Flex fullHeight>
-              <Text as="h1" size="large" weight="medium">
+              <Text as="h1" color="black" size="large" weight="medium">
                 eungyeole.
                 <Text as="span" size="large" weight="regular">
                   blog
@@ -28,20 +31,14 @@ const Header: FC = () => {
               </Text>
             </Flex>
           </Link>
-          <Flex gap={20}>
-            <Text size="small">홈</Text>
-            <Text size="small" weight="medium">
-              블로그
-            </Text>
-            <Text size="small">포트폴리오</Text>
-          </Flex>
+          {rightContent}
         </HeaderWrapperInner>
       </HeaderWrapper>
     </HeaderContainer>
   );
 };
 
-export default Header;
+export default BaseHeader;
 
 const HeaderContainer = styled.header<{ isScroll: boolean }>`
   width: 100%;

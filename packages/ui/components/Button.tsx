@@ -1,99 +1,184 @@
-import * as React from "react";
+import { forwardRef } from "react";
 import styled from "styled-components";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "quiet";
-  size?: "small" | "medium" | "large";
-
+  type?: "button" | "submit" | "reset";
+  variant?: "primary" | "quiet" | "pale";
+  size?: "xsmall" | "small" | "medium" | "large";
+  loading?: boolean;
   leadingIcon?: React.ReactNode;
   tailingIcon?: React.ReactNode;
-  iconOnly?: boolean;
+  iconOnly?: React.ReactNode;
+  children?: React.ReactNode;
 
   disabled?: boolean;
 }
 
-export const Button: React.FC<ButtonProps> = ({
-  leadingIcon,
-  tailingIcon,
-  iconOnly,
-  children,
-  size = "medium",
-  ...props
-}) => {
-  return (
-    <ButtonStyled size={size} {...props}>
-      {leadingIcon}
-      {iconOnly ? null : children}
-      {tailingIcon}
-    </ButtonStyled>
-  );
-};
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      leadingIcon,
+      tailingIcon,
+      loading,
+      iconOnly,
+      children,
+      disabled,
+      size = "medium",
+      ...props
+    },
+    ref
+  ) => {
+    return (
+      <ButtonStyled
+        ref={ref}
+        size={size}
+        {...props}
+        disabled={disabled || loading}
+      >
+        {!loading && leadingIcon}
+        {loading && <AiOutlineLoading3Quarters className="loading-spinner" />}
+        {iconOnly ? iconOnly : children}
+        {tailingIcon}
+      </ButtonStyled>
+    );
+  }
+);
+
+Button.displayName = "Button";
 
 export default Button;
 
 const ButtonStyled = styled.button<ButtonProps>`
   display: flex;
   align-items: center;
+  gap: 8px;
+  border: none;
+  font-weight: ${({ theme }) => theme.fonts.weights.medium};
+  transition: 300ms;
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  & .loading-spinner {
+    animation: spin 1s linear infinite;
+  }
 
   padding: ${(props) => {
     switch (props.size) {
+      case "xsmall":
+        return "0px 4px";
       case "small":
-        return "0.25rem 0.5rem";
+        return "0 12px";
       case "large":
-        return "0.75rem 1rem";
+        return "0 16px";
       default:
-        return "0.5rem 1rem";
+        return "0 16px";
     }
   }};
 
-  font-size: ${(props) => {
-    switch (props.size) {
+  font-size: ${({ size, theme }) => {
+    switch (size) {
       case "small":
-        return "0.75rem";
+        return theme.fonts.sizes.xsmall;
       case "large":
-        return "1.25rem";
+        return theme.fonts.sizes.large;
       default:
-        return "1rem";
+        return theme.fonts.sizes.medium;
     }
   }};
-  border-radius: ${(props) => {
+  height: ${(props) => {
     switch (props.size) {
+      case "xsmall":
+        return "24px";
       case "small":
-        return "0.25rem";
+        return "32px";
       case "large":
-        return "0.75rem";
+        return "46px";
       default:
-        return "0.5rem";
+        return "38px";
     }
   }};
 
-  background-color: ${(props) => {
-    switch (props.variant) {
+  border-radius: ${({ size }) => {
+    switch (size) {
+      case "xsmall":
+        return "3px";
+      case "small":
+        return "4px";
+      case "large":
+        return "7px";
+      default:
+        return "7px";
+    }
+  }};
+
+  background-color: ${({ theme, variant }) => {
+    switch (variant) {
       case "quiet":
         return "transparent";
+      case "pale":
+        return theme.colors.gray200;
       default:
-        return "#5D5FEF";
+        return theme.colors.primary;
     }
   }};
 
-  color: ${(props) => {
-    switch (props.variant) {
+  color: ${({ theme, variant }) => {
+    switch (variant) {
       case "quiet":
-        return "black";
+        return theme.colors.gray800;
+      case "pale":
+        return theme.colors.gray600;
       default:
-        return "white";
+        return theme.colors.white;
     }
   }};
 
-  border: ${(props) => {
-    switch (props.variant) {
-      case "quiet":
-        return "1px solid black";
-      default:
-        return "none";
-    }
-  }};
+  cursor: pointer;
 
-  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
-  opacity: ${(props) => (props.disabled ? 0.5 : 1)};
+  &:hover {
+    background-color: ${({ theme, variant }) => {
+      switch (variant) {
+        case "quiet":
+          return theme.colors.gray200;
+        case "pale":
+          return theme.colors.gray300;
+        default:
+          return theme.colors.primary;
+      }
+    }};
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+
+    background-color: ${({ theme, variant }) => {
+      switch (variant) {
+        case "quiet":
+          return "transparent";
+        case "pale":
+          return theme.colors.gray200;
+        default:
+          return theme.colors.gray100;
+      }
+    }};
+
+    color: ${({ theme, variant }) => {
+      switch (variant) {
+        case "quiet":
+          return theme.colors.gray800;
+        case "pale":
+          return theme.colors.gray600;
+        default:
+          return theme.colors.gray500;
+      }
+    }};
+  }
 `;

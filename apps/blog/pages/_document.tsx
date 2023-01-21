@@ -33,16 +33,17 @@ export default class MyDocument extends Document {
     return (
       <Html lang="ko">
         <Head>
-          {/* <link
+          <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+          <link
+            href="https://cdn.jsdelivr.net/gh/toss/tossface/dist/tossface.css"
             rel="stylesheet"
-            as="style"
-            href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard-dynamic-subset.css"
-          /> */}
-          {/* <link
+            type="text/css"
+          />
+          <link
+            href="https://cdn.eungyeole.xyz/assets/fonts.css"
             rel="stylesheet"
-            as="style"
-            href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css"
-          /> */}
+            type="text/css"
+          />
         </Head>
         <body>
           <Main />

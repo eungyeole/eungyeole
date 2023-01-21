@@ -6,6 +6,9 @@ export const colors = {
   // Whites
   white: "#ffffff",
 
+  // Blacks
+  black: "#000000",
+
   // Grays
   gray100: "#f8f9fa",
   gray200: "#e9ecef",
@@ -14,7 +17,7 @@ export const colors = {
   gray500: "#adb5bd",
   gray600: "#6c757d",
   gray700: "#495057",
-  gray800: "#343a40",
+  gray800: "#333d4b",
   gray900: "#212529",
 };
 

@@ -1,15 +1,17 @@
 import client, { Post } from "database";
+import { SerializedEditorState } from "lexical";
 import { GetServerSideProps, NextPage } from "next";
 import Image from "next/image";
 import styled from "styled-components";
-import { Flex, Text } from "ui";
-import Header from "../../components/Header";
+import { device, Flex, Text } from "ui";
+import Editor from "../../components/common/Editor/Editor";
+import Header from "../../components/common/Header/MainHeader";
 
 interface PostPageProps {
   post: Post;
 }
 const PostPage: NextPage<PostPageProps> = ({ post }) => {
-  const { title, thumbnailUrl, createdAt } = post;
+  const { title, thumbnailUrl, createdAt, content } = post;
   return (
     <>
       <Header />
@@ -17,7 +19,12 @@ const PostPage: NextPage<PostPageProps> = ({ post }) => {
         <PostContainerInner>
           <Flex direction="column" padding="80px 0 0" fullWidth gap={40}>
             <Flex gap={16} direction="column" align="center" fullWidth>
-              <Text size="xxxxlarge" color="#444" weight="medium">
+              <Text
+                align="center"
+                className="title"
+                size="xxxxlarge"
+                weight="medium"
+              >
                 {title}
               </Text>
               <Text>{createdAt}</Text>
@@ -27,6 +34,10 @@ const PostPage: NextPage<PostPageProps> = ({ post }) => {
                 <Image src={thumbnailUrl} fill alt={`${title}-img`} />
               </PostThumbnail>
             )}
+            <Editor
+              defaultValue={content as unknown as SerializedEditorState}
+              readOnly
+            />
           </Flex>
         </PostContainerInner>
       </PostContainer>
@@ -38,15 +49,21 @@ const PostPage: NextPage<PostPageProps> = ({ post }) => {
 export default PostPage;
 
 const PostContainer = styled.div`
-  max-width: 768px;
+  max-width: 760px;
   width: 100%;
   margin: 0 auto;
 `;
 
 const PostContainerInner = styled.div`
   width: 100%;
-  padding: 24px;
+  padding: 0 24px;
   box-sizing: border-box;
+
+  @media ${device.tablet} {
+    & .title {
+      font-size: ${({ theme }) => theme.fonts.sizes.xxxlarge};
+    }
+  }
 `;
 
 const PostThumbnail = styled.div`

@@ -2,8 +2,8 @@ import client, { Post } from "database";
 import { NextPage } from "next";
 import styled from "styled-components";
 import { device, Flex } from "ui";
-import Header from "../components/Header";
-import PostItem from "../components/PostItem";
+import Header from "../components/common/Header/MainHeader";
+import PostItem from "../components/post-list/PostItem";
 
 interface PostListProps {
   posts: Post[];

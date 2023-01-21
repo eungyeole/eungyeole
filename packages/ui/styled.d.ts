@@ -1,5 +1,5 @@
 import "styled-components";
-import { Fonts, Colors } from "ui";
+import { Fonts, Colors } from "./tokens";
 
 declare module "styled-components" {
   export interface DefaultTheme {
