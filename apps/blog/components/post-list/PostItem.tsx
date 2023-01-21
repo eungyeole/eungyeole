@@ -41,7 +41,8 @@ export default PostItem;
 
 const ThumbnailWrapper = styled.div`
   width: 100%;
-  height: 400px;
+  padding-bottom: 66%;
+  background-color: ${({ theme }) => theme.colors.gray100};
   overflow: hidden;
   border-radius: 7px;
   transition: 0.2s;
@@ -60,8 +61,9 @@ const PostContainer = styled(Flex)`
     color: ${({ theme }) => theme.colors.primary};
 
     & ${ThumbnailWrapper} {
-      transform: translateY(-10px);
-      box-shadow: 0 30px 30px rgba(0, 0, 0, 0.1);
+      transform: translate3D(0, -3%, 0);
+      box-shadow: rgb(0 0 33 / 7%) 0px 16px 22.4px 4.8px,
+        rgb(0 0 33 / 5%) 0px 3.2px 16px 0px, rgb(0 0 33 / 7%) 0px 0px 1px 0px;
     }
   }
 `;

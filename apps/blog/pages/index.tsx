@@ -1,7 +1,7 @@
 import client, { Post } from "database";
 import { NextPage } from "next";
 import styled from "styled-components";
-import { device, Flex } from "ui";
+import { Button, device, Flex } from "ui";
 import Header from "../components/common/Header/MainHeader";
 import PostItem from "../components/post-list/PostItem";
 
@@ -32,7 +32,6 @@ export default PostList;
 export const getServerSideProps = async () => {
   const posts = await client.post.findMany({ take: 10 });
 
-  console.log(posts);
   return {
     props: {
       posts: posts.map((post) => ({
@@ -46,7 +45,7 @@ export const getServerSideProps = async () => {
 const Container = styled.div``;
 
 const MainContainer = styled.main`
-  max-width: 1140px;
+  max-width: 780px;
   margin: 0 auto;
 `;
 
@@ -59,7 +58,7 @@ const MainInnerContainer = styled.div`
 `;
 
 const CategoryContainer = styled.div`
-  width: 400px;
+  width: 480px;
   border: 1px solid ${({ theme }) => theme.colors.gray200};
   border-radius: 4px;
   height: 90vh;
