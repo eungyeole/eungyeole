@@ -31,14 +31,13 @@ const PostList: NextPage<PostListProps> = ({ posts }) => {
 export default PostList;
 
 export const getServerSideProps = async () => {
-  const posts = await client.post.findMany({ take: 10 });
+  const posts = await client.post.findMany({
+    take: 10,
+  });
 
   return {
     props: {
-      posts: posts.map((post) => ({
-        ...post,
-        createdAt: dayjs(post.createdAt).toISOString(),
-      })),
+      posts,
     },
   };
 };

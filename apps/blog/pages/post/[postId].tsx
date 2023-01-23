@@ -94,10 +94,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   return {
     props: {
-      post: {
-        ...post,
-        createdAt: dayjs(post?.createdAt).toISOString(),
-      },
+      post,
     },
   };
 };
