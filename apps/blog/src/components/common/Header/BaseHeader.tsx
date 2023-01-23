@@ -48,8 +48,6 @@ const HeaderContainer = styled.header<{ isScroll: boolean }>`
   z-index: 99;
 
   background-color: ${({ theme }) => theme.colors.white};
-  /* background-color: ${({ theme, isScroll }) =>
-    isScroll ? theme.colors.white : "transparent"}; */
 
   ${({ isScroll }) =>
     isScroll &&

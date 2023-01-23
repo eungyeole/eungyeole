@@ -16,7 +16,11 @@ import {
   COMMAND_PRIORITY_HIGH,
   COMMAND_PRIORITY_LOW,
   INSERT_PARAGRAPH_COMMAND,
+  $createParagraphNode,
   LexicalEditor,
+  $createTextNode,
+  $createNodeSelection,
+  $setSelection,
 } from "lexical";
 import * as React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -233,11 +237,33 @@ function useAddBlockMenu(
         const { lineHeight } = window.getComputedStyle(targetElem);
         const offset = top - anchorTop - parseInt(lineHeight, 10) / 2;
         scrollerElem!.scrollTop = scrollTop + offset;
-        // TODO: create new node below the target node
       }
     },
     [anchorElem, editor, scrollerElem]
   );
+
+  const buttonOnClick = useCallback(() => {
+    let nodeKey = "";
+    editor.update(() => {
+      if (targetBlockElem) {
+        const node = $getNearestNodeFromDOMNode(targetBlockElem);
+        if (node) {
+          nodeKey = node.getKey();
+          const paragraphNode = node.insertAfter($createParagraphNode(), false);
+          const nodeSelection = $createNodeSelection();
+          nodeSelection.add(nodeKey);
+          $setSelection(nodeSelection);
+          console.log(
+            "paragraphNode",
+            paragraphNode,
+            node,
+            nodeKey,
+            nodeSelection
+          );
+        }
+      }
+    });
+  }, [editor, targetBlockElem]);
 
   useEffect(() => {
     scrollerElem!.addEventListener("mousemove", onMouseMove);
@@ -264,6 +290,7 @@ function useAddBlockMenu(
         variant="quiet"
         className={ADD_BLOCK_MENU_CLASS_NAME}
         ref={menuRef}
+        onClick={buttonOnClick}
         iconOnly={<BiPlus />}
       />
 

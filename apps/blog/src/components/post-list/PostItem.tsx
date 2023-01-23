@@ -1,12 +1,12 @@
-import { Post } from "database";
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
 import styled from "styled-components";
 import { Flex, Text } from "ui";
+import { ResponsePost } from "../../dto/post";
 
-interface PostItemProps extends Post {}
+interface PostItemProps extends ResponsePost {}
 
 const PostItem: FC<PostItemProps> = ({
   id,

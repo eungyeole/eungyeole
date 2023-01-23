@@ -22,6 +22,11 @@ export class ApiClient {
         "Content-Type": "application/json",
       },
     });
+
+    if (!res.ok) {
+      throw new Error(res.statusText);
+    }
+
     return await res.json();
   }
 
@@ -33,6 +38,11 @@ export class ApiClient {
         "Content-Type": "application/json",
       },
     });
+
+    if (!res.ok) {
+      throw new Error(res.statusText);
+    }
+
     return await res.json();
   }
 
@@ -44,8 +54,16 @@ export class ApiClient {
         "Content-Type": "application/json",
       },
     });
+
+    if (!res.ok) {
+      throw new Error(res.statusText);
+    }
+
     return await res.json();
   }
 }
 
-export const apiClient = new ApiClient("/api");
+export const apiClient = new ApiClient(
+  // eslint-disable-next-line turbo/no-undeclared-env-vars
+  process.env.NEXT_PUBLIC_API_BASE_URL || "/api"
+);

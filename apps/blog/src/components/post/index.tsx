@@ -1,18 +1,22 @@
-import client, { Post } from "database";
 import dayjs from "dayjs";
 import { SerializedEditorState } from "lexical";
-import { GetServerSideProps, NextPage } from "next";
 import Image from "next/image";
 import styled from "styled-components";
 import { device, Flex, Text } from "ui";
-import Editor from "../../components/common/Editor/Editor";
-import Header from "../../components/common/Header/MainHeader";
+import { usePostQuery } from "../../apis/post/hooks";
+import Editor from "../common/Editor/Editor";
+import Header from "../common/Header/MainHeader";
+import { usePostId } from "./hooks";
 
-interface PostPageProps {
-  post: Post;
-}
-const PostPage: NextPage<PostPageProps> = ({ post }) => {
-  const { title, thumbnailUrl, createdAt, content } = post;
+const PostView = () => {
+  const postId = usePostId();
+
+  const { data } = usePostQuery({
+    id: postId,
+  });
+
+  const { title, content, thumbnailUrl, createdAt } = data!;
+
   return (
     <>
       <Header />
@@ -48,7 +52,7 @@ const PostPage: NextPage<PostPageProps> = ({ post }) => {
   );
 };
 
-export default PostPage;
+export default PostView;
 
 const PostContainer = styled.div`
   max-width: 760px;
@@ -82,19 +86,3 @@ const PostThumbnail = styled.div`
     object-fit: cover;
   }
 `;
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const postId = ctx.query.postId as string;
-
-  const post = await client.post.findFirst({
-    where: {
-      id: postId,
-    },
-  });
-
-  return {
-    props: {
-      post,
-    },
-  };
-};
