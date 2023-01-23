@@ -1,4 +1,5 @@
 import client, * as db from "database";
+import type { NextApiResponse } from "next";
 import {
   BadRequestException,
   Body,
@@ -8,6 +9,7 @@ import {
   Post,
   Put,
   Query,
+  Res,
 } from "next-api-decorators";
 import { ResponsePost, ResponsePostList } from "../../../dto/post";
 
@@ -43,6 +45,24 @@ class PostHandler {
         throw new BadRequestException(e.message);
       }
       throw e;
+    }
+  }
+
+  @Post("/:id/revalidate")
+  public async revalidatePost(
+    @Param("id") id: db.Prisma.PostWhereInput["id"],
+    @Res() res: NextApiResponse
+  ) {
+    if (!id) return new BadRequestException("id is required");
+
+    try {
+      await res.revalidate(`/post/${id}`);
+
+      return {
+        revalidated: true,
+      };
+    } catch (e) {
+      throw new BadRequestException("revalidate failed");
     }
   }
 
