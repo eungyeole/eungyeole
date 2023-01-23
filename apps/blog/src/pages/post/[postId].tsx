@@ -1,5 +1,10 @@
 import { dehydrate, QueryClient } from "@tanstack/react-query";
-import { GetServerSideProps, NextPage } from "next";
+import {
+  GetServerSideProps,
+  GetStaticPaths,
+  GetStaticProps,
+  NextPage,
+} from "next";
 import { getPostApi } from "../../apis/post/apis";
 import { postQueryKeys } from "../../apis/post/queryKeys";
 import PostView from "../../components/post";
@@ -15,9 +20,16 @@ const PostPage: NextPage<PostPageProps> = () => {
 
 export default PostPage;
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: "blocking",
+  };
+};
+
+export const getStaticProps: GetStaticProps = async (ctx) => {
   const queryClient = new QueryClient();
-  const postId = ctx.query.postId as string;
+  const postId = ctx.params?.postId as string;
 
   try {
     await queryClient.fetchQuery(postQueryKeys.post(postId), async () =>
@@ -28,6 +40,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       props: {
         dehydrateState: dehydrate(queryClient),
       },
+      revalidate: 60,
     };
   } catch (e) {
     return {
