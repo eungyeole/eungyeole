@@ -1,0 +1,11 @@
+{
+    "$schema": "https://json.schemastore.org/tsconfig",
+    "display": "Fastify",
+    "extends": "./base.json",
+    "compilerOptions": {
+        "target": "es2017"
+    },
+    "include": ["src"],
+    "exclude": ["node_modules"]
+  }
+  
