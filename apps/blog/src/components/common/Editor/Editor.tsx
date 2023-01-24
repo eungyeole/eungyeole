@@ -144,28 +144,13 @@ const StyledContentEditable = styled(ContentEditable)`
     border-radius: 6px;
     font-family: Menlo, Consolas, Monaco, monospace;
     display: block;
-    padding: 8px 8px 8px 52px;
+    padding: 24px 32px;
     margin: 8px 0px;
-    font-size: ${({ theme }) => theme.fonts.sizes.medium};
+    font-size: ${({ theme }) => theme.fonts.sizes.xsmall};
 
     tab-size: 2;
-
     overflow-x: auto;
     position: relative;
-
-    &::before {
-      content: attr(data-gutter);
-
-      position: absolute;
-      background-color: ${({ theme }) => theme.colors.gray200};
-      left: 0;
-      top: 0;
-      padding: 8px;
-      color: ${({ theme }) => theme.colors.gray500};
-      white-space: pre-wrap;
-      text-align: right;
-      min-width: 25px;
-    }
 
     .tokenComment {
       color: slategray;

@@ -11,4 +11,13 @@ module.exports = {
     loaderFile: "./loader.js",
     domains: ["cdn.eungyeole.xyz"],
   },
+
+  async rewrites() {
+    return [
+      {
+        source: "/",
+        destination: "/page/0",
+      },
+    ];
+  },
 };

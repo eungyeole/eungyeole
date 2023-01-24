@@ -8,7 +8,7 @@ export type UseInfiniteQueryCommonOptions<T> = Omit<
   "queryKey" | "queryFn"
 >;
 
-export type UseQueryCommonOptions<T> = Omit<
-  UseQueryOptions<T, Error, T>,
+export type UseQueryCommonOptions<T, F = T> = Omit<
+  UseQueryOptions<T, Error, F>,
   "queryKey" | "queryFn"
 >;

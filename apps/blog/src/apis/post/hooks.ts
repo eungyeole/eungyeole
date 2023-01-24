@@ -26,6 +26,27 @@ export const usePostListInfiniteQuery = (
   );
 };
 
+export const usePostListQuery = <T extends ResponsePostList = ResponsePostList>(
+  {
+    limit = 10,
+    page = 0,
+  }: {
+    limit?: number;
+    page?: number;
+  },
+  options?: UseQueryCommonOptions<ResponsePostList, T>
+) => {
+  return useQuery<ResponsePostList, Error, T>(
+    postQueryKeys.postList(limit, page),
+    () =>
+      getPostListApi({
+        page: page,
+        limit: limit,
+      }),
+    options
+  );
+};
+
 export const usePostQuery = (
   { id }: { id: string },
   options?: UseQueryCommonOptions<ResponsePost>
