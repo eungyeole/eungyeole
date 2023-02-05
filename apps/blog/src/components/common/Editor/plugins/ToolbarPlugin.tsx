@@ -1,5 +1,13 @@
-import { Button, Flex } from "ui";
-import { BiBold, BiItalic, BiUnderline, BiStrikethrough } from "react-icons/bi";
+import { Button, Divider, Flex } from "ui";
+import {
+  BiBold,
+  BiItalic,
+  BiUnderline,
+  BiStrikethrough,
+  BiFontColor,
+  BiColorFill,
+} from "react-icons/bi";
+import { RiArrowDropDownFill } from "react-icons/ri";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { $isCodeHighlightNode } from "@lexical/code";
 import {
@@ -32,6 +40,7 @@ import { getDOMRangeRect } from "../utils/getDOMRangeRect";
 import { createPortal } from "react-dom";
 import { getSelectedNode } from "../utils/getSelectedNode";
 import styled from "styled-components";
+import Icon from "../../Icon";
 
 interface InlineToolbarProps {
   editor: LexicalEditor;
@@ -119,6 +128,18 @@ const InlineToolbar: FC<InlineToolbarProps> = ({ editor, anchorElement }) => {
       className="floating-text-format-popup"
     >
       <Button
+        size="small"
+        variant="quiet"
+        tailingIcon={
+          <Icon color="gray600">
+            <RiArrowDropDownFill size={24} />
+          </Icon>
+        }
+      >
+        텍스트
+      </Button>
+      <Divider direction="vertical" />
+      <Button
         onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold")}
         iconOnly={<BiBold size={18} />}
         size="small"
@@ -143,6 +164,25 @@ const InlineToolbar: FC<InlineToolbarProps> = ({ editor, anchorElement }) => {
         iconOnly={<BiStrikethrough size={18} />}
         size="small"
         variant="quiet"
+      />
+      <Divider direction="vertical" />
+      <Button
+        size="small"
+        variant="quiet"
+        iconOnly={
+          <Icon>
+            <BiFontColor />
+          </Icon>
+        }
+      />
+      <Button
+        size="small"
+        variant="quiet"
+        iconOnly={
+          <Icon>
+            <BiColorFill />
+          </Icon>
+        }
       />
 
       {/* {codeLanguage} */}

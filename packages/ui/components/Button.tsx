@@ -52,7 +52,7 @@ export default Button;
 const ButtonStyled = styled.button<ButtonProps>`
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   border: none;
   font-weight: ${({ theme }) => theme.fonts.weights.medium};
   transition: 300ms;
@@ -75,9 +75,9 @@ const ButtonStyled = styled.button<ButtonProps>`
       case "xsmall":
         return "0px 4px";
       case "small":
-        return "0 12px";
+        return "0 8px";
       case "large":
-        return "0 16px";
+        return "0 12px";
       default:
         return "0 16px";
     }
@@ -85,6 +85,8 @@ const ButtonStyled = styled.button<ButtonProps>`
 
   font-size: ${({ size, theme }) => {
     switch (size) {
+      case "xsmall":
+        return theme.fonts.sizes.xsmall;
       case "small":
         return theme.fonts.sizes.xsmall;
       case "large":
