@@ -171,7 +171,7 @@ const InlineToolbar: FC<InlineToolbarProps> = ({ editor, anchorElement }) => {
         variant="quiet"
         iconOnly={
           <Icon>
-            <BiFontColor />
+            <BiFontColor size={18} />
           </Icon>
         }
       />
@@ -180,7 +180,7 @@ const InlineToolbar: FC<InlineToolbarProps> = ({ editor, anchorElement }) => {
         variant="quiet"
         iconOnly={
           <Icon>
-            <BiColorFill />
+            <BiColorFill size={18} />
           </Icon>
         }
       />
