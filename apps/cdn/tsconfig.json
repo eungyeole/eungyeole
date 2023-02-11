@@ -1,6 +1,11 @@
 {
     "extends": "tsconfig/fastify.json",
+    "compilerOptions": {
+      "outDir": "dist",
+      "sourceMap": true
+    },
     "include": ["src"],
     "exclude": ["node_modules"]
+
   }
   
