@@ -1,11 +1,4 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "./src/serverless.ts",
-        "use": "@vercel/node"
-      }
-    ],
     "rewrites": [
       {
         "source": "/(.*)",
