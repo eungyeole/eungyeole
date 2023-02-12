@@ -5,17 +5,15 @@
   "types": "./src/index.ts",
   "license": "MIT",
   "scripts": {
-    "setup": "yarn vercel login && yarn vercel link",
-    "start": "yarn vercel dev",
     "dev": "nodemon --watch src --exec 'ts-node' src/index.ts",
+    "build": "yarn copy:public && tsc -p tsconfig.json",
     "copy:public": "cp -r src/public dist/public",
-    "deploy": "yarn vercel",
-    "deploy:prod": "yarn vercel --prod"
+    "start": "yarn build && node ./dist/index.js",
+    "lint": "TIMING=1 eslint \"**/*.ts*\""
   },
   "dependencies": {
     "@fastify/env": "^4.2.0",
     "@fastify/static": "^6.9.0",
-    "@vercel/node": "^2.9.2",
     "fastify": "^4.12.0"
   },
   "devDependencies": {
@@ -24,7 +22,6 @@
     "pino": "^8.10.0",
     "pino-pretty": "^9.2.0",
     "ts-node": "^10.9.1",
-    "typescript": "^4.9.4",
-    "vercel": "^28.15.3"
+    "typescript": "^4.9.4"
   }
 }
