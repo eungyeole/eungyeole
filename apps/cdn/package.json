@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon --watch src --exec 'ts-node' src/index.ts",
-    "build": "yarn copy:public && tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && yarn copy:public",
     "copy:public": "cp -r src/public dist/public",
     "start": "yarn build && node ./dist/index.js",
     "lint": "TIMING=1 eslint \"**/*.ts*\""
