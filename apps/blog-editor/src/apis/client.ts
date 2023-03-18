@@ -54,9 +54,6 @@ export class ApiClient {
   }
 }
 
-export const apiClient = new ApiClient(
-  // eslint-disable-next-line turbo/no-undeclared-env-vars
-  "http://211.38.86.92:8080" || "/api"
-);
+export const apiClient = new ApiClient("/api");
 
 export const localApiClient = new ApiClient("http://localhost:3000");
