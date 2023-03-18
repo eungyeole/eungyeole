@@ -40,9 +40,9 @@ export default class MyDocument extends Document {
             type="text/css"
           />
           <link
-            href="https://cdn.eungyeole.xyz/assets/fonts.css"
             rel="stylesheet"
-            type="text/css"
+            as="style"
+            href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css"
           />
         </Head>
         <body>

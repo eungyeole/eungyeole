@@ -3,6 +3,7 @@ import fastifyEnv from "@fastify/env";
 import fastifyStatic from "@fastify/static";
 import pino from "pino";
 import pinoPretty from "pino-pretty";
+import fastifyCors from "@fastify/cors";
 
 import rootRouter from "./routes/root";
 import path from "path";
@@ -23,6 +24,10 @@ export const createApp = () => {
       },
     },
   };
+
+  app.register(fastifyCors, {
+    origin: "*",
+  });
 
   app.register(fastifyEnv, {
     confKey: "config",

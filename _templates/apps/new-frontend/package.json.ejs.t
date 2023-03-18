@@ -14,6 +14,7 @@ to: apps/<%= name %>/package.json
   "dependencies": {
     "@tanstack/react-query": "^4.22.3",
     "@tanstack/react-query-devtools": "^4.22.4",
+    "styled-components": "^5.3.6",
     "next": "^13.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -28,6 +29,7 @@ to: apps/<%= name %>/package.json
     "@types/node": "^17.0.12",
     "@types/react": "^18.0.22",
     "@types/react-dom": "^18.0.7",
+    "@types/styled-components": "^5.1.26",
     "typescript": "^4.5.3"
   }
 }

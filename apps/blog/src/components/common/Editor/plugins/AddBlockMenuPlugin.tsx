@@ -1,9 +1,9 @@
 /**
- * AddBlockMenu is a plugin that adds a + button to the left side of the block in the editor.
+ * AddBlockButton is a plugin that adds a + button to the left side of the block in the editor.
  * When hover over or click the button to the anchor, it will show a button with a plus sign.
- * When clicked, it will open a menu with a list of blocks that can be added to the editor.
- * The menu will be anchored to the left side of the block and be positioned below or above the block depending on the available space.
- * The menu will be closed when the user clicks outside of the menu.
+ * When clicked, it will open a Button with a list of blocks that can be added to the editor.
+ * The Button will be anchored to the left side of the block and be positioned below or above the block depending on the available space.
+ * The Button will be closed when the user clicks outside of the Button.
  */
 
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
@@ -34,7 +34,7 @@ import { Rect, Point } from "./shape";
 
 const SPACE = 4;
 const TARGET_LINE_HALF_HEIGHT = 1.5;
-const ADD_BLOCK_MENU_CLASS_NAME = "add-block-menu";
+const ADD_BLOCK_BUTTON_CLASS_NAME = "add-block-button";
 const ADD_BLOCK_DATA_FORMAT = "application/x-lexical-add-block";
 const TEXT_BOX_HORIZONTAL_PADDING = 28;
 
@@ -123,11 +123,11 @@ function getBlockElement(
   return blockElem;
 }
 
-function isOnMenu(element: HTMLElement): boolean {
-  return !!element.closest(`.${ADD_BLOCK_MENU_CLASS_NAME}`);
+function isOnButton(element: HTMLElement): boolean {
+  return !!element.closest(`.${ADD_BLOCK_BUTTON_CLASS_NAME}`);
 }
 
-function setMenuPosition(
+function setButtonPosition(
   targetElem: HTMLElement | null,
   floatingElem: HTMLElement,
   anchorElem: HTMLElement
@@ -191,14 +191,14 @@ function hideTargetLine(targetLineElem: HTMLElement | null) {
   }
 }
 
-function useAddBlockMenu(
+function useAddBlockButton(
   editor: LexicalEditor,
   anchorElem: HTMLElement,
   isEditable: boolean
 ): JSX.Element {
   const scrollerElem = anchorElem.parentElement;
 
-  const menuRef = useRef<HTMLButtonElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const targetLineRef = useRef<HTMLDivElement>(null);
   const [targetBlockElem, setTargetBlockElem] = useState<HTMLElement | null>(
     null
@@ -212,7 +212,7 @@ function useAddBlockMenu(
         return;
       }
 
-      if (isOnMenu(target)) {
+      if (isOnButton(target)) {
         return;
       }
 
@@ -249,17 +249,33 @@ function useAddBlockMenu(
         const node = $getNearestNodeFromDOMNode(targetBlockElem);
         if (node) {
           nodeKey = node.getKey();
-          const paragraphNode = node.insertAfter($createParagraphNode(), false);
-          const nodeSelection = $createNodeSelection();
-          nodeSelection.add(nodeKey);
-          $setSelection(nodeSelection);
-          console.log(
-            "paragraphNode",
-            paragraphNode,
-            node,
-            nodeKey,
-            nodeSelection
-          );
+          let paragraphNode = node;
+          if (node.getTextContentSize() > 0) {
+            paragraphNode = node.insertAfter($createParagraphNode(), false);
+            const nodeSelection = $createNodeSelection();
+            nodeSelection.add(nodeKey);
+            $setSelection(nodeSelection);
+            console.log(
+              "paragraphNode",
+              paragraphNode,
+              node,
+              nodeKey,
+              nodeSelection
+            );
+          }
+          // modal open beside the block
+          const { top, left } = targetBlockElem.getBoundingClientRect();
+          const { top: anchorTop, left: anchorLeft } =
+            anchorElem.getBoundingClientRect();
+          const { scrollTop } = scrollerElem!;
+          const { lineHeight } = window.getComputedStyle(targetBlockElem);
+          const offset = top - anchorTop - parseInt(lineHeight, 10) / 2;
+          scrollerElem!.scrollTop = scrollTop + offset;
+          // modal open beside the block
+          const modalTop = top - anchorTop;
+          const modalLeft = left - anchorLeft;
+          const modalPosition = { top: modalTop, left: modalLeft };
+          console.log("modalPosition", modalPosition);
         }
       }
     });
@@ -278,22 +294,21 @@ function useAddBlockMenu(
   }, [scrollerElem, onMouseMove, onMouseLeave, onClick]);
 
   useEffect(() => {
-    if (menuRef.current) {
-      setMenuPosition(targetBlockElem, menuRef.current, anchorElem);
+    if (buttonRef.current) {
+      setButtonPosition(targetBlockElem, buttonRef.current, anchorElem);
     }
   }, [anchorElem, targetBlockElem]);
 
   return createPortal(
     <>
-      <AddBlockMenuStyled
+      <AddBlockButtonStyled
         size="xsmall"
         variant="quiet"
-        className={ADD_BLOCK_MENU_CLASS_NAME}
-        ref={menuRef}
+        className={ADD_BLOCK_BUTTON_CLASS_NAME}
+        ref={buttonRef}
         onClick={buttonOnClick}
         iconOnly={<BiPlus />}
       />
-
       <AddBlockTargetLineStyled
         className="add-block-target-line"
         ref={targetLineRef}
@@ -303,7 +318,7 @@ function useAddBlockMenu(
   );
 }
 
-const AddBlockMenuStyled = styled(Button)`
+const AddBlockButtonStyled = styled(Button)`
   cursor: pointer;
   opacity: 0;
   position: absolute;
@@ -333,11 +348,11 @@ const AddBlockTargetLineStyled = styled.div`
   opacity: 0;
   will-change: transform;
 `;
-export default function AddBlockMenuPlugin({
+export default function AddBlockButtonPlugin({
   anchorElement = document.body,
 }: {
   anchorElement?: HTMLElement;
 }): JSX.Element {
   const [editor] = useLexicalComposerContext();
-  return useAddBlockMenu(editor, anchorElement, editor._editable);
+  return useAddBlockButton(editor, anchorElement, editor._editable);
 }

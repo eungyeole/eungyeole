@@ -11,6 +11,7 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   tailingIcon?: React.ReactNode;
   iconOnly?: React.ReactNode;
   children?: React.ReactNode;
+  fullWidth?: boolean;
 
   disabled?: boolean;
 }
@@ -34,6 +35,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         size={size}
         {...props}
+        iconOnly={iconOnly}
         disabled={disabled || loading}
       >
         {!loading && leadingIcon}
@@ -56,6 +58,7 @@ const ButtonStyled = styled.button<ButtonProps>`
   border: none;
   font-weight: ${({ theme }) => theme.fonts.weights.medium};
   transition: 300ms;
+  justify-content: center;
 
   @keyframes spin {
     0% {
@@ -70,8 +73,12 @@ const ButtonStyled = styled.button<ButtonProps>`
     animation: spin 1s linear infinite;
   }
 
-  padding: ${(props) => {
-    switch (props.size) {
+  padding: ${({ size, iconOnly }) => {
+    if (iconOnly) {
+      return "0";
+    }
+
+    switch (size) {
       case "xsmall":
         return "0px 4px";
       case "small":
@@ -80,6 +87,25 @@ const ButtonStyled = styled.button<ButtonProps>`
         return "0 12px";
       default:
         return "0 16px";
+    }
+  }};
+
+  width: ${({ fullWidth }) => (fullWidth ? "100%" : "auto")};
+
+  min-width: ${({ size, iconOnly }) => {
+    if (!iconOnly) {
+      return "auto";
+    }
+
+    switch (size) {
+      case "xsmall":
+        return "24px";
+      case "small":
+        return "32px";
+      case "large":
+        return "46px";
+      default:
+        return "38px";
     }
   }};
 
@@ -126,7 +152,7 @@ const ButtonStyled = styled.button<ButtonProps>`
       case "quiet":
         return "transparent";
       case "pale":
-        return theme.colors.gray200;
+        return theme.colors.gray150;
       default:
         return theme.colors.primary;
     }

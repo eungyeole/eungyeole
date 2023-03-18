@@ -5,7 +5,13 @@
   "types": "./index.ts",
   "license": "MIT",
   "scripts": {
-    "lint": "TIMING=1 eslint \"**/*.ts*\""
+    "lint": "TIMING=1 eslint \"**/*.ts*\"",
+    "migrate:mysql": "prisma migrate dev --name mysql-init --schema=./prisma/mysql/schema.prisma",
+    "push:mysql": "prisma db push --schema=./prisma/mysql/schema.prisma",
+    "studio:mysql": "prisma studio --schema=./prisma/mysql/schema.prisma",
+    "migrate:mongodb": "prisma migrate dev --name mongo-init --schema=./prisma/mongodb/schema.prisma",
+    "push:mongodb": "prisma db push --schema=./prisma/mongodb/schema.prisma",
+    "studio:mongodb": "prisma studio --schema=./prisma/mongodb/schema.prisma"
   },
   "devDependencies": {
     "eslint": "^7.32.0",

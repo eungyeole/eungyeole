@@ -4,7 +4,7 @@
       "outDir": "dist",
       "sourceMap": true
     },
-    "include": ["src", "api/serverless.ts"],
+    "include": ["src"],
     "exclude": ["node_modules"]
 
   }
