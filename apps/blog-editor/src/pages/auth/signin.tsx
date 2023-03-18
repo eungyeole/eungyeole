@@ -44,7 +44,7 @@ const Signin: NextPage<SigninProps> = () => {
           expires: new Date(data.accessTokenExpireAt),
         });
 
-        router.push(redirectPath ? String(redirectPath) : "/workspace");
+        router.push(redirectPath ? String(redirectPath) : "/workspaces");
       },
     }
   );

@@ -10,7 +10,9 @@ export const getWorkspaceApi = async ({
 };
 
 export const getWorkspacesApi = async () => {
-  return await apiClient.get<Workspace>("/workspaces");
+  return await apiClient.get<{
+    workspaces: Workspace[];
+  }>("/workspaces/list");
 };
 
 export const getWorkspaceMembersApi = async ({

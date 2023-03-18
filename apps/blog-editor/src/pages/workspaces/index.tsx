@@ -1,12 +1,38 @@
-const EmptyWorkspace = () => {
-  return (
-    <div className="flex flex-col justify-center items-center h-full">
-      <h2 className="text-2xl font-bold mb-4">No workspace selected</h2>
-      <p className="text-gray-500 text-center">
-        Select a workspace from the sidebar to get started.
-      </p>
-    </div>
-  );
+import { QueryClient } from "@tanstack/react-query";
+import { GetServerSideProps } from "next";
+import { getWorkspacesApi } from "src/apis/workspace/apis";
+import { workspaceQueryKeys } from "src/apis/workspace/queryKeys";
+import { NextPageWithAuth } from "src/types";
+
+const EmptyWorkspace: NextPageWithAuth = () => {
+  return <></>;
 };
 
 export default EmptyWorkspace;
+
+EmptyWorkspace.requireAuth = true;
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const queryClient = new QueryClient();
+
+  const { data } = await queryClient.fetchQuery(
+    workspaceQueryKeys.getWorkspaces(),
+    () => getWorkspacesApi()
+  );
+
+  if (data.workspaces.length <= 0) {
+    return {
+      redirect: {
+        destination: "/workspaces/create",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    redirect: {
+      destination: `/workspaces/${data.workspaces[0].id}`,
+      permanent: false,
+    },
+  };
+};
