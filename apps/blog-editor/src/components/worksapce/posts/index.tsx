@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import { BiPlus } from "react-icons/bi";
 import { getWorkspacePostsApi } from "src/apis/workspace/apis";
 import { workspaceQueryKeys } from "src/apis/workspace/queryKeys";
@@ -9,6 +10,7 @@ import { useWorkspaceId } from "../hooks/useWorkspaceId";
 
 const Posts = () => {
   const workspaceId = useWorkspaceId();
+
   const { data } = useQuery(
     workspaceQueryKeys.getWorkspacePosts(workspaceId),
     () =>
@@ -19,6 +21,7 @@ const Posts = () => {
       select: ({ data }) => data,
     }
   );
+
   return (
     <Flex direction="column" fullHeight fullWidth>
       <Header />
@@ -28,17 +31,21 @@ const Posts = () => {
             <Text size="xxxlarge" weight="bold">
               Posts
             </Text>
-            <Button
-              leadingIcon={
-                <Icon>
-                  <BiPlus />
-                </Icon>
-              }
-            >
-              New
-            </Button>
+            <Link href={`/workspaces/${workspaceId}/editors/posts`}>
+              <Button
+                leadingIcon={
+                  <Icon>
+                    <BiPlus />
+                  </Icon>
+                }
+              >
+                New
+              </Button>
+            </Link>
           </Flex>
-          <div>adad</div>
+          {data?.posts?.map((post) => (
+            <Text key={post.id}>{post.title}</Text>
+          ))}
         </ContentContainer>
       </Container>
     </Flex>

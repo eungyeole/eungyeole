@@ -1,5 +1,5 @@
 import { apiClient } from "../client";
-import { Member, Workspace, InviteMember } from "./types";
+import { Member, Workspace, InviteMember, Post } from "./types";
 
 export const getWorkspaceApi = async ({
   workspaceId,
@@ -64,14 +64,46 @@ export const getWorkspacePostsApi = async ({
   workspaceId: string;
 }) => {
   return await apiClient.get<{
-    posts: {
-      postId: number;
-      title: string;
-      content: any;
-      createdAt: string;
-      updatedAt: string;
-    }[];
-  }>(`/posts/workspaces/${workspaceId}`);
+    posts: Post[];
+  }>(`/workspaces/${workspaceId}/posts`);
+};
+
+export const getWorkspacePostApi = async ({ postId }: { postId: number }) => {
+  const { data } = await apiClient.get<Post>(`/workspaces/posts/${postId}`);
+
+  return data;
+};
+
+export const createWorkspacePostApi = async ({
+  workspaceId,
+  title,
+  content,
+}: {
+  workspaceId: string;
+  title: string;
+  content: any;
+}) => {
+  return await apiClient.post<number>(`/workspaces/${workspaceId}/posts`, {
+    title,
+    content,
+  });
+};
+
+export const updateWorkspacePostApi = async ({
+  postId,
+  title,
+  content,
+}: {
+  postId: number;
+  title: string;
+  content: any;
+}) => {
+  return await apiClient.put<{
+    postId: number;
+  }>(`/workspaces/posts/${postId}`, {
+    title,
+    content,
+  });
 };
 
 export const joinWorkspaceApi = async ({

@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "lexical": "^0.7.6",
+    "@lexical/react": "^0.7.6",
     "@tanstack/react-query": "^4.22.3",
     "@tanstack/react-query-devtools": "^4.22.4",
     "axios": "^1.3.4",

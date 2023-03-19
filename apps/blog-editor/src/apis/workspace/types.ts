@@ -19,3 +19,14 @@ export interface InviteMember {
   email: string;
   role: WorkspaceRole;
 }
+
+export interface Post {
+  id: number;
+  status: "DRAFT" | "PUBLISHED";
+  title: string;
+  content: any;
+  createdAt: string;
+  updatedAt: string;
+  writerName: string;
+  writerProfileImage: string;
+}

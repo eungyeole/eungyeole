@@ -36,7 +36,7 @@ function MyApp({ Component, pageProps }: MyAppProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Hydrate state={pageProps?.dehydrateState}>
+      <Hydrate state={pageProps?.dehydratedState}>
         <ThemeProvider>
           <GlobalStyle />
           <ToastProvider>
@@ -72,5 +72,9 @@ MyApp.getInitialProps = async ({ ctx, Component }: AppContext) => {
     ] = `Bearer ${accessToken}`;
   }
 
-  return { ...appProps };
+  return {
+    pageProps: {
+      ...appProps,
+    },
+  };
 };

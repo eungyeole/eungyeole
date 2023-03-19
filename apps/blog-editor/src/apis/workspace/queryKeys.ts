@@ -17,4 +17,9 @@ export const workspaceQueryKeys = {
     workspaceId,
     "posts",
   ],
+  getWorkspacePost: (postId: number) => [
+    workspaceQueryKeys.all,
+    "posts",
+    postId,
+  ],
 };
