@@ -46,6 +46,16 @@ export const inviteMembers = async ({
   );
 };
 
+export const revokeInvitationApi = async ({
+  invitationId,
+}: {
+  invitationId: number;
+}) => {
+  return await apiClient.delete<unknown>(
+    `/workspaces/invitations/${invitationId}`
+  );
+};
+
 export const getWorkspaceInvitedMembersApi = async ({
   workspaceId,
 }: {

@@ -1,10 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FC, useState } from "react";
 import { Avatar, Button, Flex, Icon, Text } from "ui";
 
 import {
   getWorkspaceInvitedMembersApi,
   getWorkspaceMembersApi,
+  revokeInvitationApi,
 } from "src/apis/workspace/apis";
 
 import Header from "../Header";
@@ -13,9 +14,11 @@ import styled from "styled-components";
 import { BiPlus } from "react-icons/bi";
 import { workspaceQueryKeys } from "src/apis/workspace/queryKeys";
 import InviteMembersModal from "./InviteMembersModal";
+import { BsX } from "react-icons/bs";
 
 const Members: FC = () => {
   const [state, setState] = useState(false);
+  const queryClient = useQueryClient();
   const workspaceId = useWorkspaceId();
 
   const { data: activeMembersData } = useQuery(
@@ -34,11 +37,19 @@ const Members: FC = () => {
     }
   );
 
+  const { mutate: revokeInvitationMutate } = useMutation(revokeInvitationApi, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(
+        workspaceQueryKeys.getWorkspaceInvitedMembers(workspaceId)
+      );
+    },
+  });
+
   return (
     <Flex direction="column">
       {state && <InviteMembersModal onClose={() => setState(false)} />}
       <Header />
-      <ContentContainer gap={36} direction="column">
+      <ContentContainer gap={48} direction="column">
         <Flex justify="space-between" align="center">
           <Text size="xxxlarge" weight="bold">
             Members
@@ -55,44 +66,66 @@ const Members: FC = () => {
             Invite
           </Button>
         </Flex>
-        {(invitedMembersData?.invitations.length ?? 0) > 0 && (
+        <Flex gap={64} direction="column">
+          {(invitedMembersData?.invitations.length ?? 0) > 0 && (
+            <Flex gap={8} direction="column">
+              <Text size="xsmall">Invited Members</Text>
+              <Flex gap={12} direction="column" fullWidth>
+                {invitedMembersData?.invitations.map((user) => (
+                  <Flex
+                    key={user.invitationId}
+                    align="center"
+                    justify="space-between"
+                    fullWidth
+                  >
+                    <Flex align="center" gap={12}>
+                      <Avatar variant="circle" name={user.email} />
+                      <Text weight="medium">{user.email}</Text>
+                    </Flex>
+                    <Flex align="center" gap={8}>
+                      <Tag>{user.role?.toLowerCase()}</Tag>
+                      <Button
+                        variant="quiet"
+                        size="xsmall"
+                        onClick={() =>
+                          revokeInvitationMutate({
+                            invitationId: user.invitationId,
+                          })
+                        }
+                        iconOnly={
+                          <Icon>
+                            <BsX size={24} />
+                          </Icon>
+                        }
+                      />
+                    </Flex>
+                  </Flex>
+                ))}
+              </Flex>
+            </Flex>
+          )}
           <Flex gap={8} direction="column">
-            <Text size="xsmall">Invited Members</Text>
+            <Text size="xsmall">Active Members</Text>
             <Flex gap={12} direction="column" fullWidth>
-              {invitedMembersData?.invitations.map((user) => (
+              {activeMembersData?.users.map((user) => (
                 <Flex
-                  key={user.invitationId}
+                  key={user.memberId}
                   align="center"
                   justify="space-between"
                   fullWidth
                 >
                   <Flex align="center" gap={12}>
-                    <Avatar variant="circle" name={user.email} />
-                    <Text weight="medium">{user.email}</Text>
+                    <Avatar
+                      src={user.profileImage}
+                      variant="circle"
+                      name={user.name}
+                    />
+                    <Text weight="medium">{user.name}</Text>
                   </Flex>
-                  <Tag>{user.role?.toLowerCase()}</Tag>
+                  <Tag>{user.role.toLowerCase()}</Tag>
                 </Flex>
               ))}
             </Flex>
-          </Flex>
-        )}
-        <Flex gap={8} direction="column">
-          <Text size="xsmall">Active Members</Text>
-          <Flex gap={12} direction="column" fullWidth>
-            {activeMembersData?.users.map((user) => (
-              <Flex
-                key={user.memberId}
-                align="center"
-                justify="space-between"
-                fullWidth
-              >
-                <Flex align="center" gap={12}>
-                  <Avatar variant="circle" name={user.name} />
-                  <Text weight="medium">{user.name}</Text>
-                </Flex>
-                <Tag>{user.role.toLowerCase()}</Tag>
-              </Flex>
-            ))}
           </Flex>
         </Flex>
       </ContentContainer>
