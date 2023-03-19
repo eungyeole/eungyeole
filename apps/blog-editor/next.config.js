@@ -5,15 +5,6 @@ module.exports = {
   compiler: {
     styledComponents: true,
   },
-  async redirects() {
-    return [
-      {
-        source: "/workspaces/:workspaceId",
-        destination: "/workspaces/:workspaceId/posts",
-        permanent: true,
-      },
-    ];
-  },
 
   async rewrites() {
     return [
