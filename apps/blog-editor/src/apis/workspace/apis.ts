@@ -98,6 +98,7 @@ export const updateWorkspacePostApi = async ({
   }>(`/workspaces/posts/${postId}`, {
     title,
     content,
+    status,
   });
 };
 

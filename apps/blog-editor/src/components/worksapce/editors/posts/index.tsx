@@ -1,13 +1,12 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { FC, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { FC, useState, useEffect } from "react";
 import { updateWorkspacePostApi } from "src/apis/workspace/apis";
+import { workspaceQueryKeys } from "src/apis/workspace/queryKeys";
 import { Post } from "src/apis/workspace/types";
 import Editor from "src/components/common/editor/Editor";
 import styled from "styled-components";
 import { Flex, device, Button, useToast } from "ui";
-import { useWorkspaceId } from "../../hooks/useWorkspaceId";
 import Header from "./Header";
 
 interface PostEditorProps {
@@ -17,6 +16,7 @@ interface PostEditorProps {
 const PostEditor: FC<PostEditorProps> = ({ initialPost }) => {
   const { addToast } = useToast();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const [state, setState] = useState({
     title: initialPost?.title || "",
@@ -28,7 +28,32 @@ const PostEditor: FC<PostEditorProps> = ({ initialPost }) => {
   const {
     mutate: updateWorkspacePostMutate,
     isLoading: isUpdateWorkspacePostLoading,
-  } = useMutation(updateWorkspacePostApi);
+  } = useMutation(updateWorkspacePostApi, {
+    onMutate: (variable) => {
+      const queryKey = workspaceQueryKeys.getWorkspacePost(postId);
+      const prev = queryClient.getQueryData<Post>(queryKey);
+
+      queryClient.setQueryData(queryKey, {
+        ...prev,
+        ...variable,
+      });
+    },
+  });
+
+  // auto save with debounce
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (isFinite(postId)) {
+        updateWorkspacePostMutate({
+          postId,
+          status: initialPost?.status || "DRAFT",
+          ...state,
+        });
+      }
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, [initialPost?.status, postId, state, updateWorkspacePostMutate]);
 
   return (
     <>
