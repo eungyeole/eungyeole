@@ -89,10 +89,11 @@ const PostEditor: FC<PostEditorProps> = ({ initialPost }) => {
           <Controller
             name="content"
             control={control}
-            render={({ field: { onChange } }) => (
+            render={({ field: { onChange, value } }) => (
               <Editor
                 placeholder="Wirte your post here..."
                 onChange={(editor) => onChange(editor.toJSON())}
+                defaultValue={value}
               />
             )}
           />
