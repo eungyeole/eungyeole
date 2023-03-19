@@ -15,7 +15,7 @@ const CommonFormTemplate: FC<CommonFormTemplateProps> = ({
   ...props
 }: CommonFormTemplateProps) => {
   return (
-    <Container {...props}>
+    <Container {...props} gap={24} direction="column">
       <Flex gap={24} direction="column" align="center">
         <Text size="xxxxlarge">🖋️</Text>
         <Flex gap={8} direction="column" align="center">
@@ -34,7 +34,7 @@ const CommonFormTemplate: FC<CommonFormTemplateProps> = ({
 
 export default CommonFormTemplate;
 
-const Container = styled.div`
+const Container = styled(Flex)`
   max-width: 380px;
   margin: 0 auto;
   margin-top: 50px;

@@ -6,6 +6,7 @@ import { NextPageWithAuth } from "src/types";
 import { useMutation } from "@tanstack/react-query";
 import { createWorkspaceApi } from "src/apis/workspace/apis";
 import { useRouter } from "next/router";
+import CommonFormTemplate from "src/components/common/templates/CommonFormTemplate";
 
 interface CreateWorkspaceProps {}
 
@@ -32,30 +33,19 @@ const CreateWorkspace: NextPageWithAuth<CreateWorkspaceProps> = () => {
   });
 
   return (
-    <CreateWorkspaceContainer
-      as="form"
-      direction="column"
-      gap={24}
-      align="center"
-      justify="center"
-      fullHeight
-      onSubmit={handleSubmit((data) => {
-        mutate(data);
-      })}
+    <CommonFormTemplate
+      title="Create a new workspace"
+      description="A workspace is a collection of resources to help organize and track your work."
     >
-      <Flex gap={24} direction="column" align="center">
-        <Text size="xxxxlarge">🖋️</Text>
-        <Flex gap={8} direction="column" align="center">
-          <Text size="xxlarge" weight="bold">
-            Create a new workspace
-          </Text>
-          <Text size="small" color="gray600" align="center">
-            A workspace is a collection of resources to help organize and track
-            your work.
-          </Text>
-        </Flex>
-      </Flex>
-      <Flex direction="column" fullWidth gap={24}>
+      <Flex
+        as="form"
+        onSubmit={handleSubmit((data) => {
+          mutate(data);
+        })}
+        direction="column"
+        fullWidth
+        gap={24}
+      >
         <Input
           placeholder="ex) eungyeole"
           {...register("workspaceName", {
@@ -73,7 +63,7 @@ const CreateWorkspace: NextPageWithAuth<CreateWorkspaceProps> = () => {
           New workspace
         </Button>
       </Flex>
-    </CreateWorkspaceContainer>
+    </CommonFormTemplate>
   );
 };
 

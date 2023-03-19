@@ -73,3 +73,13 @@ export const getWorkspacePostsApi = async ({
     }[];
   }>(`/posts/workspaces/${workspaceId}`);
 };
+
+export const joinWorkspaceApi = async ({
+  workspaceId,
+  code,
+}: {
+  workspaceId: string;
+  code: string;
+}) => {
+  return await apiClient.post(`/workspaces/${workspaceId}/join`, { code });
+};

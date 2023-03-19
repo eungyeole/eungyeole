@@ -5,8 +5,8 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { sendVertificationCodeApi, signInApi } from "src/apis/users/apis";
+import CommonFormTemplate from "src/components/common/templates/CommonFormTemplate";
 import { COOKIE_KEYS } from "src/constants/cookies";
-import styled from "styled-components";
 import { Button, Flex, Input, Text } from "ui";
 import { isEmail } from "utils";
 
@@ -50,24 +50,10 @@ const Signin: NextPage<SigninProps> = () => {
   );
 
   return (
-    <Container gap={24} direction="column" justify="center">
-      <Flex gap={24} direction="column" align="center">
-        <Text size="xxxxlarge">🖋️</Text>
-        <Flex gap={8} direction="column" align="center">
-          <Text size="xxlarge" weight="bold">
-            Sign in for write
-          </Text>
-
-          <Text
-            whiteSpace="pre-wrap"
-            size="small"
-            color="gray600"
-            align="center"
-          >
-            Publish your stories and connect with audiences.
-          </Text>
-        </Flex>
-      </Flex>
+    <CommonFormTemplate
+      title="Sign in for write"
+      description="Publish your stories and connect with audiences."
+    >
       <Flex
         as="form"
         onSubmit={handleSubmit((value) => {
@@ -136,14 +122,8 @@ const Signin: NextPage<SigninProps> = () => {
           </Button>
         )}
       </Flex>
-    </Container>
+    </CommonFormTemplate>
   );
 };
 
 export default Signin;
-
-const Container = styled(Flex)`
-  max-width: 380px;
-  margin: 0 auto;
-  margin-top: 50px;
-`;
