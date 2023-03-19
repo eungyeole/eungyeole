@@ -5,9 +5,9 @@ import { Button } from "ui";
 export default function Web() {
   return (
     <div>
-      <Link href="/auth/signin">
+      <a href="/workspaces">
         <Button>go to login</Button>
-      </Link>
+      </a>
     </div>
   );
 }
