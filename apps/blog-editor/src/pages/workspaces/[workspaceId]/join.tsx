@@ -4,12 +4,13 @@ import { useRouter } from "next/router";
 import { joinWorkspaceApi } from "src/apis/workspace/apis";
 import CommonFormTemplate from "src/components/common/templates/CommonFormTemplate";
 import { useWorkspaceId } from "src/components/worksapce/hooks/useWorkspaceId";
+import { NextPageWithAuth } from "src/types";
 import { Button } from "ui";
 
 interface WorkspaceJoinProps {
   code: string;
 }
-const WorkspaceJoin: NextPage<WorkspaceJoinProps> = ({ code }) => {
+const WorkspaceJoin: NextPageWithAuth<WorkspaceJoinProps> = ({ code }) => {
   const router = useRouter();
   const workspaceId = useWorkspaceId();
 
@@ -42,6 +43,8 @@ const WorkspaceJoin: NextPage<WorkspaceJoinProps> = ({ code }) => {
 };
 
 export default WorkspaceJoin;
+
+WorkspaceJoin.requireAuth = true;
 
 export const getServerSideProps: GetServerSideProps<
   WorkspaceJoinProps
