@@ -72,9 +72,9 @@ const Header: FC = () => {
               <CustomButton
                 variant="quiet"
                 size="small"
-                selected={asPath.startsWith(
-                  `/workspaces/${workspaceId}/${tab.path}`
-                )}
+                selected={
+                  !!asPath.startsWith(`/workspaces/${workspaceId}/${tab.path}`)
+                }
               >
                 {tab.label}
               </CustomButton>
