@@ -31,8 +31,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
   return {
     redirect: {
+      statusCode: 301,
       destination: `/workspaces/${data.workspaces[0].id}`,
-      permanent: false,
     },
   };
 };
