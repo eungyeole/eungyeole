@@ -4,7 +4,7 @@ interface DividerProps {
   direction?: "horizontal" | "vertical";
 }
 export const Divider = styled.div<DividerProps>`
-  background-color: ${({ theme }) => theme.colors.gray400};
+  background-color: ${({ theme }) => theme.colors.gray200};
   margin: 0 4px;
   ${({ direction = "horizontal" }) => {
     if (direction === "horizontal") {

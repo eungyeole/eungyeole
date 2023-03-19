@@ -1,11 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import {
-  createWorkspacePostApi,
-  updateWorkspacePostApi,
-} from "src/apis/workspace/apis";
+import { updateWorkspacePostApi } from "src/apis/workspace/apis";
 import { Post } from "src/apis/workspace/types";
 import Editor from "src/components/common/editor/Editor";
 import styled from "styled-components";
@@ -21,81 +18,54 @@ const PostEditor: FC<PostEditorProps> = ({ initialPost }) => {
   const { addToast } = useToast();
   const router = useRouter();
 
+  const [state, setState] = useState({
+    title: initialPost?.title || "",
+    content: initialPost?.content || "",
+  });
+
   const postId = Number(router.query.postId);
-
-  const workspaceId = useWorkspaceId();
-
-  const { register, control, handleSubmit, formState } = useForm({
-    defaultValues: {
-      title: initialPost?.title || "",
-      content: initialPost?.content || "",
-    },
-  });
-
-  const {
-    mutate: createWorkspacePostMutate,
-    isLoading: isCreateWorkspacePostLoading,
-  } = useMutation(createWorkspacePostApi, {
-    onSuccess: ({ data }) => {
-      addToast({
-        variant: "success",
-        message: "Your post has been created successfully",
-      });
-      router.replace(`/workspaces/${workspaceId}/editors/posts?postId=${data}`);
-    },
-  });
 
   const {
     mutate: updateWorkspacePostMutate,
     isLoading: isUpdateWorkspacePostLoading,
-  } = useMutation(updateWorkspacePostApi, {});
+  } = useMutation(updateWorkspacePostApi);
 
   return (
     <>
       <Header
         rightContent={
           <Button
-            loading={
-              isCreateWorkspacePostLoading || isUpdateWorkspacePostLoading
-            }
-            onClick={handleSubmit((data) => {
+            variant={initialPost?.status === "PUBLISHED" ? "pale" : "primary"}
+            loading={isUpdateWorkspacePostLoading}
+            onClick={() => {
               if (isFinite(postId)) {
                 updateWorkspacePostMutate({
                   postId,
-                  ...data,
-                });
-              } else {
-                createWorkspacePostMutate({
-                  workspaceId,
-                  ...data,
+                  status:
+                    initialPost?.status === "PUBLISHED" ? "DRAFT" : "PUBLISHED",
+                  ...state,
                 });
               }
-            })}
+            }}
             size="small"
-            disabled={!formState.isValid}
           >
-            Save
+            {initialPost?.status === "PUBLISHED" ? "Unpublish" : "Publish"}
           </Button>
         }
       />
       <Container>
         <Flex direction="column" gap={24}>
           <TitleInput
-            {...register("title", {
-              required: true,
-            })}
+            value={state.title}
+            onChange={(e) => setState({ ...state, title: e.target.value })}
             placeholder="Title"
           />
-          <Controller
-            name="content"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <Editor
-                placeholder="Wirte your post here..."
-                onChange={(editor) => onChange(editor.toJSON())}
-                defaultValue={value}
-              />
-            )}
+          <Editor
+            placeholder="Wirte your post here..."
+            onChange={(editor) =>
+              setState({ ...state, content: editor.toJSON() })
+            }
+            defaultValue={state.content}
           />
         </Flex>
       </Container>

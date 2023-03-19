@@ -20,9 +20,11 @@ export interface InviteMember {
   role: WorkspaceRole;
 }
 
+export type PostStatus = "DRAFT" | "PUBLISHED";
+
 export interface Post {
   id: number;
-  status: "DRAFT" | "PUBLISHED";
+  status: PostStatus;
   title: string;
   content: any;
   createdAt: string;

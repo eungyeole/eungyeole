@@ -1,14 +1,13 @@
-import { GetServerSideProps } from "next";
+import Link from "next/link";
 
-import { localApiClient } from "src/apis/client";
-import { Button, Text } from "ui";
+import { Button } from "ui";
 
 export default function Web() {
   return (
     <div>
-      <Text>blog-editor: Hello World</Text>
-
-      <Button>Click me</Button>
+      <Link href="/auth/signin">
+        <Button>go to login</Button>
+      </Link>
     </div>
   );
 }

@@ -2,12 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC } from "react";
+import { BiPlus } from "react-icons/bi";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { getWorkspaceApi } from "src/apis/workspace/apis";
 import { workspaceQueryKeys } from "src/apis/workspace/queryKeys";
 import styled, { css } from "styled-components";
-import { Avatar, Button, Flex, Icon, Text } from "ui";
-import { useWorkspaceId } from "./hooks/useWorkspaceId";
+import { Avatar, Button, Divider, Dropdown, Flex, Icon, Text } from "ui";
+import { useWorkspaceId } from "../hooks/useWorkspaceId";
+import { SelectWorkspacePopup } from "./SelectWorkspacePopup";
 
 const tabs = [
   {
@@ -41,13 +43,26 @@ const Header: FC = () => {
 
   return (
     <Container>
-      <Flex gap={12} align="center">
-        <WorkspaceContainer gap={8} flex="1" align="center">
-          <Avatar src={data?.profileImage} name={data?.name} size="small" />
-          <Text color="gray800" size="large" weight="bold">
-            {data?.name}
-          </Text>
-        </WorkspaceContainer>
+      <Flex align="center" fullHeight>
+        <SelectWorkspacePopup
+          selectedWorkspace={data}
+          trigger={
+            <WorkspaceContainer gap={8} flex="1" align="center">
+              <Avatar src={data?.profileImage} name={data?.name} size="small" />
+              <Text color="gray800" size="large" weight="bold">
+                {data?.name}
+              </Text>
+            </WorkspaceContainer>
+          }
+        />
+        <Divider
+          direction="vertical"
+          style={{
+            boxSizing: "border-box",
+            height: "32px",
+            margin: "0 12px 0 0",
+          }}
+        />
         <Flex gap={8}>
           {tabs.map((tab) => (
             <Link
@@ -69,17 +84,29 @@ const Header: FC = () => {
       </Flex>
 
       <Flex gap={8}>
-        <Button
-          size="small"
-          variant="quiet"
-          tailingIcon={
-            <Icon color="gray600">
-              <IoMdArrowDropdown />
-            </Icon>
+        <Dropdown
+          trigger={
+            <Button
+              size="small"
+              variant="quiet"
+              tailingIcon={
+                <Icon color="gray600">
+                  <IoMdArrowDropdown />
+                </Icon>
+              }
+            >
+              <Avatar variant="circle" name="eungyeole" size="xsmall" />
+            </Button>
           }
-        >
-          <Avatar variant="circle" name="eungyeole" size="xsmall" />
-        </Button>
+          render={({ hide }) => (
+            <Dropdown.Menu position="right">
+              <Dropdown.Item danger>Sign out</Dropdown.Item>
+              <Dropdown.Item onClick={hide} danger>
+                Sign out
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          )}
+        />
       </Flex>
     </Container>
   );
@@ -101,8 +128,13 @@ const Container = styled.header`
 `;
 
 const WorkspaceContainer = styled(Flex)`
-  border-right: 1px solid ${({ theme }) => theme.colors.gray200};
+  height: 100%;
   padding: 0 24px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.gray200};
+  }
 `;
 
 const CustomButton = styled(Button)<{

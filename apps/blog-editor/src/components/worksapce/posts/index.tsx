@@ -1,16 +1,22 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { BiPlus } from "react-icons/bi";
-import { getWorkspacePostsApi } from "src/apis/workspace/apis";
+import {
+  createWorkspacePostApi,
+  getWorkspacePostsApi,
+} from "src/apis/workspace/apis";
 import { workspaceQueryKeys } from "src/apis/workspace/queryKeys";
 import styled from "styled-components";
-import { Avatar, Button, Flex, Icon, Text } from "ui";
+import { Avatar, Button, Flex, Icon, Text, useToast } from "ui";
 import dayjs from "dayjs";
 
 import Header from "../Header";
 import { useWorkspaceId } from "../hooks/useWorkspaceId";
+import { useRouter } from "next/router";
 
 const Posts = () => {
+  const router = useRouter();
+  const { addToast } = useToast();
   const workspaceId = useWorkspaceId();
 
   const { data } = useQuery(
@@ -25,6 +31,19 @@ const Posts = () => {
     }
   );
 
+  const {
+    mutate: createWorkspacePostMutate,
+    isLoading: isCreateWorkspacePostLoading,
+  } = useMutation(createWorkspacePostApi, {
+    onSuccess: ({ data }) => {
+      addToast({
+        variant: "success",
+        message: "Your post has been created successfully",
+      });
+      router.push(`/workspaces/${workspaceId}/editors/posts?postId=${data}`);
+    },
+  });
+
   return (
     <Flex direction="column" fullHeight fullWidth>
       <Header />
@@ -34,17 +53,22 @@ const Posts = () => {
             <Text size="xxxlarge" weight="bold">
               Posts
             </Text>
-            <Link href={`/workspaces/${workspaceId}/editors/posts`}>
-              <Button
-                leadingIcon={
-                  <Icon>
-                    <BiPlus />
-                  </Icon>
-                }
-              >
-                New
-              </Button>
-            </Link>
+
+            <Button
+              loading={isCreateWorkspacePostLoading}
+              onClick={() =>
+                createWorkspacePostMutate({
+                  workspaceId,
+                })
+              }
+              leadingIcon={
+                <Icon>
+                  <BiPlus />
+                </Icon>
+              }
+            >
+              New
+            </Button>
           </Flex>
           <Flex direction="column">
             {data?.posts?.map((post) => (
