@@ -1,10 +1,10 @@
 import { forwardRef } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   type?: "button" | "submit" | "reset";
-  variant?: "primary" | "quiet" | "pale";
+  variant?: "primary" | "quiet" | "pale" | "ghost";
   size?: "xsmall" | "small" | "medium" | "large";
   loading?: boolean;
   leadingIcon?: React.ReactNode;
@@ -149,6 +149,7 @@ const ButtonStyled = styled.button<ButtonProps>`
 
   background-color: ${({ theme, variant }) => {
     switch (variant) {
+      case "ghost":
       case "quiet":
         return "transparent";
       case "pale":
@@ -160,6 +161,7 @@ const ButtonStyled = styled.button<ButtonProps>`
 
   color: ${({ theme, variant }) => {
     switch (variant) {
+      case "ghost":
       case "quiet":
         return theme.colors.gray800;
       case "pale":
@@ -171,9 +173,16 @@ const ButtonStyled = styled.button<ButtonProps>`
 
   cursor: pointer;
 
+  ${({ variant }) =>
+    variant === "ghost" &&
+    css`
+      border: 1px solid ${({ theme }) => theme.colors.gray400};
+    `}
+
   &:hover {
     background-color: ${({ theme, variant }) => {
       switch (variant) {
+        case "ghost":
         case "quiet":
           return theme.colors.gray200;
         case "pale":

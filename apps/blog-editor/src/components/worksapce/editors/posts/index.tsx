@@ -53,14 +53,21 @@ const PostEditor: FC<PostEditorProps> = ({ initialPost }) => {
     }, 1000);
 
     return () => clearTimeout(timeout);
-  }, [initialPost?.status, postId, state, updateWorkspacePostMutate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    initialPost?.status,
+    postId,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    JSON.stringify(state),
+    updateWorkspacePostMutate,
+  ]);
 
   return (
     <>
       <Header
         rightContent={
           <Button
-            variant={initialPost?.status === "PUBLISHED" ? "pale" : "primary"}
+            variant={initialPost?.status === "PUBLISHED" ? "ghost" : "primary"}
             loading={isUpdateWorkspacePostLoading}
             onClick={() => {
               if (isFinite(postId)) {
