@@ -82,7 +82,7 @@ const Posts = () => {
                   align="center"
                 >
                   <Flex direction="column" gap={2}>
-                    <Text weight="medium">{post.title}</Text>
+                    <Text weight="medium">{post.title || "Untitled"}</Text>
                     <Flex gap={4}>
                       <Text size="small">{post.status} |</Text>
                       <Text size="small" color="gray600">
