@@ -9,13 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@lexical/react": "^0.7.6",
+    "@lexical/react": "^0.9.0",
     "@tanstack/react-query": "^4.22.3",
     "@tanstack/react-query-devtools": "^4.22.4",
     "axios": "^1.3.4",
     "cookies-next": "^2.1.1",
     "dayjs": "^1.11.7",
-    "lexical": "^0.7.6",
+    "lexical": "^0.9.0",
     "lodash": "^4.17.21",
     "next": "^13.1.1",
     "react": "^18.2.0",
