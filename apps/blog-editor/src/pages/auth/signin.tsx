@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { sendVertificationCodeApi, signInApi } from "src/apis/users/apis";
 import CommonFormTemplate from "src/components/common/templates/CommonFormTemplate";
 import { COOKIE_KEYS } from "src/constants/cookies";
-import { Button, Flex, Input, Text } from "ui";
+import { Button, Flex, Input, Text, useToast } from "ui";
 import { isEmail } from "utils";
 
 interface SigninProps {}
@@ -16,6 +16,7 @@ const Signin: NextPage<SigninProps> = () => {
   const router = useRouter();
   const { redirectPath } = router.query;
 
+  const { addToast } = useToast();
   const [step, setStep] = useState<"email" | "code">("email");
 
   const { register, handleSubmit, formState } = useForm<{
@@ -45,6 +46,12 @@ const Signin: NextPage<SigninProps> = () => {
         });
 
         router.push(redirectPath ? String(redirectPath) : "/workspaces");
+      },
+      onError: () => {
+        addToast({
+          variant: "error",
+          message: "Code is not valid.",
+        });
       },
     }
   );

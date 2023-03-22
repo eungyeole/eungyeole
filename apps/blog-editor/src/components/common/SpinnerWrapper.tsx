@@ -5,7 +5,7 @@ import { Flex, Icon } from "ui";
 
 interface SpinnerWrapperProps {
   isLoading: boolean;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 const SpinnerWrapper: FC<SpinnerWrapperProps> = ({ isLoading, children }) => {

@@ -41,26 +41,26 @@ const PostEditor: FC<PostEditorProps> = ({ initialPost }) => {
   });
 
   // auto save with debounce
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (isFinite(postId)) {
-        updateWorkspacePostMutate({
-          postId,
-          status: initialPost?.status || "DRAFT",
-          ...state,
-        });
-      }
-    }, 1000);
+  // useEffect(() => {
+  //   const timeout = setTimeout(() => {
+  //     if (isFinite(postId)) {
+  //       updateWorkspacePostMutate({
+  //         postId,
+  //         status: initialPost?.status || "DRAFT",
+  //         ...state,
+  //       });
+  //     }
+  //   }, 1000);
 
-    return () => clearTimeout(timeout);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    initialPost?.status,
-    postId,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    JSON.stringify(state),
-    updateWorkspacePostMutate,
-  ]);
+  //   return () => clearTimeout(timeout);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [
+  //   initialPost?.status,
+  //   postId,
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  //   JSON.stringify(state),
+  //   updateWorkspacePostMutate,
+  // ]);
 
   return (
     <>
@@ -94,9 +94,7 @@ const PostEditor: FC<PostEditorProps> = ({ initialPost }) => {
           />
           <Editor
             placeholder="Wirte your post here..."
-            onChange={(editor) =>
-              setState({ ...state, content: editor.toJSON() })
-            }
+            onChange={(editor) => setState({ ...state, content: editor })}
             defaultValue={state.content}
           />
         </Flex>
