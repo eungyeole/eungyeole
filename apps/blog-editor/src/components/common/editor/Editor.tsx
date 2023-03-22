@@ -135,7 +135,7 @@ const StyledContentEditable = styled(ContentEditable)`
   }
 
   & .${theme.ltr} {
-    margin-bottom: 4px;
+    padding-bottom: 4px;
     box-sizing: border-box;
   }
 
@@ -182,7 +182,8 @@ const StyledContentEditable = styled(ContentEditable)`
     color: ${({ theme }) => theme.colors.primary};
     border-radius: 6px;
     position: relative;
-    padding: 0px 0px 0px 16px;
+    padding: 0px 0px 0px 20px;
+    margin: 16px 0;
 
     &::before {
       content: "";
@@ -202,6 +203,11 @@ const StyledContentEditable = styled(ContentEditable)`
   h3 {
     color: ${({ theme }) => theme.colors.gray800};
     font-weight: ${({ theme }) => theme.fonts.weights.medium};
+    margin: 36px 0px 16px 0px;
+
+    @media ${device.tablet} {
+      margin: 28px 0px 16px 0px;
+    }
   }
 
   h1 {
@@ -245,9 +251,12 @@ const StyledContentEditable = styled(ContentEditable)`
   }
 
   .ul {
-    padding: 0;
     margin: 0;
     list-style-position: inside;
+  }
+
+  & > .ul {
+    padding-left: 0;
   }
 
   .nestedListItem {
