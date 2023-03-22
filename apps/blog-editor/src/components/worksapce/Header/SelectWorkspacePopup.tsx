@@ -44,17 +44,19 @@ export const SelectWorkspacePopup: FC<SelectWorkspacePopupProps> = ({
               {selectedWorkspace?.name}
             </Text>
           </Flex>
-          <WorkspaceListContainer direction="column">
-            {data?.workspaces
-              .filter((workspace) => workspace.id !== selectedWorkspace?.id)
-              .map((workspace) => (
-                <Link href={`/workspaces/${workspace.id}`} key={workspace.id}>
-                  <Dropdown.Item key={workspace.id} onClick={hide}>
-                    {workspace.name}
-                  </Dropdown.Item>
-                </Link>
-              ))}
-          </WorkspaceListContainer>
+          {data && data.workspaces.length > 1 && (
+            <WorkspaceListContainer direction="column">
+              {data?.workspaces
+                .filter((workspace) => workspace.id !== selectedWorkspace?.id)
+                .map((workspace) => (
+                  <Link href={`/workspaces/${workspace.id}`} key={workspace.id}>
+                    <Dropdown.Item key={workspace.id} onClick={hide}>
+                      {workspace.name}
+                    </Dropdown.Item>
+                  </Link>
+                ))}
+            </WorkspaceListContainer>
+          )}
           <Link href="/workspaces/create">
             <Dropdown.Item leadingIcon={<BiPlus />} onClick={hide}>
               Create a new workspace
