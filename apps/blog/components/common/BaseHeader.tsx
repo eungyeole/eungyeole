@@ -58,6 +58,10 @@ const HeaderContainer = styled.header<{ $isScroll: boolean }>`
       height: 60px;
       border-bottom: 1px solid ${({ theme }) => theme.colors.gray200};
     `}
+
+  @media ${device.tablet} {
+    height: 60px;
+  }
 `;
 
 const HeaderWrapper = styled(Flex)`
