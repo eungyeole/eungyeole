@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/next-script-for-ga */
 import { GlobalStyle, ThemeProvider } from "ui";
 import StyledComponentsRegistry from "../components/common/registry/styled-components";
 
@@ -19,6 +20,21 @@ export default function RootLayout({
           rel="stylesheet"
           as="style"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css"
+        />
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-ZE9MYGDXFC"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-ZE9MYGDXFC');
+          `,
+          }}
         />
       </head>
       <body>
