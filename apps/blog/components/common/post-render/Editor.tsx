@@ -71,7 +71,6 @@ const StyledContentEditable = styled(ContentEditable)`
   outline: none;
   color: ${({ theme }) => theme.colors.gray700};
   font-size: ${({ theme }) => theme.fonts.sizes.large};
-  padding: 0 16px;
 
   @media ${device.tablet} {
     font-size: 17px;
