@@ -28,6 +28,9 @@ export const metadata: Metadata = {
     title,
     description,
   },
+  other: {
+    "naver-site-verification": "5e76f2696f98b6fb7b547a41a96f55bf56a4d1c6",
+  },
 };
 
 async function Page() {
