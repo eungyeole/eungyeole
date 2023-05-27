@@ -7,6 +7,7 @@ interface PageProps {
     postId: string;
   };
 }
+
 async function Page({ params }: PageProps) {
   const post = await getData(params.postId);
 

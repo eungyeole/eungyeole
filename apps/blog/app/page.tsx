@@ -1,9 +1,34 @@
-import { Button } from "ui";
-import Header from "../components/common/Header";
 import client from "database";
 import { ResponsePostList } from "../dto/post";
-import PostItem from "../components/post-list/PostItem";
 import PostListPageView from "../components/post-list";
+import { Metadata } from "next";
+
+const title = "안은결 | Blog";
+const description =
+  "안녕하세요 Frontend 개발자 안은결입니다. 이 블로그는 개발하면서 겪었던 이슈들을 정리하고, 공유하기 위해 만들어졌습니다.";
+
+export const metadata: Metadata = {
+  title,
+  description,
+  keywords: [
+    "안은결",
+    "개발자",
+    "Frontend",
+    "Engineer",
+    "Blog",
+    "블로그",
+    "프론트엔드",
+    "eungyeole",
+  ],
+  openGraph: {
+    title,
+    description,
+  },
+  twitter: {
+    title,
+    description,
+  },
+};
 
 async function Page() {
   const { datas } = await getData();
