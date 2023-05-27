@@ -15,6 +15,7 @@ export const GlobalStyle = createGlobalStyle`
         font-weight: 400;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        -webkit-tap-highlight-color: transparent;
     }
 
     a {
