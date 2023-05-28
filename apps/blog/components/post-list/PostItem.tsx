@@ -22,7 +22,7 @@ const PostItem: FC<PostItemProps> = ({
     <PostContainer gap={20} fullWidth direction="column">
       {thumbnailUrl && (
         <ThumbnailWrapper>
-          {/* <Image fill src={thumbnailUrl} alt={`${title}-썸네일`} /> */}
+          <Image fill src={thumbnailUrl} alt={`${title}-썸네일`} />
         </ThumbnailWrapper>
       )}
       <TextWrapper gap={10} direction="column" fullWidth>

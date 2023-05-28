@@ -6,6 +6,7 @@ import Header from "../common/Header";
 import { ResponsePost } from "../../dto/post";
 
 import PostRender from "../common/post-render";
+import Image from "next/image";
 
 interface PostViewProps {
   post: ResponsePost;
@@ -35,7 +36,7 @@ const PostView = ({ post }: PostViewProps) => {
             </Flex>
             {thumbnailUrl && (
               <PostThumbnail>
-                {/* <Image src={thumbnailUrl} fill alt={`${title}-img`} /> */}
+                <Image src={thumbnailUrl} fill alt={`${title}-img`} />
               </PostThumbnail>
             )}
 
