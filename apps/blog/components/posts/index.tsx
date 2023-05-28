@@ -4,8 +4,8 @@ import styled from "styled-components";
 import { device, Flex, Text } from "ui";
 import Header from "../common/Header";
 import { ResponsePost } from "../../dto/post";
-import Editor from "../common/post-render/Editor";
-import { SerializedEditorState } from "lexical";
+
+import PostRender from "../common/post-render";
 
 interface PostViewProps {
   post: ResponsePost;
@@ -39,9 +39,7 @@ const PostView = ({ post }: PostViewProps) => {
               </PostThumbnail>
             )}
 
-            <Editor
-              defaultValue={content as unknown as SerializedEditorState}
-            />
+            <PostRender content={content} />
           </Flex>
         </PostContainerInner>
       </PostContainer>

@@ -1,63 +1,28 @@
-import { LexicalComposer } from "@lexical/react/LexicalComposer";
-import { ContentEditable } from "@lexical/react/LexicalContentEditable";
-import { LinkNode } from "@lexical/link";
-import { ListPlugin } from "@lexical/react/LexicalListPlugin";
-
 import { device, Text } from "ui";
-import { FC } from "react";
-import { CodeNode, CodeHighlightNode } from "@lexical/code";
-import { ListItemNode, ListNode } from "@lexical/list";
-import { HeadingNode, QuoteNode } from "@lexical/rich-text";
-import { Klass, LexicalNode, SerializedEditorState } from "lexical";
-import { CodeHighlightPlugin } from "./plugins/CodeHighLightPlugin";
 import styled from "styled-components";
 import { theme } from "./theme";
 
-export const nodes: Klass<LexicalNode>[] = [
-  HeadingNode,
-  ListNode,
-  ListItemNode,
-  QuoteNode,
-  CodeNode,
-  LinkNode,
-  CodeHighlightNode,
-];
-
-interface EditorProps {
-  defaultValue?: SerializedEditorState;
+interface PostRenderProps {
+  content: string;
 }
 
-const Editor: FC<EditorProps> = ({ defaultValue }) => {
+const PostRender = ({ content }: PostRenderProps) => {
   return (
-    <>
-      <LexicalComposer
-        initialConfig={{
-          namespace: "blog",
-          nodes,
-          onError: (error) => {},
-          editorState: (editor) => {
-            defaultValue &&
-              editor.setEditorState(editor.parseEditorState(defaultValue));
-          },
-          theme,
-          editable: false,
-        }}
-      >
-        <RichTextContainer>
-          <div className="block-wrapper">
-            <StyledContentEditable />
-          </div>
-        </RichTextContainer>
-        <ListPlugin />
-        <CodeHighlightPlugin />
-      </LexicalComposer>
-    </>
+    <Container>
+      <div className="block-wrapper">
+        <Render
+          dangerouslySetInnerHTML={{
+            __html: content,
+          }}
+        />
+      </div>
+    </Container>
   );
 };
 
-export default Editor;
+export default PostRender;
 
-const RichTextContainer = styled.div`
+const Container = styled.div`
   position: relative;
 
   * {
@@ -67,7 +32,7 @@ const RichTextContainer = styled.div`
   line-height: 1.5;
 `;
 
-const StyledContentEditable = styled(ContentEditable)`
+const Render = styled.div`
   outline: none;
   color: ${({ theme }) => theme.colors.gray700};
   font-size: ${({ theme }) => theme.fonts.sizes.large};
@@ -192,12 +157,10 @@ const StyledContentEditable = styled(ContentEditable)`
     text-decoration: underline line-through;
   }
 
-  .ul {
+  .ul,
+  ol {
     margin: 0;
     list-style-position: inside;
-  }
-
-  & > .ul {
     padding-left: 0;
   }
 

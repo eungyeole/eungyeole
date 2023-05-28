@@ -15,5 +15,5 @@ model Post {
     categories   String[]
     createdAt    DateTime @default(now())
     thumbnailUrl String?
-    content      Json
+    content      String
 }
