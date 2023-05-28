@@ -3,6 +3,7 @@ import { CommonPageResponse } from "./common";
 
 export class ResponsePost {
   id: string;
+  slug: string;
   title: string;
   description: string | null;
   content: string;
@@ -12,6 +13,7 @@ export class ResponsePost {
 
   constructor(post: db.Post) {
     this.id = post.id;
+    this.slug = post.slug;
     this.title = post.title;
     this.description = post.description;
     this.content = JSON.parse(JSON.stringify(post.content));

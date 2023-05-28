@@ -4,12 +4,12 @@ import { ResponsePost } from "../../../dto/post";
 
 interface PageProps {
   params: {
-    postId: string;
+    slug: string;
   };
 }
 
 async function Page({ params }: PageProps) {
-  const post = await getData(params.postId);
+  const post = await getData(params.slug);
 
   return (
     <>
@@ -20,10 +20,10 @@ async function Page({ params }: PageProps) {
 
 export default Page;
 
-const getData = async (id: string) => {
+const getData = async (slug: string) => {
   const post = await client.post.findUniqueOrThrow({
     where: {
-      id,
+      slug,
     },
   });
 

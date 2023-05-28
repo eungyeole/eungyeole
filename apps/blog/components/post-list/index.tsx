@@ -18,8 +18,8 @@ const PostListPageView: FC<PostListProps> = ({ posts }) => {
         <MainInnerContainer>
           <Flex gap={36} fullWidth>
             <Flex gap={48} direction="column" fullWidth>
-              {posts?.map((post, index) => (
-                <PostItem key={index} {...post} />
+              {posts?.map((post) => (
+                <PostItem key={post.id} {...post} />
               ))}
             </Flex>
           </Flex>

@@ -11,13 +11,14 @@ interface PostItemProps extends ResponsePost {}
 
 const PostItem: FC<PostItemProps> = ({
   id,
+  slug,
   thumbnailUrl,
   title,
   description,
   categories,
   createdAt,
 }) => (
-  <Link href={`/posts/${id}`}>
+  <Link href={`/posts/${slug}`}>
     <PostContainer gap={20} fullWidth direction="column">
       {thumbnailUrl && (
         <ThumbnailWrapper>
