@@ -39,7 +39,7 @@ const PostItem: FC<PostItemProps> = ({
           {title}
         </Text>
         {description && (
-          <Text color="gray700" size="medium">
+          <Text className="description" color="gray700" size="medium">
             {description}
           </Text>
         )}
@@ -83,6 +83,13 @@ const PostContainer = styled(Flex)`
 `;
 
 const TextWrapper = styled(Flex)`
+  & .description {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
   @media ${device.tablet} {
     & .title {
       font-size: ${({ theme }) => theme.fonts.sizes.large};
