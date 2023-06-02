@@ -115,7 +115,7 @@ const ButtonStyled = styled.button<ButtonProps>`
       case "xsmall":
         return theme.fonts.sizes.xsmall;
       case "small":
-        return theme.fonts.sizes.xsmall;
+        return theme.fonts.sizes.small;
       case "large":
         return theme.fonts.sizes.large;
       default:

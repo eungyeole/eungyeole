@@ -1,16 +1,17 @@
-import { Flex, Text } from "ui";
+import { Button, Flex } from "ui";
 import BaseHeader from "./BaseHeader";
 
 const Header = () => {
   return (
     <BaseHeader
       rightContent={
-        <Flex gap={20}>
-          <Text size="small">홈</Text>
-          <Text size="small" weight="medium">
-            블로그
-          </Text>
-          <Text size="small">포트폴리오</Text>
+        <Flex gap={8}>
+          <Button size="small" variant="quiet">
+            홈
+          </Button>
+          <Button size="small" variant="quiet">
+            이력서
+          </Button>
         </Flex>
       }
     />

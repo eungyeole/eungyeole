@@ -10,7 +10,6 @@ import { ResponsePost } from "../../dto/post";
 interface PostItemProps extends ResponsePost {}
 
 const PostItem: FC<PostItemProps> = ({
-  id,
   slug,
   thumbnailUrl,
   title,

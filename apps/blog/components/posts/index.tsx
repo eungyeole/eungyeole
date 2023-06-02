@@ -25,7 +25,7 @@ const PostView = ({ post }: PostViewProps) => {
               <Text
                 align="center"
                 className="title"
-                size="xxxxlarge"
+                size="xxxlarge"
                 weight="medium"
               >
                 {title}

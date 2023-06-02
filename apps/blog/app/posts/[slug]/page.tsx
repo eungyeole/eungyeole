@@ -1,6 +1,7 @@
 import client from "database";
 import PostView from "../../../components/posts";
 import { ResponsePost } from "../../../dto/post";
+import { notFound } from "next/navigation";
 
 interface PageProps {
   params: {
@@ -21,11 +22,15 @@ async function Page({ params }: PageProps) {
 export default Page;
 
 const getData = async (slug: string) => {
-  const post = await client.post.findUniqueOrThrow({
-    where: {
-      slug,
-    },
-  });
+  try {
+    const post = await client.post.findUniqueOrThrow({
+      where: {
+        slug,
+      },
+    });
 
-  return new ResponsePost(post);
+    return new ResponsePost(post);
+  } catch (error) {
+    notFound();
+  }
 };

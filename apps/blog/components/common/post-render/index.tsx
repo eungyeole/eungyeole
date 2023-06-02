@@ -54,7 +54,7 @@ const Render = styled.div`
     padding: 24px 32px;
     margin: 8px 0px;
     font-size: ${({ theme }) => theme.fonts.sizes.xsmall};
-
+    white-space: pre;
     tab-size: 2;
     overflow-x: auto;
     position: relative;
@@ -86,7 +86,7 @@ const Render = styled.div`
   }
 
   & .${theme.quote} {
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.gray900};
     border-radius: 6px;
     position: relative;
     padding: 0px 0px 0px 20px;
@@ -99,7 +99,7 @@ const Render = styled.div`
       left: 0px;
       width: 3px;
       height: 100%;
-      background-color: ${({ theme }) => theme.colors.primary};
+      background-color: ${({ theme }) => theme.colors.gray900};
       border-radius: 4px;
       margin: 0px;
     }
@@ -157,6 +157,15 @@ const Render = styled.div`
     text-decoration: underline line-through;
   }
 
+  // 임시 스타일
+  a {
+    color: #1a73e8;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
   .ul,
   ol {
     margin: 0;
