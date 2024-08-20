@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
 
-const host = "https://blog.eungyeole.com";
+const host = "https://resume.eungyeole.com";
+
 function sitemap(): MetadataRoute.Sitemap {
   return [
     {
