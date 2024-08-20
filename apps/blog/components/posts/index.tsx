@@ -2,7 +2,7 @@
 import dayjs from "dayjs";
 import styled from "styled-components";
 import { device, Flex, Text } from "ui";
-import Header from "../common/Header";
+import Header from "../common/header";
 import { ResponsePost } from "../../dto/post";
 
 import PostRender from "../common/post-render";

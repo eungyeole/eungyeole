@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Header from "../components/common/Header";
+import Header from "../components/common/header";
 
 export default function NotFound() {
   return (

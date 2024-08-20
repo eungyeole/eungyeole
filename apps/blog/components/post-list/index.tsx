@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { device, Flex } from "ui";
 
 import PostItem from "../../components/post-list/PostItem";
-import Header from "../common/Header";
+import Header from "../common/header";
 import { ResponsePost } from "../../dto/post";
 
 interface PostListProps {
