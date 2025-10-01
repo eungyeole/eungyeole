@@ -1,4 +1,0 @@
-User-Agent: *
-Allow: /
-
-Sitemap: https://blog.eungyeole.xyz/sitemap.xml
