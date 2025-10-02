@@ -21,12 +21,8 @@ export const Footer = () => {
         </a>
       </div>
 
-      <MonaLisaEffect max={-60} min={-120}>
-        <IconEungyeole
-          width={24}
-          height={24}
-          className="text-gray-500 rotate-90"
-        />
+      <MonaLisaEffect offset={90} max={-60} min={-120}>
+        <IconEungyeole width={24} height={24} className="text-gray-500" />
       </MonaLisaEffect>
     </footer>
   );

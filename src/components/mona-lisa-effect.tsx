@@ -9,12 +9,14 @@ interface MonaLisaEffectProps {
   children: React.ReactNode;
   max?: number;
   min?: number;
+  offset?: number;
 }
 
 export const MonaLisaEffect = ({
   children,
   max = 360,
   min = -360,
+  offset = 0,
 }: MonaLisaEffectProps) => {
   const iconRef = useRef<HTMLDivElement>(null);
 
@@ -49,7 +51,7 @@ export const MonaLisaEffect = ({
           }
 
           if (normalizedAngle >= min && normalizedAngle <= max) {
-            targetRotation.current = normalizedAngle;
+            targetRotation.current = normalizedAngle + offset;
           }
         }
       }
@@ -84,7 +86,7 @@ export const MonaLisaEffect = ({
         cancelAnimationFrame(animationFrameId.current);
       }
     };
-  }, [max, min]);
+  }, [max, min, offset]);
 
   return (
     <div ref={iconRef} className="transition-transform duration-75 ease-linear">
