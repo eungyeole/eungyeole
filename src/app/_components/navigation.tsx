@@ -9,14 +9,14 @@ export const Navigation = () => {
   const router = useRouter();
   const pathname = usePathname();
   const path = pathname.split("/")[1];
-  const defaultValue = `/${path}`;
+  const value = `/${path}`;
 
   const handleValueChange = (value: string) => {
     router.push(value);
   };
 
   return (
-    <Tabs defaultValue={defaultValue} onValueChange={handleValueChange}>
+    <Tabs value={value} onValueChange={handleValueChange}>
       <TabsList>
         <TabsTab value="/">
           <UserIcon />
