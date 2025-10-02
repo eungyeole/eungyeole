@@ -1,12 +1,24 @@
-import { IconEungyeole } from "../icon-eungyeole";
+import { IconEungyeole } from "./assets/icon-eungyeole";
 import { MonaLisaEffect } from "./mona-lisa-effect";
 
 export const Footer = () => {
   return (
     <footer className="mt-12 flex gap-4 items-center justify-between">
       <div className="flex gap-4 items-center">
-        <a className="text-sm font-medium text-gray-500">Github</a>
-        <a className="text-sm font-medium text-gray-500">Linkedin</a>
+        <a
+          href="https://github.com/eungyeole"
+          className="text-sm font-medium text-gray-500"
+          target="_blank"
+        >
+          Github
+        </a>
+        <a
+          href="https://www.linkedin.com/in/eungyeole/"
+          className="text-sm font-medium text-gray-500"
+          target="_blank"
+        >
+          Linkedin
+        </a>
       </div>
 
       <MonaLisaEffect max={-60} min={-120}>
