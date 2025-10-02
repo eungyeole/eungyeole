@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const SMOOTHING = 0.08;
 const DEAD_ZONE_RADIUS = 20;
@@ -39,7 +39,7 @@ export const MonaLisaEffect = ({
         const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
         if (distance > DEAD_ZONE_RADIUS) {
-          let angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI) + 90;
+          const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI) + 90;
 
           let normalizedAngle = angle % 360;
           if (normalizedAngle > 180) {
@@ -84,7 +84,7 @@ export const MonaLisaEffect = ({
         cancelAnimationFrame(animationFrameId.current);
       }
     };
-  }, []);
+  }, [max, min]);
 
   return (
     <div ref={iconRef} className="transition-transform duration-75 ease-linear">

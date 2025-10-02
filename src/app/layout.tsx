@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import localFont from "next/font/local";
-import { ThemeSwitch } from "./_components/theme-switch";
-import { Tabs, TabsList, TabsTab } from "@/components/ui/tabs";
-import { Cuboid, SwatchBook, UserIcon } from "lucide-react";
 import { Footer } from "@/components/footer";
 import { Navigation } from "./_components/navigation";
 

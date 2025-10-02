@@ -2,7 +2,6 @@
 
 import { Tabs, TabsList, TabsTab } from "@/components/ui/tabs";
 import { Cuboid, SwatchBook, UserIcon } from "lucide-react";
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 export const Navigation = () => {

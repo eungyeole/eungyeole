@@ -1,4 +1,3 @@
-// AnimatedTabs.tsx
 "use client";
 
 import { Tabs as BaseTabs } from "@base-ui-components/react";
@@ -11,7 +10,6 @@ import React, {
 } from "react";
 import { cn } from "./cn";
 
-// 1. Context 생성
 interface AnimatedTabsContextValue {
   activeTab: string | undefined;
   containerRef: React.RefObject<HTMLDivElement | null>;
@@ -30,17 +28,13 @@ const useAnimatedTabs = () => {
   return context;
 };
 
-// 2. Root 컴포넌트: 상태와 로직 관리
-interface RootProps extends BaseTabs.Root.Props {}
-
 export const Tabs = ({
   children,
   defaultValue,
   value,
   onValueChange,
   ...props
-}: RootProps) => {
-  // 내부 상태를 관리하되, 제어 컴포넌트로도 사용할 수 있도록 value prop 처리
+}: BaseTabs.Root.Props) => {
   const [internalValue, setInternalValue] = useState(defaultValue);
   const activeTab = value !== undefined ? value : internalValue;
 
@@ -96,10 +90,11 @@ export const Tabs = ({
   );
 };
 
-// 3. List 컴포넌트: 레이아웃과 오버레이 렌더링
-interface ListProps extends BaseTabs.List.Props {}
-
-export const TabsList = ({ children, className, ...props }: ListProps) => {
+export const TabsList = ({
+  children,
+  className,
+  ...props
+}: BaseTabs.List.Props) => {
   const { containerRef } = useAnimatedTabs();
 
   return (
@@ -125,10 +120,12 @@ export const TabsList = ({ children, className, ...props }: ListProps) => {
   );
 };
 
-// 4. Tab 컴포넌트: 개별 탭 정의
-interface TabProps extends BaseTabs.Tab.Props {}
-
-export const TabsTab = ({ children, value, className, ...props }: TabProps) => {
+export const TabsTab = ({
+  children,
+  value,
+  className,
+  ...props
+}: BaseTabs.Tab.Props) => {
   const { activeTab, activeTabElementRef } = useAnimatedTabs();
   const isActive = activeTab === value;
 
