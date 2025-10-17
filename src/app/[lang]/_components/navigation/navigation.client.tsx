@@ -1,6 +1,7 @@
 "use client";
 import { Tabs, TabsList, TabsTab } from "@/components/ui/tabs";
 import { Cuboid, SwatchBook, UserIcon } from "lucide-react";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 interface NavigationClientProps {
@@ -26,15 +27,23 @@ export const NavigationClient = ({ lang }: NavigationClientProps) => {
   };
 
   return (
-    <Tabs value={value} onValueChange={handleValueChange}>
-      <TabsList>
-        {TABS.map((tab) => (
-          <TabsTab key={tab.value} value={tab.value}>
-            <tab.icon />
-            {tab.label}
-          </TabsTab>
-        ))}
-      </TabsList>
-    </Tabs>
+    <>
+      {TABS.map((tab) => (
+        <Link key={tab.value} href={tab.value}>
+          <tab.icon />
+          {tab.label}
+        </Link>
+      ))}
+      <Tabs value={value} onValueChange={handleValueChange}>
+        <TabsList>
+          {TABS.map((tab) => (
+            <TabsTab key={tab.value} value={tab.value}>
+              <tab.icon />
+              {tab.label}
+            </TabsTab>
+          ))}
+        </TabsList>
+      </Tabs>
+    </>
   );
 };
