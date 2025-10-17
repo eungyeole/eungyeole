@@ -9,6 +9,7 @@ import React, {
   useState,
 } from "react";
 import { cn } from "./cn";
+import { useIsClient } from "@/hooks/use-is-client";
 
 interface AnimatedTabsContextValue {
   activeTab: string | undefined;
@@ -95,6 +96,7 @@ export const TabsList = ({
   className,
   ...props
 }: BaseTabs.List.Props) => {
+  const isClient = useIsClient();
   const { containerRef } = useAnimatedTabs();
 
   return (
@@ -105,11 +107,16 @@ export const TabsList = ({
       <div
         aria-hidden
         ref={containerRef}
-        className="absolute top-0 left-0 w-full h-full pointer-events-none transition-all duration-300"
+        inert
+        className={cn(
+          "absolute top-0 left-0 w-full h-full",
+          "transition-all duration-300",
+          isClient ? "opacity-100" : "opacity-0"
+        )}
       >
         <BaseTabs.List
           className={cn(
-            "w-full flex bg-green-900 rounded-[17px] text-white",
+            "w-full flex bg-emerald-950 rounded-[17px] text-white",
             className
           )}
         >

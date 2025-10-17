@@ -88,9 +88,5 @@ export const MonaLisaEffect = ({
     };
   }, [max, min, offset]);
 
-  return (
-    <div ref={iconRef} className="transition-transform duration-75 ease-linear">
-      {children}
-    </div>
-  );
+  return <div ref={iconRef}>{children}</div>;
 };
