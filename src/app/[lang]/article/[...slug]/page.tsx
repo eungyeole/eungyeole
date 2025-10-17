@@ -54,12 +54,11 @@ export const generateMetadata = async ({
 export const generateStaticParams = async () => {
   const articles = await getAllArticlesMetadata();
 
-  console.log(articles.map((article) => article.slug));
   return articles.map((article) => {
     const slug = article.slug.split("/");
 
-    return slug.map((s) => ({
-      slug: s,
-    }));
+    return {
+      slug: slug,
+    };
   });
 };
