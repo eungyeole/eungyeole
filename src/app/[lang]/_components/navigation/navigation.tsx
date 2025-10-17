@@ -21,7 +21,7 @@ export const Navigation = async () => {
           </Link>
         ))}
       </div>
-      <Suspense fallback={null}>
+      <Suspense>
         <NavigationIndicator lang={await lang()} />
       </Suspense>
     </div>
