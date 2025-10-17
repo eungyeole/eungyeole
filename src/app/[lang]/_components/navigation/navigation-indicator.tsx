@@ -1,17 +1,15 @@
 "use client";
 import { cn } from "@/components/ui/cn";
-import { Cuboid, SwatchBook, UserIcon } from "lucide-react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { NAVIGATION_TABS } from "./constant";
 import { useEffect, useRef } from "react";
 import { useIsClient } from "@/hooks/use-is-client";
 
-interface NavigationClientProps {
+interface NavigationIndicatorProps {
   lang: string;
 }
 
-export const NavigationClient = ({ lang }: NavigationClientProps) => {
+export const NavigationIndicator = ({ lang }: NavigationIndicatorProps) => {
   const isClient = useIsClient();
 
   const containerRef = useRef<HTMLDivElement>(null);

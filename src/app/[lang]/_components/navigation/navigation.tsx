@@ -1,9 +1,12 @@
 import { lang } from "next/root-params";
-import { NavigationClient } from "./navigation.client";
+import { NavigationIndicator } from "./navigation-indicator";
 import { NAVIGATION_TABS } from "./constant";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export const Navigation = async () => {
+  const data = await lang();
+
   return (
     <div className="relative w-fit">
       <div className="w-full flex">
@@ -18,7 +21,9 @@ export const Navigation = async () => {
           </Link>
         ))}
       </div>
-      <NavigationClient lang={await lang()} />
+      <Suspense fallback={null}>
+        <NavigationIndicator lang={await lang()} />
+      </Suspense>
     </div>
   );
 };
