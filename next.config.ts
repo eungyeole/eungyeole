@@ -16,6 +16,7 @@ const nextConfig: NextConfig = {
     swcPlugins: [["@lingui/swc-plugin", {}]],
     mdxRs: true,
     cacheComponents: true,
+    mcpServer: true,
   },
 };
 
