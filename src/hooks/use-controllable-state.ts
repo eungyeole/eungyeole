@@ -1,9 +1,9 @@
 import {
-  Dispatch,
-  SetStateAction,
+  type Dispatch,
+  type SetStateAction,
   useCallback,
-  useState,
   useEffectEvent,
+  useState,
 } from "react";
 
 export interface UseControllableStateProps<T> {
@@ -36,7 +36,7 @@ export function useControllableState<T>(props: UseControllableStateProps<T>) {
 
       onChangeProp(nextValue);
     },
-    [controlled, value, onChangeProp]
+    [controlled, value],
   );
 
   return [value, setValue] as const;

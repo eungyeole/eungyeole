@@ -7,6 +7,7 @@ export const ThemeSwitch = () => {
       onClick={() => {
         document.documentElement.classList.toggle("dark");
       }}
+      type="button"
     >
       Toggle
     </button>

@@ -9,6 +9,7 @@ export const Footer = () => {
           href="https://github.com/eungyeole"
           className="text-sm font-medium text-gray-500"
           target="_blank"
+          rel="noopener"
         >
           Github
         </a>
@@ -16,6 +17,7 @@ export const Footer = () => {
           href="https://www.linkedin.com/in/eungyeole/"
           className="text-sm font-medium text-gray-500"
           target="_blank"
+          rel="noopener"
         >
           Linkedin
         </a>

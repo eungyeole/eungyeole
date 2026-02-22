@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
+    "lingui:extract": "lingui extract --clean",
+    "localize": "tsx scripts/localize.ts",
     "start": "next start",
     "lint": "eslint"
   },
@@ -24,18 +26,24 @@
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.4.4",
     "@eslint/eslintrc": "^3",
     "@lingui/cli": "^5.5.1",
+    "@lingui/conf": "^5.5.1",
+    "@lingui/format-po": "^5.5.1",
     "@lingui/loader": "^5.5.1",
     "@lingui/swc-plugin": "^5.6.1",
+    "@septuagint/core": "^1.0.1",
     "@tailwindcss/postcss": "^4",
     "@types/mdx": "^2.0.13",
     "@types/node": "^24",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
+    "dotenv": "^17.2.3",
     "eslint": "^9",
     "eslint-config-next": "15.5.4",
     "tailwindcss": "^4",
+    "tsx": "^4.20.6",
     "typescript": "^5"
   },
   "packageManager": "pnpm@10.17.1"

@@ -1,6 +1,6 @@
-import { getAllArticlesMetadata, getArticleMetadata } from "@/utils/article";
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
+import { getAllArticlesMetadata, getArticleMetadata } from "@/utils/article";
 
 const paramsToSlug = async (params: Promise<{ slug: string | string[] }>) => {
   const { slug } = await params;
@@ -12,7 +12,7 @@ const getArticleMetadataWithNotFound = async (slug: string) => {
   try {
     const metadata = await getArticleMetadata(slug);
     return metadata;
-  } catch (error) {
+  } catch {
     notFound();
   }
 };

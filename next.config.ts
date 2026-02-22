@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  typedRoutes: true,
   experimental: {
     swcPlugins: [["@lingui/swc-plugin", {}]],
     mdxRs: true,

@@ -1,8 +1,12 @@
-import { lang } from "next/root-params";
 import type { Metadata } from "next";
+import { lang } from "next/root-params";
+import linguiConfig from "../../../lingui.config";
 import "./globals.css";
+import { Trans } from "@lingui/react/macro";
 import localFont from "next/font/local";
 import { Footer } from "@/components/footer";
+import { i18n } from "@/utils/i18n/i18n";
+import { I18nClientProvider } from "@/utils/i18n/i18n-provider";
 import { Navigation } from "./_components/navigation/navigation";
 
 const pretendard = localFont({
@@ -21,29 +25,37 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const resolvedLang = await lang();
+  i18n.use(resolvedLang);
+  const { messages } = i18n.get(resolvedLang);
+
   return (
-    <html lang={await lang()}>
-      <body
-        className={`${pretendard.className} antialiased max-w-3xl mx-auto py-12 px-4 relative`}
-      >
-        <header className="flex flex-col gap-6">
-          <div className="flex flex-col">
-            <h1 className="text-md font-semibold">Eungyeole</h1>
-            <p className="text-sm font-medium text-gray-500">
-              Frontend Engineer
-            </p>
-          </div>
-          <div className="-mx-1">
-            <Navigation />
-          </div>
-        </header>
-        <div className="mt-8">{children}</div>
-        <Footer />
-      </body>
-    </html>
+    <I18nClientProvider locale={resolvedLang} messages={messages}>
+      <html lang={resolvedLang}>
+        <body
+          className={`${pretendard.className} antialiased max-w-3xl mx-auto py-12 px-4 relative`}
+        >
+          <header className="flex flex-col gap-6">
+            <div className="flex flex-col">
+              <h1 className="text-md font-semibold">
+                <Trans>안은결</Trans>
+              </h1>
+              <p className="text-sm font-medium text-gray-500">
+                Frontend Engineer
+              </p>
+            </div>
+            <div className="-mx-1">
+              <Navigation />
+            </div>
+          </header>
+          <div className="mt-8">{children}</div>
+          <Footer />
+        </body>
+      </html>
+    </I18nClientProvider>
   );
 }
 
 export async function generateStaticParams() {
-  return [{ lang: "en" }, { lang: "ko" }];
+  return linguiConfig.locales.map((locale) => ({ lang: locale })) || [];
 }

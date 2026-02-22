@@ -4,6 +4,7 @@ export const IconEungyeole = (props: React.SVGProps<SVGSVGElement>) => {
       viewBox="0 0 600 600"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      aria-label="eungyeole-icon"
       {...props}
     >
       <path

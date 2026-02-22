@@ -1,6 +1,7 @@
 // middleware.ts
-import { NextResponse } from "next/server";
+
 import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 const LOCALES = ["en", "ko"] as const;
 const DEFAULT_LOCALE = "ko";
@@ -34,14 +35,14 @@ export function proxy(request: NextRequest) {
 
 function hasLocalePrefix(pathname: string) {
   return LOCALES.some(
-    (locale) => pathname === `/${locale}` || pathname.startsWith(`/${locale}/`)
+    (locale) => pathname === `/${locale}` || pathname.startsWith(`/${locale}/`),
   );
 }
 
 function addLocaleCookie(
   request: NextRequest,
   response: NextResponse,
-  locale: string
+  locale: string,
 ) {
   if (request.cookies.get(LOCALE_COOKIE)?.value !== locale) {
     response.cookies.set(LOCALE_COOKIE, locale, { sameSite: "strict" });
@@ -50,5 +51,5 @@ function addLocaleCookie(
 }
 
 export const config = {
-  matcher: ["/((?!_next|api|static|.*\\..*).*)"],
+  matcher: "/((?!api|trpc|_next|_vercel|.*\\..*).*)",
 };
