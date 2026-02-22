@@ -10,6 +10,7 @@ export default async function Home() {
       <div className="h-[1200px] text-base">
         <div>
           <div>
+            <h1 className="text-lg font-medium mb-8">🚧 공사중 🚧</h1>
             <Trans>
               <a
                 className="border-dashed border-b border-gray-500"
