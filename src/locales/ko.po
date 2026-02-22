@@ -1,0 +1,22 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2025-10-23 16:43+0900\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: ko\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/app/[lang]/page.tsx:13
+msgid "<0>두들린 (그리팅)</0>에서 프론트엔드 엔지니어로, 사용자가 한눈에 이해하고 만족할 수 있는 경험을 설계합니다. 기능을 넘어, ‘쓰는 순간 좋은 느낌’을 만드는 데 집중하고 있습니다."
+msgstr "<0>두들린 (그리팅)</0>에서 프론트엔드 엔지니어로, 사용자가 한눈에 이해하고 만족할 수 있는 경험을 설계합니다. 기능을 넘어, ‘쓰는 순간 좋은 느낌’을 만드는 데 집중하고 있습니다."
+
+#: src/app/[lang]/layout.tsx:41
+msgid "안은결"
+msgstr "안은결"

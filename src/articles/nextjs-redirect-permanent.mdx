@@ -1,0 +1,96 @@
+export const metadata = {
+  title: "왜 항상 같은 곳으로 리다이렉트 하지?",
+  description: "같은 곳으로만 리다이렉트된 이유, 원인은 permanent 옵션이었다.",
+  createdAt: "2025-10-17",
+};
+
+최근 워크스페이스 전환 과정에서 이상한 리다이렉트 오류를 발견했다. 특정
+워크스페이스로 이동하려고 로그인했는데, 항상 A 워크스페이스로만 리다이렉트되는
+현상이었다.
+
+---
+
+## 오류 발생 Flow
+
+1. A 워크스페이스 접속
+2. B 워크스페이스 접속
+3. 로그인 시 A 워크스페이스로 리다이렉트됨
+
+---
+
+## 정상 작동 Flow
+
+1. A 워크스페이스 접속
+2. B 워크스페이스 접속
+3. 로그인 시 B 워크스페이스로 리다이렉트됨
+
+---
+
+## 원인: `nextjs`의 `permanent` 옵션
+
+문제의 원인은 Next.js의 `redirect` 옵션 중 `permanent` 설정이었다.  
+이 옵션을 이해하려면 먼저 HTTP 307과 308 리다이렉트의 차이를 알아야 한다.
+
+---
+
+### 307 vs 308 Redirect
+
+| 코드                   | 의미            | 설명                                                       |
+| ---------------------- | --------------- | ---------------------------------------------------------- |
+| 307 Temporary Redirect | 임시 리다이렉트 | 브라우저가 기존 URL을 기억하지 않음                        |
+| 308 Permanent Redirect | 영구 리다이렉트 | 브라우저가 캐시에 URL을 저장해 이후에도 같은 경로로 이동함 |
+
+[MDN에서 자세히 보기](https://developer.mozilla.org/ko/docs/Web/HTTP/Redirections)
+
+---
+
+## `permanent`란?
+
+Next.js에서 `getServerSideProps` 혹은 `redirect()`를 사용할 때  
+`permanent` 옵션이 `true`면 308 Permanent Redirect,  
+`false`면 307 Temporary Redirect가 적용된다.
+
+```typescript
+export const getServerSideProps = () => {
+  return {
+    redirect: {
+      destination: `/workspaces/${workspaceId}`,
+      permanent: true,
+    },
+  };
+};
+```
+
+위 코드처럼 `permanent: true`로 설정되어 있으면  
+브라우저는 해당 리다이렉트를 영구적으로 기억한다.  
+그 결과, 이후 다른 워크스페이스에 접속하더라도  
+브라우저 캐시 때문에 계속 A 워크스페이스로 리다이렉트되는 현상이 발생했다.
+
+---
+
+## 결론
+
+문제 해결 방법은 단순하다.  
+`permanent`를 `false`로 변경해 임시 리다이렉트(307)를 사용하면 된다.
+
+```typescript
+export const getServerSideProps = () => {
+  return {
+    redirect: {
+      destination: `/workspaces/${workspaceId}`,
+      permanent: false,
+    },
+  };
+};
+```
+
+---
+
+## 정리
+
+이번 이슈는 Next.js에서 발생했지만,  
+`permanent` 개념은 `Kubernetes ingress`나 프록시 설정 등 다양한 곳에서도 자주 등장한다.  
+(실제로 회사 Kubernetes ingress에서 비슷한 문제가 생겨서 생각난 김에 글을 작성한 것..)
+옵션 하나의 차이가 브라우저 캐시와 관련된 예기치 못한 동작으로 이어질 수 있다.
+
+리다이렉트는 단순한 URL 이동이 아니라, 브라우저의 “기억”까지 포함된 동작이라는 점을 명심하자.

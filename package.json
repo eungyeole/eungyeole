@@ -1,22 +1,47 @@
 {
+  "name": "eungyeole",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "dev": "next dev --turbopack",
+    "build": "next build --turbopack",
+    "lingui:extract": "lingui extract --clean",
+    "localize": "tsx scripts/localize.ts",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@base-ui/react": "^1.2.0",
+    "@lingui/core": "^5.5.1",
+    "@lingui/macro": "^5.5.1",
+    "@lingui/react": "^5.5.1",
+    "@mdx-js/loader": "^3.1.1",
+    "@mdx-js/react": "^3.1.1",
+    "@next/mdx": "^15.5.6",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.544.0",
+    "next": "16.1.6",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
-    "@turbo/gen": "^1.9.7",
-    "eslint": "^7.32.0",
-    "eslint-config-custom": "*",
-    "prettier": "^2.5.1",
-    "turbo": "^1.9.7"
+    "@biomejs/biome": "2.4.4",
+    "@lingui/cli": "^5.9.1",
+    "@lingui/conf": "^5.9.1",
+    "@lingui/format-po": "^5.9.1",
+    "@lingui/loader": "^5.9.1",
+    "@lingui/swc-plugin": "^5.11.0",
+    "@septuagint/core": "^1.0.1",
+    "@tailwindcss/postcss": "^4",
+    "@types/mdx": "^2.0.13",
+    "@types/node": "^24",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "dotenv": "^17.2.3",
+    "tailwindcss": "^4",
+    "tsx": "^4.20.6",
+    "typescript": "^5"
   },
-  "name": "eungyeole",
-  "packageManager": "yarn@1.22.19",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ]
+  "packageManager": "pnpm@10.17.1"
 }
