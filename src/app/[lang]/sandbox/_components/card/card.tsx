@@ -1,7 +1,7 @@
-import { cn } from "@/components/ui/cn";
-
 export const Card = ({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
-  return <div className={cn("rounded-md border border-gray-200 p-4", className)} {...props}>
-    {children}
-  </div>;
+  return (
+    <div className="flex w-full rounded-lg bg-white shadow-sm !px-[23px] !py-[17px] h-64">
+      {children}
+    </div>
+  );
 };
