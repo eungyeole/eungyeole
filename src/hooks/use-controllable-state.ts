@@ -1,10 +1,4 @@
-import {
-  type Dispatch,
-  type SetStateAction,
-  useCallback,
-  useEffectEvent,
-  useState,
-} from "react";
+import { type Dispatch, type SetStateAction, useCallback, useEffectEvent, useState } from "react";
 
 export interface UseControllableStateProps<T> {
   value?: T;

@@ -6,6 +6,6 @@ export const useIsClient = () => {
   return useSyncExternalStore(
     emptySubscribe,
     () => true,
-    () => false
+    () => false,
   );
 };

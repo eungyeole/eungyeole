@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Pretendard Variable";
+  src: url("../fonts/PretendardVariable.woff2") format("woff2-variations");
+  font-weight: 45 920;
+  font-display: swap;
+}
+
+/*
+ * Pretendard와 동일한 수직 메트릭으로 보정한 시스템 폰트 fallback.
+ * 웹폰트 로드 전후의 레이아웃 시프트(CLS)를 방지한다.
+ * (next/font의 adjustFontFallback에 해당 — PretendardVariable.woff2에서 추출한 값)
+ */
+@font-face {
+  font-family: "Pretendard Fallback";
+  src: local("Apple SD Gothic Neo"), local("Malgun Gothic"), local("Arial");
+  ascent-override: 95.21%;
+  descent-override: 24.12%;
+  line-gap-override: 0%;
+}
+
+:root {
+  --background: #faf9f6;
+  --foreground: #2b2a28;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+.dark {
+  --background: #1f1e1c;
+  --foreground: #eae6e1;
+}
+
+body {
+  font-family: "Pretendard Variable", "Pretendard Fallback", sans-serif;
+  background: var(--background);
+  color: var(--foreground);
+}

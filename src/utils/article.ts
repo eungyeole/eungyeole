@@ -1,5 +1,4 @@
-import { readdir } from "fs/promises";
-import path from "path";
+import type { ComponentType } from "react";
 
 interface ArticleMetadata {
   slug: string;
@@ -8,36 +7,42 @@ interface ArticleMetadata {
   createdAt: string;
 }
 
-export const getArticleMetadata = async (
-  slug: string
-): Promise<ArticleMetadata> => {
-  "use cache";
-  const article = await import(`@/articles/${slug}.mdx`);
+interface ArticleModule {
+  default: ComponentType<Record<string, unknown>>;
+  metadata?: Omit<ArticleMetadata, "slug">;
+}
 
-  if (!article?.metadata) {
-    throw new Error(`Article ${slug} not found`);
+const modules = import.meta.glob<ArticleModule>("../articles/**/*.mdx", {
+  eager: true,
+});
+
+const articles = new Map(
+  Object.entries(modules).map(([path, module]) => {
+    const slug = path.replace("../articles/", "").replace(/\.mdx$/, "");
+
+    return [
+      slug,
+      {
+        component: module.default,
+        metadata: { slug, ...module.metadata },
+      },
+    ];
+  }),
+);
+
+export const getArticleMetadata = (slug: string): ArticleMetadata | null => {
+  const article = articles.get(slug);
+
+  if (!article?.metadata.title) {
+    return null;
   }
 
-  return {
-    slug,
-    ...article.metadata,
-  };
+  return article.metadata as ArticleMetadata;
 };
 
-export const getAllArticlesMetadata = async () => {
-  "use cache";
-  const dir = path.join(process.cwd(), "src/articles");
-  const files = await readdir(dir, { recursive: true });
+export const getArticleComponent = (slug: string) => articles.get(slug)?.component ?? null;
 
-  const slugs = files
-    .filter((file) => file.endsWith(".mdx"))
-    .map((file) => file.replace(".mdx", ""));
-
-  const articles = await Promise.all(
-    slugs.map(async (slug) => {
-      return await getArticleMetadata(slug);
-    })
-  );
-
-  return articles;
-};
+export const getAllArticlesMetadata = (): ArticleMetadata[] =>
+  [...articles.keys()]
+    .map((slug) => getArticleMetadata(slug))
+    .filter((metadata): metadata is ArticleMetadata => metadata !== null);

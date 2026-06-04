@@ -1,9 +1,8 @@
-"use client";
-import { cn } from "@/components/ui/cn";
-import { usePathname } from "next/navigation";
-import { NAVIGATION_TABS } from "./constant";
+import { useLocation } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
+import { cn } from "@/components/ui/cn";
 import { useIsClient } from "@/hooks/use-is-client";
+import { NAVIGATION_TABS } from "./constant";
 
 interface NavigationIndicatorProps {
   lang: string;
@@ -15,7 +14,7 @@ export const NavigationIndicator = ({ lang }: NavigationIndicatorProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const activeTabElementRef = useRef<HTMLSpanElement>(null);
 
-  const pathname = usePathname();
+  const pathname = useLocation({ select: (location) => location.pathname });
 
   const cleaned = pathname.replace(`/${lang}`, "") || "/";
   const path = cleaned.split("/")[1];
@@ -32,12 +31,9 @@ export const NavigationIndicator = ({ lang }: NavigationIndicatorProps) => {
         if (containerWidth === 0) return;
 
         const clipLeft = (offsetLeft / containerWidth) * 100;
-        const clipRight =
-          100 - ((offsetLeft + offsetWidth) / containerWidth) * 100;
+        const clipRight = 100 - ((offsetLeft + offsetWidth) / containerWidth) * 100;
 
-        container.style.clipPath = `inset(0 ${clipRight.toFixed(
-          2
-        )}% 0 ${clipLeft.toFixed(2)}% round 17px)`;
+        container.style.clipPath = `inset(0 ${clipRight.toFixed(2)}% 0 ${clipLeft.toFixed(2)}% round 17px)`;
       }
     }
   }, [value]);
@@ -50,7 +46,7 @@ export const NavigationIndicator = ({ lang }: NavigationIndicatorProps) => {
       className={cn(
         "absolute top-0 left-0 w-full h-full",
         "transition-all duration-300",
-        isClient ? "opacity-100" : "opacity-0"
+        isClient ? "opacity-100" : "opacity-0",
       )}
     >
       <div className="w-full flex bg-emerald-950 rounded-[17px] text-white">

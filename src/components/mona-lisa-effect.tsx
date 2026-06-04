@@ -12,12 +12,7 @@ interface MonaLisaEffectProps {
   offset?: number;
 }
 
-export const MonaLisaEffect = ({
-  children,
-  max = 360,
-  min = -360,
-  offset = 0,
-}: MonaLisaEffectProps) => {
+export const MonaLisaEffect = ({ children, max = 360, min = -360, offset = 0 }: MonaLisaEffectProps) => {
   const iconRef = useRef<HTMLDivElement>(null);
 
   const animationFrameId = useRef<number | null>(null);
@@ -29,8 +24,7 @@ export const MonaLisaEffect = ({
     const handleMouseMove = (event: MouseEvent) => {
       if (iconRef.current) {
         const { clientX, clientY } = event;
-        const { left, top, width, height } =
-          iconRef.current.getBoundingClientRect();
+        const { left, top, width, height } = iconRef.current.getBoundingClientRect();
 
         const iconCenterX = left + width / 2;
         const iconCenterY = top + height / 2;

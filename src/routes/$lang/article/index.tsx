@@ -1,17 +1,22 @@
-import Link from "next/link";
-import { lang } from "next/root-params";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { getAllArticlesMetadata } from "@/utils/article";
 
-export default async function Article() {
-  const resolveLang = await lang();
-  const articles = await getAllArticlesMetadata();
+export const Route = createFileRoute("/$lang/article/")({
+  loader: () => getAllArticlesMetadata(),
+  component: Article,
+});
+
+function Article() {
+  const { lang } = Route.useParams();
+  const articles = Route.useLoaderData();
 
   return (
     <div className="flex flex-col gap-4">
       {articles.map((article) => (
         <Link
           key={article.slug}
-          href={`/${resolveLang}/article/${article.slug}`}
+          to="/$lang/article/$"
+          params={{ lang, _splat: article.slug }}
           className="flex flex-col gap-0.5 w-full rounded-md p-3 -mx-3 hover:bg-neutral-200"
         >
           {article.title}

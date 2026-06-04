@@ -1,56 +1,35 @@
-import "server-only";
-
 import { type I18n, type Messages, setupI18n } from "@lingui/core";
-import { setI18n } from "@lingui/react/server";
-import linguiConfig from "../../../lingui.config";
+import { messages as enMessages } from "@/locales/en.po";
+import { messages as koMessages } from "@/locales/ko.po";
 
-const { locales } = linguiConfig;
+export const LOCALES = ["ko", "en"] as const;
+export type Locale = (typeof LOCALES)[number];
+export const DEFAULT_LOCALE: Locale = "ko";
+export const LOCALE_COOKIE = "LOCALE";
 
-async function initI18n() {
-  async function loadCatalog(
-    locale: string,
-  ): Promise<{ [k: string]: Messages }> {
-    const { messages } = await import(`@/locales/${locale}.po`);
-    return {
-      [locale]: messages,
-    };
+export const isLocale = (value: string | undefined): value is Locale => !!value && LOCALES.includes(value as Locale);
+
+const catalogs: Record<Locale, Messages> = {
+  ko: koMessages,
+  en: enMessages,
+};
+
+const instances = LOCALES.reduce(
+  (acc, locale) => {
+    acc[locale] = setupI18n({
+      locale,
+      messages: { [locale]: catalogs[locale] },
+    });
+    return acc;
+  },
+  {} as Record<Locale, I18n>,
+);
+
+export const getI18n = (locale: string): I18n => {
+  if (!isLocale(locale)) {
+    console.warn(`No i18n instance found for locale "${locale}"`);
+    return instances[DEFAULT_LOCALE];
   }
 
-  const catalogs = await Promise.all(locales.map(loadCatalog));
-
-  const messages = catalogs.reduce((acc, oneCatalog) => {
-    Object.assign(acc, oneCatalog);
-    return acc;
-  }, {});
-
-  type AllI18nInstances = { [K in string]: I18n };
-
-  const instances: AllI18nInstances = locales.reduce((acc, locale) => {
-    const message = messages[locale] ?? {};
-    const i18n = setupI18n({ locale, messages: { [locale]: message } });
-    return { ...acc, [locale]: i18n };
-  }, {});
-
-  const get = (locale: string) => {
-    if (!instances[locale]) {
-      console.warn(`No i18n instance found for locale "${locale}"`);
-    }
-
-    return instances[locale!] ?? instances["ko"]!;
-  };
-
-  const use = (locale: string) => {
-    const instance = get(locale);
-
-    setI18n(instance);
-
-    return instance;
-  };
-
-  return {
-    get,
-    use,
-  };
-}
-
-export const i18n = await initI18n();
+  return instances[locale];
+};
