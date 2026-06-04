@@ -14,7 +14,8 @@ export default defineConfig({
     lingui(),
     tailwindcss(),
     tanstackStart(),
-    nitro(),
+    // 정적 자산을 gzip/brotli로 사전 압축해 서빙한다.
+    nitro({ compressPublicAssets: true }),
     viteReact({
       plugins: [["@lingui/swc-plugin", {}]],
     }),

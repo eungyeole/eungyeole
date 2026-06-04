@@ -19,6 +19,7 @@
     "@tanstack/react-start": "^1.168.19",
     "clsx": "^2.1.1",
     "lucide-react": "^0.544.0",
+    "pretendard": "^1.3.9",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "tailwind-merge": "^3.3.1"

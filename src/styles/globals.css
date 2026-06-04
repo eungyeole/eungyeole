@@ -1,11 +1,9 @@
 @import "tailwindcss";
-
-@font-face {
-  font-family: "Pretendard Variable";
-  src: url("../fonts/PretendardVariable.woff2") format("woff2-variations");
-  font-weight: 45 920;
-  font-display: swap;
-}
+/*
+ * 한글 풀 폰트(2MB) 대신 unicode-range 기반 dynamic subset을 사용한다.
+ * 화면에 실제 사용된 글자가 포함된 조각(~수십 KB)만 다운로드된다.
+ */
+@import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 
 /*
  * Pretendard와 동일한 수직 메트릭으로 보정한 시스템 폰트 fallback.
