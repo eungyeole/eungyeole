@@ -92,6 +92,39 @@
   animation: none;
 }
 
+.ai-gradient-layer-canvas {
+  position: relative;
+  contain: paint;
+  overflow: hidden;
+  border: 1px solid var(--preview-border);
+  border-radius: 16px;
+  background: var(--preview-surface);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--preview-surface) 75%, transparent);
+}
+
+.ai-gradient-layer-canvas::before {
+  --ai-reveal-fill-angle: 90deg;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  content: "";
+  background: conic-gradient(
+    color-mix(in srgb, var(--accent) 72%, #86efac) 0deg 60deg,
+    color-mix(in srgb, var(--accent) 34%, var(--preview-border)) 60deg var(--ai-reveal-fill-angle),
+    transparent var(--ai-reveal-fill-angle) 360deg
+  );
+  filter: blur(20px);
+  transform: translate(-50%, -50%) rotate(0deg);
+  transform-origin: center;
+  animation: ai-reveal-rotate 2.4s linear infinite;
+}
+
+.ai-gradient-layer-canvas--paused::before {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ai-result-frame::before {
     --ai-reveal-fill-angle: 360deg;
@@ -103,6 +136,11 @@
     opacity: 1;
     filter: none;
     transform: none;
+    animation: none;
+  }
+
+  .ai-gradient-layer-canvas::before {
+    transform: translate(-50%, -50%) rotate(0deg);
     animation: none;
   }
 }
