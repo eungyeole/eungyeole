@@ -31,16 +31,17 @@
   --accent: #022c22;
   --accent-foreground: #ffffff;
   --accent-soft: #ecfdf5;
-  --preview-canvas: color-mix(in srgb, var(--background) 98%, var(--accent));
-  --preview-surface: color-mix(in srgb, var(--background) 99%, var(--accent));
-  --preview-border: color-mix(in srgb, var(--background) 86%, var(--preview-strong));
-  --preview-muted: color-mix(in srgb, var(--foreground) 48%, var(--background));
-  --preview-strong: color-mix(in srgb, var(--foreground) 98%, var(--accent));
-  --preview-level-0: color-mix(in srgb, var(--background) 94%, var(--preview-strong));
-  --preview-level-1: color-mix(in srgb, var(--background) 84%, var(--preview-strong));
-  --preview-level-2: color-mix(in srgb, var(--background) 68%, var(--preview-strong));
-  --preview-level-3: color-mix(in srgb, var(--background) 42%, var(--preview-strong));
-  --preview-level-4: color-mix(in srgb, var(--background) 10%, var(--preview-strong));
+  --preview-warm-base: color-mix(in srgb, var(--background) 78%, #e8dcc8);
+  --preview-canvas: color-mix(in srgb, var(--preview-warm-base) 99%, var(--accent));
+  --preview-surface: color-mix(in srgb, var(--background) 94%, #fff3dc);
+  --preview-strong: color-mix(in srgb, var(--foreground) 99%, var(--accent));
+  --preview-border: color-mix(in srgb, var(--preview-canvas) 88%, var(--preview-strong));
+  --preview-muted: color-mix(in srgb, var(--foreground) 46%, var(--preview-canvas));
+  --preview-level-0: color-mix(in srgb, var(--preview-surface) 94%, var(--preview-strong));
+  --preview-level-1: color-mix(in srgb, var(--preview-surface) 84%, var(--preview-strong));
+  --preview-level-2: color-mix(in srgb, var(--preview-surface) 68%, var(--preview-strong));
+  --preview-level-3: color-mix(in srgb, var(--preview-surface) 42%, var(--preview-strong));
+  --preview-level-4: color-mix(in srgb, var(--preview-surface) 10%, var(--preview-strong));
 }
 
 @theme inline {
@@ -77,6 +78,8 @@
   --accent: #d1fae5;
   --accent-foreground: #022c22;
   --accent-soft: #12372d;
+  --preview-warm-base: color-mix(in srgb, var(--background) 90%, #655e54);
+  --preview-surface: color-mix(in srgb, var(--background) 94%, #655e54);
 }
 
 html {
