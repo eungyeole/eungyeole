@@ -1,10 +1,14 @@
-import { VelogStatsDemo, VelogStatsPlayground } from "@/components/sandbox";
+import {
+  VelogStatsDemo,
+  VelogStatsPlayground,
+  VelogTagWidthDemo,
+} from "@/components/sandbox";
 
 export const metadata = {
   title: "Velog Readme Stats",
   description: {
-    ko: "Velog의 최신 글을 GitHub README에서 바로 보여주는 SVG 카드 생성기입니다.",
-    en: "An SVG card generator that brings your latest Velog post directly into a GitHub README.",
+    ko: "서로 다른 글자 너비를 측정해 Velog 태그에 꼭 맞는 SVG 카드를 만든 과정입니다.",
+    en: "How measuring variable text widths made every Velog tag fit neatly inside a generated SVG card.",
   },
   createdAt: "2021-06-16",
   kind: "project",
@@ -12,52 +16,64 @@ export const metadata = {
   layout: "half",
   href: "https://velog-readme-stats.vercel.app/api?name=eungyeole&tag=github",
   source: "https://github.com/eungyeole/velog-readme-stats",
-  tags: ["Open Source", "GitHub", "Velog"],
+  tags: ["Open Source", "SVG", "Canvas"],
 };
 
 export const Preview = VelogStatsDemo;
 
 <VelogStatsDemo />
 
-위 카드는 예시를 다시 그린 화면이 아닙니다. Velog Readme Stats의 프로덕션 API가 지금 반환한 SVG입니다. 새 글이 생기면 같은 주소에서 내용도 함께 바뀝니다.
+Velog Readme Stats는 Velog의 최신 글을 GitHub README에 넣을 수 있는 SVG 카드로 만듭니다. 위 카드는 예시를 다시 그린 화면이 아니라 프로덕션 API가 지금 반환한 결과입니다.
 
-아래에서 사용자 이름과 태그를 바꾸거나 카드의 형태를 골라보세요. 결과는 실제 서비스에서 받아오며, 오른쪽 아래 버튼을 누르면 그대로 README에 붙일 수 있는 Markdown이 복사됩니다.
+사용자 이름과 태그를 바꾸거나 카드의 형태를 골라보세요. 결과는 실제 서비스에서 받아오며, 오른쪽 아래 버튼으로 README에 붙일 Markdown을 복사할 수 있습니다.
 
 <VelogStatsPlayground />
 
-## 한 주소로 최신 글 보여주기
+## SVG 안에는 flex가 없다
 
-가장 단순한 형태는 Velog 사용자 이름만 받습니다.
+카드에서 가장 재미있었던 문제는 태그였습니다. `CSS`, `TypeScript`, `Frontend Development`처럼 글자 수가 모두 다른데, 각 테두리는 텍스트에 꼭 맞아야 하고 다음 태그의 시작 위치도 달라져야 합니다.
 
-```text
-https://velog-readme-stats.vercel.app/api?name=eungyeole
+HTML이라면 텍스트에 좌우 padding을 주고 `inline-flex`에 맡기면 끝납니다. 하지만 서버에서 하나의 SVG 문자열을 만들 때는 각 `<text>`가 차지할 너비를 레이아웃 엔진이 대신 계산해주지 않습니다. `<rect>`의 너비와 다음 태그의 `x` 좌표를 렌더링 전에 직접 정해야 합니다.
+
+아래 입력값을 바꿔보세요. 글자의 실측 너비에 좌우 여백 20px을 더한 값이 태그 전체 너비가 됩니다.
+
+<VelogTagWidthDemo />
+
+## 글자를 먼저 잰다
+
+서버에서는 `@napi-rs/canvas`의 `measureText`로 SVG에 들어갈 문자의 너비를 먼저 구합니다. 카드와 같은 글꼴 크기와 font stack을 사용해야 측정값과 실제 렌더링 사이의 차이를 줄일 수 있습니다.
+
+```ts
+function getTextWidth(text: string, fontSize: number) {
+  const context = canvas.createCanvas(1, 1).getContext("2d");
+  context.font = `${fontSize}px ${fontFamily}`;
+
+  return context.measureText(text).width;
+}
 ```
 
-이 주소는 최신 글의 제목과 설명, 태그를 하나의 SVG 카드로 만듭니다. README는 같은 이미지 주소를 유지하고, 카드의 내용은 새 글에 맞춰 갱신됩니다.
+Canvas는 이미지를 그리기 위한 것이 아니라, SVG를 만들기 전에 필요한 숫자 하나를 얻기 위해 사용했습니다.
 
-## 보여줄 글 고르기
+## 너비가 다음 위치를 만든다
 
-기본값은 가장 최근 글입니다. 특정 주제의 최신 글은 `tag`로 좁히고, 한 글을 계속 보여주고 싶다면 `slug`를 지정할 수 있습니다.
+측정한 글자 너비에 20px을 더해 pill의 너비를 만들고, 누적된 `x` 값에 배치합니다. 태그 하나를 그릴 때마다 자신의 너비와 6px 간격만큼 다음 시작점을 옮깁니다.
 
-```text
-/api?name=eungyeole&tag=github
-/api?name=eungyeole&slug=Velog-포스트로-Github를-꾸며보자
+```ts
+let x = 25;
+
+for (const tag of tags) {
+  const width = getTextWidth(tag, 12) + 20;
+  if (x + width > 400) continue;
+
+  renderTag({ x, width, textX: width / 2 });
+  x += width + 6;
+}
 ```
 
-`tag`는 계속 쌓이는 주제에, `slug`는 오래 남겨둘 글에 어울립니다. 글을 고르는 조건이 URL에 그대로 드러나기 때문에 README 안에 별도의 설정을 둘 필요가 없습니다.
+텍스트는 `x={width / 2}`와 `text-anchor="middle"`로 pill의 가운데에 놓습니다. 같은 측정값이 배경 너비, 텍스트 중심, 다음 태그 위치를 모두 결정하므로 세 요소가 따로 밀리지 않습니다.
 
-## 카드와 글을 함께 연결하기
+## 측정과 렌더링 사이의 여유
 
-SVG를 이미지로 넣고 `/api/redirect`를 링크로 사용하면, 카드를 클릭했을 때 같은 조건으로 선택된 글이 열립니다.
+너비는 서버의 Canvas에서 측정하지만 SVG의 텍스트는 README를 보는 환경에서 렌더링됩니다. 같은 font stack을 사용해 기준을 맞추고, 좌우 10px의 padding이 환경에 따른 작은 오차를 흡수합니다.
 
-```md
-[![Latest Velog post](https://velog-readme-stats.vercel.app/api?name=eungyeole&tag=github)](https://velog-readme-stats.vercel.app/api/redirect?name=eungyeole&tag=github)
-```
-
-카드가 보여주는 글과 링크가 향하는 글이 함께 바뀌므로 README에는 이 한 줄만 남습니다.
-
-## 자리에 맞는 형태 고르기
-
-글 하나를 강조할 때는 기본 카드, 최근 글을 모아 보여줄 때는 `/api/list`, 이름만 작게 연결할 때는 `/api/badge`를 사용할 수 있습니다.
-
-Velog Readme Stats가 만드는 것은 새로운 통계 화면이 아니라 두 공간 사이의 연결입니다. 글은 Velog에 남고, GitHub README에는 그 글을 보여주는 작은 창만 놓입니다.
+결국 450px로 고정된 카드 안에 길이가 매번 달라지는 콘텐츠를 넣는 일이었습니다. 태그를 그리기 전에 먼저 측정하자, 배경과 텍스트와 다음 위치가 하나의 값으로 연결됐습니다.
