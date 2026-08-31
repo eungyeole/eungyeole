@@ -17,6 +17,34 @@ type RedirectStatus = (typeof REDIRECTS)[number]["status"];
 type Destination = (typeof DESTINATIONS)[number]["id"];
 type ResultSource = "idle" | "server-307" | "server-308" | "cache";
 
+export function RedirectPreview() {
+  return (
+    <section
+      aria-label="Cached permanent redirect"
+      className="flex min-h-60 w-full items-center justify-center overflow-hidden bg-preview-canvas p-5 text-preview-strong"
+    >
+      <div className="w-full max-w-sm rounded-xl border border-preview-border bg-preview-surface p-4 shadow-sm">
+        <div className="flex items-center gap-2">
+          <span className="rounded-md bg-preview-strong px-2 py-1 font-mono text-[10px] text-preview-surface">308</span>
+          <span className="text-xs text-preview-muted">Permanent redirect</span>
+        </div>
+
+        <div className="mt-4 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2">
+          <code className="min-w-0 truncate rounded-md border-0 bg-preview-canvas px-3 py-2.5 text-[11px]">
+            /login
+          </code>
+          <ArrowRight aria-hidden="true" className="size-3.5 text-preview-muted" strokeWidth={1.8} />
+          <code className="min-w-0 truncate rounded-md border-0 bg-preview-canvas px-3 py-2.5 text-[11px]">
+            /workspaces/a
+          </code>
+        </div>
+
+        <p className="mt-3 text-[10px] text-preview-muted">Browser cache · saved</p>
+      </div>
+    </section>
+  );
+}
+
 export function RedirectDemo() {
   const [status, setStatus] = useState<RedirectStatus>(308);
   const [serverDestination, setServerDestination] = useState<Destination>("a");
