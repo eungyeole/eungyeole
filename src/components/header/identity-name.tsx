@@ -20,7 +20,7 @@ export function IdentityName({ align = "start", lang }: IdentityNameProps) {
 
     const interval = window.setInterval(() => {
       setIndex((current) => (current + 1) % names.length);
-    }, 5000);
+    }, 8000);
 
     return () => window.clearInterval(interval);
   }, [reduceMotion, names.length]);
@@ -29,23 +29,22 @@ export function IdentityName({ align = "start", lang }: IdentityNameProps) {
     <span
       aria-label={`eungyeole, ${realName}`}
       className={cn(
-        "inline-grid h-[1.25em] w-24 items-center overflow-hidden leading-[1.25]",
+        "inline-grid w-24",
         align === "end" ? "justify-items-end" : "justify-items-start",
       )}
     >
-      <AnimatePresence initial={false} mode="sync">
+      <AnimatePresence initial={false} mode="wait">
         <motion.span
           aria-hidden="true"
-          animate={{ opacity: 1, filter: "blur(0px)", y: "0%" }}
+          animate={{ opacity: 1, filter: "blur(0px)" }}
           className="whitespace-nowrap [grid-area:1/1]"
-          exit={{ opacity: 0, filter: "blur(2px)", y: "-75%" }}
-          initial={{ opacity: 0, filter: "blur(2px)", y: "75%" }}
+          exit={{ opacity: 0, filter: "blur(1.5px)" }}
+          initial={{ opacity: 0, filter: "blur(1.5px)" }}
           key={names[index]}
           style={{ willChange: "filter, opacity" }}
           transition={{
-            y: { duration: 0.52, ease: [0.76, 0, 0.24, 1] },
-            opacity: { duration: 0.34, ease: "easeOut" },
-            filter: { duration: 0.4, ease: "easeOut" },
+            opacity: { duration: 0.22, ease: "easeOut" },
+            filter: { duration: 0.26, ease: "easeOut" },
           }}
         >
           {names[index]}
