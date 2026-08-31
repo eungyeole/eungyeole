@@ -1,0 +1,120 @@
+import {
+  AiGradientLayerDemo,
+  AiResultRevealDemo,
+  AiResultRevealPreview,
+  AiResultTimelineDemo,
+} from "@/components/sandbox";
+
+export const metadata = {
+  title: "AI Animation",
+  description: {
+    ko: "AI 기능에 어울리는 완료감을 만들기 위해, 카드 뒤의 그라데이션 배경을 회전시키고 테두리로 채운 과정입니다.",
+    en: "How a rotating gradient behind a card becomes a finished border for an AI result.",
+  },
+  createdAt: "2026-08-31",
+  kind: "experiment",
+  order: 90,
+  layout: "half",
+  draft: false,
+  tags: ["AI", "Motion", "CSS"],
+};
+
+export const Preview = AiResultRevealPreview;
+
+<AiResultRevealDemo />
+
+요즘 제품에 AI 기능을 반영하는 일이 많아졌습니다. 익숙한 화면에서도 AI 기능다운 완료감을 전달할 장치가 필요했습니다. 그래서 짧은 빛이 카드를 한 바퀴 돈 뒤 테두리로 남는 효과를 만들었습니다.
+
+## border로는 움직이는 그라디언트를 다루기 어렵다
+
+`border-color`에는 그라데이션을 넣을 수 없습니다. `border-image`는 그라데이션을 표현할 수 있지만, 둥근 모서리를 따라 하나의 빛을 회전시키고 블러까지 적용하기는 어렵습니다.
+
+필요한 것은 네 개의 선이 아니라 카드 뒤에서 회전하는 하나의 평면이었습니다. 그래서 테두리를 직접 그리지 않고 `conic-gradient` 배경을 만들었습니다. 아래에서 회전을 멈춰보면 색이 있는 짧은 구간과 나머지 투명한 영역을 확인할 수 있습니다.
+
+<AiGradientLayerDemo />
+
+## 배경 위에 카드를 올려 선으로 만든다
+
+실제 카드에서는 그라데이션 배경 위를 불투명한 요소로 덮습니다. 부모의 `2px` 여백으로 드러난 배경만 테두리처럼 보입니다.
+
+```css
+.frame {
+  position: relative;
+  isolation: isolate;
+  contain: paint;
+  padding: 2px;
+  border-radius: 18px;
+}
+
+.frame::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  top: 50%;
+  width: 200%;
+  height: 200%;
+}
+
+.card {
+  position: relative;
+  z-index: 1;
+  border-radius: 16px;
+  background: var(--surface);
+}
+```
+
+레이어를 분리했기 때문에 `::before`만 회전하고 카드의 내용은 움직이지 않습니다. 배경은 모서리가 비지 않도록 크게 만들고 `contain: paint`로 바깥 라운드 안에서 자릅니다. 블러도 배경에만 적용되어 글자와 아이콘은 선명하게 남습니다.
+
+## 짧은 빛이 한 바퀴 돌고 선으로 채워진다
+
+`conic-gradient`는 중심을 기준으로 색의 구간을 나눕니다.
+
+```css
+background: conic-gradient(
+  var(--lead) 0deg 60deg,
+  var(--trail) 60deg var(--fill-angle),
+  transparent var(--fill-angle) 360deg
+);
+```
+
+`0deg`부터 `--fill-angle`까지만 색이 있고 이후는 투명합니다. 값이 `90deg`일 때는 짧은 호만 보입니다. 이 평면을 한 바퀴 돌린 뒤 값을 `360deg`까지 늘리면 투명한 영역이 사라지고 같은 빛이 완성된 테두리로 남습니다.
+
+## @property로 각도를 보간한다
+
+등록하지 않은 CSS 변수는 값의 타입을 알 수 없는 토큰 묶음입니다. 브라우저는 `90deg`와 `360deg` 사이를 계산하지 못해 값을 즉시 전환합니다. `@property`로 변수의 타입을 등록하면 중간 각도를 만들 수 있습니다.
+
+```css
+@property --fill-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 90deg;
+}
+```
+
+`syntax: "<angle>"`은 값을 각도로 등록합니다. `inherits: false`는 진행 각도를 자식에게 물려주지 않고, `initial-value`는 별도 값이 없을 때 짧은 호로 시작하게 합니다. 이제 keyframe이 바뀔 때마다 `conic-gradient`의 색상 경계도 함께 이동합니다.
+
+```css
+@keyframes fill {
+  from {
+    --fill-angle: 90deg;
+  }
+  to {
+    --fill-angle: 360deg;
+  }
+}
+
+.frame::before {
+  animation:
+    rotate 1.2s forwards,
+    fill 0.8s forwards 1.2s;
+}
+```
+
+`rotate`는 바로 시작해 배경의 `transform`을 바꿉니다. `fill`은 `1.2초` 뒤에 시작해 `--fill-angle`을 채웁니다. 서로 다른 속성을 움직이므로 같은 `::before`에서 이어서 실행할 수 있습니다. 아래 타임라인에서 두 단계의 경계를 확인해 보세요.
+
+<AiResultTimelineDemo />
+
+## 완료 뒤에는 멈춘다
+
+이 움직임은 로딩이 아니라 결과의 도착을 알리는 전환입니다. 처음 나타날 때와 다시 보기에서만 한 번 재생합니다. 모션 감소 설정에서는 애니메이션을 건너뛰고 완성된 테두리와 내용을 바로 보여줍니다.
