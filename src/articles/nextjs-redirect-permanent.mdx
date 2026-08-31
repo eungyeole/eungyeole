@@ -4,7 +4,7 @@ export const Preview = RedirectDemo;
 
 export const metadata = {
   title: "왜 항상 같은 곳으로 리다이렉트 하지?",
-  description: "같은 곳으로만 리다이렉트된 이유, 원인은 permanent 옵션이었다.",
+  description: "프로젝트에서 리다이렉트 목적지를 바꿔도 이전 주소로 이동했던 이유를 308과 브라우저 캐시에서 찾았습니다.",
   createdAt: "2025-10-17",
   kind: "note",
   order: 50,
@@ -13,93 +13,64 @@ export const metadata = {
   tags: ["Next.js", "HTTP", "Debugging"],
 };
 
-최근 워크스페이스 전환 과정에서 이상한 리다이렉트 오류를 발견했다. 특정
-워크스페이스로 이동하려고 로그인했는데, 항상 A 워크스페이스로만 리다이렉트되는
-현상이었다.
+프로젝트를 개발하던 중 로그인 뒤 이동할 워크스페이스를 바꾸는 작업을 했습니다. 리다이렉트 목적지는 A에서 B로 수정했지만 브라우저는 계속 이전 목적지 A로 이동했습니다.
 
----
+코드는 새 목적지를 가리키는데 결과만 바뀌지 않았습니다. 이 현상을 따라가면서 영구 리다이렉트는 주소를 한 번 옮기는 데서 끝나지 않고, 브라우저가 다음 이동에도 그 결정을 재사용할 수 있다는 사실을 알게 됐습니다.
 
-## 오류 발생 Flow
+<RedirectDemo />
 
-1. A 워크스페이스 접속
-2. B 워크스페이스 접속
-3. 로그인 시 A 워크스페이스로 리다이렉트됨
+`308 Permanent`와 목적지 `A`를 선택한 채 요청을 보내보세요. 브라우저 캐시에 `/login → /workspaces/a`가 남습니다. 이제 서버 목적지만 `B`로 바꾸고 다시 요청하세요. 서버는 B를 가리키지만 결과는 여전히 A입니다.
 
----
+## 서버보다 캐시가 먼저 움직인다
 
-## 정상 작동 Flow
+설정을 따라가 보니 서버는 `308 Permanent Redirect`를 응답하고 있었습니다. 308은 이 이동이 영구적이라는 뜻이며, 브라우저는 출발 주소와 목적지를 함께 기억할 수 있습니다.
 
-1. A 워크스페이스 접속
-2. B 워크스페이스 접속
-3. 로그인 시 B 워크스페이스로 리다이렉트됨
+```http
+HTTP/1.1 308 Permanent Redirect
+Location: /workspaces/a
+```
 
----
+다음에 `/login`을 방문하면 브라우저는 서버에 묻기 전에 저장한 목적지를 사용할 수 있습니다. 서버가 새 요청을 받지 못하므로 코드를 B로 바꿔도 이전 목적지 A로 이동합니다.
 
-## 원인: `nextjs`의 `permanent` 옵션
+문제는 목적지가 로그인할 때마다 달라지는 값이었다는 점입니다. 같은 `/login`에서도 사용자가 선택한 워크스페이스에 따라 A나 B로 보내야 합니다. 변할 수 있는 관계를 영구적인 관계로 응답한 것이 원인이었습니다.
 
-문제의 원인은 Next.js의 `redirect` 옵션 중 `permanent` 설정이었다.  
-이 옵션을 이해하려면 먼저 HTTP 307과 308 리다이렉트의 차이를 알아야 한다.
+## 영구와 임시는 다음 요청에서 갈린다
 
----
+307과 308은 모두 요청의 메서드와 본문을 유지한 채 다른 주소로 보냅니다. 여기서 중요한 차이는 다음 요청입니다.
 
-### 307 vs 308 Redirect
+- `308 Permanent Redirect`는 같은 이동을 다시 사용할 수 있는 영구 응답입니다.
+- `307 Temporary Redirect`는 이번 요청에만 적용하는 임시 응답입니다. 다음 요청에서는 서버가 목적지를 다시 결정합니다.
 
-| 코드                   | 의미            | 설명                                                       |
-| ---------------------- | --------------- | ---------------------------------------------------------- |
-| 307 Temporary Redirect | 임시 리다이렉트 | 브라우저가 기존 URL을 기억하지 않음                        |
-| 308 Permanent Redirect | 영구 리다이렉트 | 브라우저가 캐시에 URL을 저장해 이후에도 같은 경로로 이동함 |
+목적지가 사용자나 세션에 따라 달라진다면 브라우저가 이전 결정을 재사용해서는 안 됩니다.
 
-[MDN에서 자세히 보기](https://developer.mozilla.org/ko/docs/Web/HTTP/Redirections)
+## 변하는 목적지는 임시로 보낸다
 
----
+문제가 된 Next.js 코드에서는 `permanent: true`가 308 응답을 만들고 있었습니다.
 
-## `permanent`란?
-
-Next.js에서 `getServerSideProps` 혹은 `redirect()`를 사용할 때  
-`permanent` 옵션이 `true`면 308 Permanent Redirect,  
-`false`면 307 Temporary Redirect가 적용된다.
-
-```typescript
-export const getServerSideProps = () => {
-  return {
-    redirect: {
-      destination: `/workspaces/${workspaceId}`,
-      permanent: true,
-    },
-  };
+```ts
+return {
+  redirect: {
+    destination: `/workspaces/${workspaceId}`,
+    permanent: true,
+  },
 };
 ```
 
-위 코드처럼 `permanent: true`로 설정되어 있으면  
-브라우저는 해당 리다이렉트를 영구적으로 기억한다.  
-그 결과, 이후 다른 워크스페이스에 접속하더라도  
-브라우저 캐시 때문에 계속 A 워크스페이스로 리다이렉트되는 현상이 발생했다.
+로그인 뒤처럼 목적지가 매번 계산되는 이동에는 `permanent: false`를 사용합니다. 응답은 307이 되고, 다음 방문에서도 서버가 현재 목적지를 결정합니다.
 
----
-
-## 결론
-
-문제 해결 방법은 단순하다.  
-`permanent`를 `false`로 변경해 임시 리다이렉트(307)를 사용하면 된다.
-
-```typescript
-export const getServerSideProps = () => {
-  return {
-    redirect: {
-      destination: `/workspaces/${workspaceId}`,
-      permanent: false,
-    },
-  };
+```ts
+return {
+  redirect: {
+    destination: `/workspaces/${workspaceId}`,
+    permanent: false,
+  },
 };
 ```
 
----
+## 코드를 고친 뒤에는 캐시도 지운다
 
-## 정리
+이미 저장된 308은 서버 코드를 바꿔도 사라지지 않습니다. 데모에서 307로 바꾼 뒤 바로 요청해보세요. 캐시가 남아 있는 동안에는 여전히 A로 이동합니다.
 
-이번 이슈는 Next.js에서 발생했지만,  
-`permanent` 개념은 `Kubernetes ingress`나 프록시 설정 등 다양한 곳에서도 자주 등장한다.  
-(실제로 회사 Kubernetes ingress에서 비슷한 문제가 생겨서 생각난 김에 글을 작성한 것..)
-옵션 하나의 차이가 브라우저 캐시와 관련된 예기치 못한 동작으로 이어질 수 있다.
+`캐시 지우기`를 누르고 다시 요청하면 서버가 선택한 B로 이동합니다. 이후 목적지를 A와 B 사이에서 바꿔보세요. 307에서는 매번 현재 서버 설정을 따릅니다.
 
-리다이렉트는 단순한 URL 이동이 아니라, 브라우저의 “기억”까지 포함된 동작이라는 점을 명심하자.
+이 일을 겪고 나서 `permanent`를 단순한 상태 코드 선택으로 보지 않게 됐습니다. 영구 리다이렉트는 이번 이동뿐 아니라 다음 요청에서 서버를 다시 거칠지까지 바꿉니다. 주소의 관계가 앞으로도 바뀌지 않을 때만 사용하고, 잘못된 308을 이미 응답했다면 코드와 함께 브라우저 캐시도 바로잡아야 합니다.

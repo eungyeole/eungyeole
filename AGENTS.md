@@ -2,7 +2,7 @@
 
 ## Sandbox article voice
 
-Apply these rules whenever creating or editing `src/sandboxes/**/*.mdx`.
+Apply these rules whenever creating or editing `src/sandboxes/**/*.mdx` or legacy content in `src/articles/**/*.mdx`.
 
 - Use the teaching voice established by `mona-lisa-effect.mdx` as the default.
 - Put the real result or an interactive demo before the implementation details.
@@ -15,4 +15,3 @@ Apply these rules whenever creating or editing `src/sandboxes/**/*.mdx`.
 - Do not foreground arbitrary coordinate corrections, offsets, or other implementation artifacts. Describe the underlying visual rule instead.
 - Preserve accessibility, legacy URLs, and product truth without interrupting the main teaching flow.
 - Do not reveal the location of an easter egg; invite the reader to find it.
-
