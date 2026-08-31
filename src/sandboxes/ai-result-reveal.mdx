@@ -1,0 +1,95 @@
+import {
+  AiResultRevealDemo,
+  AiResultRevealPreview,
+  AiResultTimelineDemo,
+} from "@/components/sandbox";
+
+export const metadata = {
+  title: "AI Result Reveal",
+  description: {
+    ko: "회전하는 빛을 완성된 테두리로 바꾸고 내용을 읽는 순서대로 드러내, AI 결과가 도착하는 순간을 만든 과정입니다.",
+    en: "How a rotating arc settles into a border while staggered content makes an AI result feel ready.",
+  },
+  createdAt: "2026-08-31",
+  kind: "experiment",
+  order: 90,
+  layout: "half",
+  draft: false,
+  tags: ["AI", "Motion", "CSS"],
+};
+
+export const Preview = AiResultRevealPreview;
+
+<AiResultRevealDemo />
+
+AI 결과가 한 번에 나타나면 화면이 갑자기 바뀐 것처럼 보입니다. 반대로 긴 로딩을 붙이면 결과가 실제보다 늦게 느껴집니다.
+
+위 카드에서는 결과가 나타나는 짧은 순간을 두 움직임으로 나눴습니다. 테두리의 빛은 변화를 알리고, 본문은 읽는 순서대로 나타납니다. 움직임이 끝나면 빛은 완성된 테두리로 남습니다.
+
+## 짧은 빛을 한 바퀴 돌린다
+
+`conic-gradient`는 중심을 기준으로 색을 각도로 나눕니다. 색이 있는 구간 뒤를 투명하게 두면 원의 일부만 남습니다.
+
+```css
+background: conic-gradient(
+  var(--lead) 0deg 60deg,
+  var(--trail) 60deg var(--fill-angle),
+  transparent var(--fill-angle) 360deg
+);
+```
+
+이 그라데이션을 카드보다 크게 그린 뒤 안쪽을 카드로 가리면 가장자리만 선처럼 보입니다. 레이어를 크게 만드는 이유는 회전하는 동안 카드의 모서리에서 선이 끊기지 않게 하기 위해서입니다. 블러는 경계를 풀어 짧은 선을 빛처럼 보이게 합니다.
+
+## 회전하던 빛을 테두리로 남긴다
+
+첫 움직임은 그라데이션 레이어를 한 바퀴 돌립니다. 회전이 끝나면 `--fill-angle`을 `90deg`에서 `360deg`까지 늘립니다. 투명한 구간이 점점 줄어들면서 짧은 빛이 카드 전체를 감싸는 테두리로 바뀝니다.
+
+```css
+animation:
+  rotate 1.2s forwards,
+  fill 0.8s forwards 1.2s;
+```
+
+두 애니메이션을 따로 두면 회전과 완료 상태를 하나의 그라데이션으로 연결할 수 있습니다.
+
+## 각도를 움직일 수 있는 값으로 만든다
+
+일반적인 CSS 변수는 브라우저가 값의 타입을 알 수 없습니다. `@property`로 `<angle>`을 선언하면 시작과 끝 사이의 각도를 계산할 수 있습니다.
+
+```css
+@property --fill-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 90deg;
+}
+
+@keyframes fill {
+  to {
+    --fill-angle: 360deg;
+  }
+}
+```
+
+아래 타임라인을 움직여보세요. `1.2초`까지는 짧은 빛이 회전하고, 그 뒤에는 투명한 영역이 닫히며 테두리가 완성됩니다.
+
+<AiResultTimelineDemo />
+
+## 내용은 읽는 순서대로 나타난다
+
+요약, 판단 근거, 확인할 내용은 서로 다른 정보입니다. 모두 한 번에 나타내는 대신 짧은 간격을 두고 위에서부터 보여주면 첫 문장에서 다음 항목으로 자연스럽게 시선이 이동합니다.
+
+```css
+.section {
+  opacity: 0;
+  animation: reveal 0.6s forwards;
+  animation-delay: calc(var(--index) * 0.3s);
+}
+```
+
+이동과 블러는 초점이 맞는 정도로만 사용했습니다. 내용이 날아오는 인상보다 결과가 차분히 정리되는 인상이 더 중요했습니다.
+
+## 움직임은 한 번이면 충분하다
+
+이 효과는 로딩 상태가 아닙니다. 결과가 준비되었다는 변화를 전달한 뒤에는 멈춰야 내용을 읽을 수 있습니다. 그래서 처음 나타날 때와 다시 보기에서만 재생합니다.
+
+모션 감소 설정에서는 회전과 순차 등장을 건너뛰고 완성된 테두리와 내용을 바로 보여줍니다. 효과가 없어도 결과의 의미와 사용 방법은 달라지지 않습니다.
