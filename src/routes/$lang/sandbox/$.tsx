@@ -37,11 +37,6 @@ function SandboxDetail() {
   const title = resolveSandboxText(metadata.title, lang);
   const description = resolveSandboxText(metadata.description, lang);
   const backLabel = lang === "en" ? "Back to Sandbox" : "Sandbox로 돌아가기";
-  const kindLabel = {
-    project: "Project",
-    experiment: "Experiment",
-    note: "Note",
-  }[metadata.kind];
   const visitLabel = lang === "en" ? "Visit project" : "프로젝트 보기";
   const sourceLabel = lang === "en" ? "View source" : "소스 보기";
 
@@ -65,24 +60,8 @@ function SandboxDetail() {
       </nav>
 
       <header className="mb-8">
-        <div className="flex items-center gap-2 text-sm text-gray-500">
-          <span>{kindLabel}</span>
-          <span aria-hidden="true">·</span>
-          <time dateTime={metadata.createdAt}>{metadata.createdAt}</time>
-        </div>
-        <h1 className="mt-2 text-lg font-medium">{title}</h1>
+        <h1 className="text-lg font-medium">{title}</h1>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-500">{description}</p>
-
-        {metadata.tags?.length ? (
-          <ul className="mt-3 flex flex-wrap gap-x-2 text-xs text-gray-400" aria-label="Tags">
-            {metadata.tags.map((tag, index) => (
-              <li key={tag}>
-                {index > 0 ? <span aria-hidden="true">· </span> : null}
-                {tag}
-              </li>
-            ))}
-          </ul>
-        ) : null}
 
         {metadata.href || metadata.source ? (
           <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm">
