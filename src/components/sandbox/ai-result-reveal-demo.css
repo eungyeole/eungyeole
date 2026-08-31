@@ -4,6 +4,12 @@
   initial-value: 90deg;
 }
 
+@property --ai-comparison-fill-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 90deg;
+}
+
 @keyframes ai-reveal-rotate {
   from {
     transform: translate(-50%, -50%) rotate(0deg);
@@ -35,6 +41,34 @@
     opacity: 1;
     filter: blur(0);
     transform: translateY(0);
+  }
+}
+
+@keyframes ai-gradient-comparison-discrete {
+  from {
+    background-image: conic-gradient(
+      color-mix(in srgb, var(--accent) 72%, #86efac) 0deg 60deg,
+      color-mix(in srgb, var(--accent) 34%, var(--preview-border)) 60deg 90deg,
+      transparent 90deg 360deg
+    );
+  }
+
+  to {
+    background-image: conic-gradient(
+      color-mix(in srgb, var(--accent) 72%, #86efac) 0deg 60deg,
+      color-mix(in srgb, var(--accent) 34%, var(--preview-border)) 60deg 360deg,
+      transparent 360deg 360deg
+    );
+  }
+}
+
+@keyframes ai-gradient-comparison-interpolated {
+  from {
+    --ai-comparison-fill-angle: 90deg;
+  }
+
+  to {
+    --ai-comparison-fill-angle: 360deg;
   }
 }
 
@@ -125,6 +159,32 @@
   animation-play-state: paused;
 }
 
+.ai-gradient-comparison-canvas {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--preview-border);
+  border-radius: 14px;
+  background-color: var(--preview-surface);
+}
+
+.ai-gradient-comparison-canvas--discrete {
+  animation: ai-gradient-comparison-discrete 2.4s linear infinite alternate;
+}
+
+.ai-gradient-comparison-canvas--property {
+  --ai-comparison-fill-angle: 90deg;
+  background-image: conic-gradient(
+    color-mix(in srgb, var(--accent) 72%, #86efac) 0deg 60deg,
+    color-mix(in srgb, var(--accent) 34%, var(--preview-border)) 60deg var(--ai-comparison-fill-angle),
+    transparent var(--ai-comparison-fill-angle) 360deg
+  );
+  animation: ai-gradient-comparison-interpolated 2.4s linear infinite alternate;
+}
+
+.ai-gradient-comparison-canvas--paused {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ai-result-frame::before {
     --ai-reveal-fill-angle: 360deg;
@@ -141,6 +201,16 @@
 
   .ai-gradient-layer-canvas::before {
     transform: translate(-50%, -50%) rotate(0deg);
+    animation: none;
+  }
+
+  .ai-gradient-comparison-canvas--discrete,
+  .ai-gradient-comparison-canvas--property {
+    --ai-comparison-fill-angle: 360deg;
+    background-image: conic-gradient(
+      color-mix(in srgb, var(--accent) 72%, #86efac) 0deg 60deg,
+      color-mix(in srgb, var(--accent) 34%, var(--preview-border)) 60deg 360deg
+    );
     animation: none;
   }
 }
