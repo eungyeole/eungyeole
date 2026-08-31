@@ -8,21 +8,21 @@ interface NavigationProps {
 
 export const Navigation = ({ lang }: NavigationProps) => {
   return (
-    <div className="relative w-fit">
-      <div className="w-full flex">
+    <nav className="relative w-fit rounded-full bg-surface-muted p-0.5" aria-label="Primary navigation">
+      <div className="flex w-full">
         {NAVIGATION_TABS.map((tab) => (
           <Link
             key={tab.value}
             to={tab.to}
             params={{ lang }}
-            className="cursor-pointer px-2 pr-2.5 py-1 font-medium text-sm flex items-center gap-1 [&_svg]:w-3 [&_svg]:h-3"
+            activeOptions={{ exact: tab.value === "/" }}
+            className="relative z-0 flex cursor-pointer items-center rounded-full px-3 py-1.5 text-[13px] font-medium text-muted transition-colors duration-200 hover:text-foreground"
           >
-            <tab.icon />
             {tab.label}
           </Link>
         ))}
       </div>
       <NavigationIndicator lang={lang} />
-    </div>
+    </nav>
   );
 };

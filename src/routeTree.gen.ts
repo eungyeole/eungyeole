@@ -16,6 +16,7 @@ import { Route as LangIndexRouteImport } from './routes/$lang/index'
 import { Route as LangPingRouteImport } from './routes/$lang/ping'
 import { Route as LangSandboxIndexRouteImport } from './routes/$lang/sandbox/index'
 import { Route as LangArticleIndexRouteImport } from './routes/$lang/article/index'
+import { Route as LangSandboxSplatRouteImport } from './routes/$lang/sandbox/$'
 import { Route as LangArticleSplatRouteImport } from './routes/$lang/article/$'
 
 const SplatRoute = SplatRouteImport.update({
@@ -53,6 +54,11 @@ const LangArticleIndexRoute = LangArticleIndexRouteImport.update({
   path: '/article/',
   getParentRoute: () => LangRouteRoute,
 } as any)
+const LangSandboxSplatRoute = LangSandboxSplatRouteImport.update({
+  id: '/sandbox/$',
+  path: '/sandbox/$',
+  getParentRoute: () => LangRouteRoute,
+} as any)
 const LangArticleSplatRoute = LangArticleSplatRouteImport.update({
   id: '/article/$',
   path: '/article/$',
@@ -66,6 +72,7 @@ export interface FileRoutesByFullPath {
   '/$lang/ping': typeof LangPingRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/article/$': typeof LangArticleSplatRoute
+  '/$lang/sandbox/$': typeof LangSandboxSplatRoute
   '/$lang/article/': typeof LangArticleIndexRoute
   '/$lang/sandbox/': typeof LangSandboxIndexRoute
 }
@@ -75,6 +82,7 @@ export interface FileRoutesByTo {
   '/$lang/ping': typeof LangPingRoute
   '/$lang': typeof LangIndexRoute
   '/$lang/article/$': typeof LangArticleSplatRoute
+  '/$lang/sandbox/$': typeof LangSandboxSplatRoute
   '/$lang/article': typeof LangArticleIndexRoute
   '/$lang/sandbox': typeof LangSandboxIndexRoute
 }
@@ -86,6 +94,7 @@ export interface FileRoutesById {
   '/$lang/ping': typeof LangPingRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/article/$': typeof LangArticleSplatRoute
+  '/$lang/sandbox/$': typeof LangSandboxSplatRoute
   '/$lang/article/': typeof LangArticleIndexRoute
   '/$lang/sandbox/': typeof LangSandboxIndexRoute
 }
@@ -98,6 +107,7 @@ export interface FileRouteTypes {
     | '/$lang/ping'
     | '/$lang/'
     | '/$lang/article/$'
+    | '/$lang/sandbox/$'
     | '/$lang/article/'
     | '/$lang/sandbox/'
   fileRoutesByTo: FileRoutesByTo
@@ -107,6 +117,7 @@ export interface FileRouteTypes {
     | '/$lang/ping'
     | '/$lang'
     | '/$lang/article/$'
+    | '/$lang/sandbox/$'
     | '/$lang/article'
     | '/$lang/sandbox'
   id:
@@ -117,6 +128,7 @@ export interface FileRouteTypes {
     | '/$lang/ping'
     | '/$lang/'
     | '/$lang/article/$'
+    | '/$lang/sandbox/$'
     | '/$lang/article/'
     | '/$lang/sandbox/'
   fileRoutesById: FileRoutesById
@@ -178,6 +190,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangArticleIndexRouteImport
       parentRoute: typeof LangRouteRoute
     }
+    '/$lang/sandbox/$': {
+      id: '/$lang/sandbox/$'
+      path: '/sandbox/$'
+      fullPath: '/$lang/sandbox/$'
+      preLoaderRoute: typeof LangSandboxSplatRouteImport
+      parentRoute: typeof LangRouteRoute
+    }
     '/$lang/article/$': {
       id: '/$lang/article/$'
       path: '/article/$'
@@ -192,6 +211,7 @@ interface LangRouteRouteChildren {
   LangPingRoute: typeof LangPingRoute
   LangIndexRoute: typeof LangIndexRoute
   LangArticleSplatRoute: typeof LangArticleSplatRoute
+  LangSandboxSplatRoute: typeof LangSandboxSplatRoute
   LangArticleIndexRoute: typeof LangArticleIndexRoute
   LangSandboxIndexRoute: typeof LangSandboxIndexRoute
 }
@@ -200,6 +220,7 @@ const LangRouteRouteChildren: LangRouteRouteChildren = {
   LangPingRoute: LangPingRoute,
   LangIndexRoute: LangIndexRoute,
   LangArticleSplatRoute: LangArticleSplatRoute,
+  LangSandboxSplatRoute: LangSandboxSplatRoute,
   LangArticleIndexRoute: LangArticleIndexRoute,
   LangSandboxIndexRoute: LangSandboxIndexRoute,
 }
