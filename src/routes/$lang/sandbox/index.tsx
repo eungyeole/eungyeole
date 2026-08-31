@@ -30,7 +30,7 @@ function Sandbox() {
       <h1 className="sr-only">Sandbox</h1>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {entries.map((entry) => {
+        {entries.map((entry, index) => {
           const Preview = getSandboxPreview(entry.slug);
           const title = resolveSandboxText(entry.title, lang);
           const description = resolveSandboxText(entry.description, lang);
@@ -38,7 +38,7 @@ function Sandbox() {
           return (
             <Card
               id={entry.slug}
-              className={entry.layout === "wide" ? "scroll-mt-8 sm:col-span-2" : "scroll-mt-8"}
+              className={index === 0 ? "scroll-mt-8 sm:col-span-2" : "scroll-mt-8"}
               key={entry.slug}
               preview={Preview ? <Preview /> : <GenericPreview />}
               previewClassName="p-0"

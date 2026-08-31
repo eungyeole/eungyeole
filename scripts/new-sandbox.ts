@@ -44,7 +44,6 @@ const createTemplate = (title: string) => `export const metadata = {
   createdAt: "${formatLocalDate(new Date())}",
   kind: "experiment",
   order: 0,
-  layout: "half",
   draft: true,
   tags: [],
 };
