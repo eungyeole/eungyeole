@@ -13,7 +13,9 @@ export function IdentityName({ align = "start", lang }: IdentityNameProps) {
   const reduceMotion = useReducedMotion();
   const [index, setIndex] = useState(0);
   const realName = lang === "en" ? "Eungyeol An" : "안은결";
-  const names = ["eungyeole", realName];
+  const names = [realName, "eungyeole"];
+  const characters = Array.from(names[index]);
+  const gaps = Math.max(characters.length - 1, 1);
 
   useEffect(() => {
     if (reduceMotion) return;
@@ -27,7 +29,7 @@ export function IdentityName({ align = "start", lang }: IdentityNameProps) {
 
   return (
     <span
-      aria-label={`eungyeole, ${realName}`}
+      aria-label={`${realName}, eungyeole`}
       className={cn(
         "inline-grid w-24",
         align === "end" ? "justify-items-end" : "justify-items-start",
@@ -36,18 +38,39 @@ export function IdentityName({ align = "start", lang }: IdentityNameProps) {
       <AnimatePresence initial={false} mode="wait">
         <motion.span
           aria-hidden="true"
-          animate={{ opacity: 1, filter: "blur(0px)" }}
+          animate="visible"
           className="whitespace-nowrap [grid-area:1/1]"
-          exit={{ opacity: 0, filter: "blur(1.5px)" }}
-          initial={{ opacity: 0, filter: "blur(1.5px)" }}
+          exit="exit"
+          initial="hidden"
           key={names[index]}
-          style={{ willChange: "filter, opacity" }}
-          transition={{
-            opacity: { duration: 0.22, ease: "easeOut" },
-            filter: { duration: 0.26, ease: "easeOut" },
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.24 / gaps } },
+            exit: { transition: { staggerChildren: 0.16 / gaps, staggerDirection: -1 } },
           }}
         >
-          {names[index]}
+          {characters.map((character, characterIndex) => (
+            <motion.span
+              className="inline-block"
+              key={`${character}-${characterIndex}`}
+              style={{ willChange: "filter, opacity" }}
+              variants={{
+                hidden: { opacity: 0, filter: "blur(2px)" },
+                visible: {
+                  opacity: 1,
+                  filter: "blur(0px)",
+                  transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
+                },
+                exit: {
+                  opacity: 0,
+                  filter: "blur(2px)",
+                  transition: { duration: 0.26, ease: [0.7, 0, 0.84, 0] },
+                },
+              }}
+            >
+              {character === " " ? "\u00a0" : character}
+            </motion.span>
+          ))}
         </motion.span>
       </AnimatePresence>
     </span>
