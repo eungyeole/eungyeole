@@ -1,7 +1,6 @@
 import { Link, useMatch } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { motion } from "motion/react";
-import { IdentityName } from "@/components/header/identity-name";
 import { Navigation } from "@/components/navigation/navigation";
 
 interface DynamicHeaderProps {
@@ -31,7 +30,7 @@ function DefaultHeader({ lang }: DynamicHeaderProps) {
     <div className="flex flex-col gap-6">
       <div className="flex flex-col">
         <h1 className="text-md font-semibold">
-          <IdentityName lang={lang} />
+          {lang === "en" ? "Eungyeol An" : "안은결"}
         </h1>
         <p className="text-sm font-medium text-gray-500">Frontend Engineer</p>
       </div>
@@ -63,7 +62,7 @@ function DetailNavigation({ lang }: DynamicHeaderProps) {
         params={{ lang }}
         className="text-sm font-semibold transition-colors hover:text-gray-500"
       >
-        <IdentityName align="end" lang={lang} />
+        {lang === "en" ? "Eungyeol An" : "안은결"}
       </Link>
     </div>
   );
