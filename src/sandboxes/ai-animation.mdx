@@ -8,8 +8,8 @@ import {
 export const metadata = {
   title: "AI Animation",
   description: {
-    ko: "AI 기능에 어울리는 완료감을 만들기 위해, 카드 뒤의 그라데이션 배경을 회전시키고 테두리로 채운 과정입니다.",
-    en: "How a rotating gradient behind a card becomes a finished border for an AI result.",
+    ko: "절제된 UI에서 AI 결과에 짧은 임팩트를 주기 위해, 회전하는 그라데이션 배경을 테두리로 만든 과정입니다.",
+    en: "How a rotating gradient border gives an AI result a moment of emphasis within a restrained interface.",
   },
   createdAt: "2026-08-31",
   kind: "experiment",
@@ -23,9 +23,11 @@ export const Preview = AiResultRevealPreview;
 
 <AiResultRevealDemo />
 
-요즘 제품에 AI 기능을 반영하는 일이 많아졌습니다. 익숙한 화면에서도 AI 기능다운 완료감을 전달할 장치가 필요했습니다. 그래서 짧은 빛이 카드를 한 바퀴 돈 뒤 테두리로 남는 효과를 만들었습니다.
+요즘 제품 UI는 색을 절제하고 단순한 면과 얇은 경계로 정리되는 경우가 많습니다. 기존 기능에는 잘 어울리지만 AI 결과까지 같은 톤으로 맞추면 화면의 다른 카드와 같은 무게로 보였습니다.
 
-## border로는 움직이는 그라디언트를 다루기 어렵다
+그라디언트는 한 면 안에서 색과 방향의 변화를 함께 보여줄 수 있습니다. 하지만 카드 전체를 채우면 내용보다 강해집니다. 그래서 안쪽의 모던한 톤은 유지하고, 결과가 도착하는 순간에만 가장자리의 그라디언트 라인으로 임팩트를 주었습니다.
+
+## 그라디언트 라인은 border로 만들기 어렵다
 
 `border-color`에는 그라데이션을 넣을 수 없습니다. `border-image`는 그라데이션을 표현할 수 있지만, 둥근 모서리를 따라 하나의 빛을 회전시키고 블러까지 적용하기는 어렵습니다.
 
