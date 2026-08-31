@@ -7,10 +7,7 @@ interface CardProps extends React.HTMLAttributes<HTMLElement> {
 
 export const Card = ({ children, className, preview, previewClassName, ...props }: CardProps) => {
   return (
-    <article
-      className={cn("group w-full overflow-hidden rounded-xl bg-surface shadow-sm", className)}
-      {...props}
-    >
+    <article className={cn("group w-full overflow-hidden rounded-xl bg-surface shadow-sm", className)} {...props}>
       <div
         className={cn(
           "relative flex min-h-56 items-center justify-center overflow-hidden bg-transparent p-5 [&>*]:!rounded-none",
