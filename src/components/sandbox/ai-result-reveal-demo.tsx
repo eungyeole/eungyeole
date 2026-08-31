@@ -15,7 +15,7 @@ interface Playback {
   sections: number[];
 }
 
-interface AiReviewCardProps {
+interface AiSummaryCardProps {
   compact?: boolean;
   onToggle: () => void;
   open: boolean;
@@ -49,7 +49,7 @@ export function AiResultTimelineDemo() {
       className="overflow-hidden rounded-lg border border-preview-border bg-preview-surface text-preview-strong"
     >
       <div className="grid min-h-[25rem] place-items-center bg-preview-canvas px-4 py-10 sm:px-8">
-        <AiReviewCard onToggle={() => setOpen((value) => !value)} open={open} playback={playback} />
+        <AiSummaryCard onToggle={() => setOpen((value) => !value)} open={open} playback={playback} />
       </div>
 
       <label className="flex items-center gap-4 border-t border-preview-border px-4 py-3 text-xs text-preview-muted">
@@ -107,12 +107,12 @@ function AiResultRevealExperience({ compact = false }: { compact?: boolean }) {
         </button>
       ) : null}
 
-      <AiReviewCard compact={compact} key={cycle} onToggle={toggle} open={open} />
+      <AiSummaryCard compact={compact} key={cycle} onToggle={toggle} open={open} />
     </section>
   );
 }
 
-function AiReviewCard({ compact = false, onToggle, open, playback }: AiReviewCardProps) {
+function AiSummaryCard({ compact = false, onToggle, open, playback }: AiSummaryCardProps) {
   const frameStyle = playback
     ? ({
         "--ai-reveal-controlled-fill-angle": `${playback.fillAngle}deg`,
@@ -136,7 +136,7 @@ function AiReviewCard({ compact = false, onToggle, open, playback }: AiReviewCar
         >
           <span className="flex min-w-0 items-center gap-2">
             <Sparkles aria-hidden="true" className="size-4 shrink-0 text-accent" strokeWidth={1.8} />
-            <span className="truncate text-sm font-semibold">AI 서류 평가</span>
+            <span className="truncate text-sm font-semibold">AI 문서 요약</span>
             <span className="rounded-full bg-accent-soft px-1.5 py-0.5 text-[9px] font-semibold tracking-wide text-accent">
               BETA
             </span>
@@ -144,7 +144,7 @@ function AiReviewCard({ compact = false, onToggle, open, playback }: AiReviewCar
 
           <span className="flex shrink-0 items-center gap-2">
             <span className="rounded-md border border-preview-border px-2 py-1 text-[10px] text-preview-muted">
-              86점 예측
+              요약 완료
             </span>
             <ChevronDown
               aria-hidden="true"
@@ -166,21 +166,21 @@ function AiReviewCard({ compact = false, onToggle, open, playback }: AiReviewCar
             >
               <RevealSection index={0} playback={playback}>
                 <p className={`${compact ? "text-[11px] leading-5" : "text-sm leading-6"} text-preview-strong`}>
-                  제품의 문제를 정의하고 여러 직군과 협업해 개선한 경험이 고르게 드러납니다.
+                  긴 문서에서 반복되는 내용을 덜어내고 핵심 흐름을 세 문장으로 정리했습니다.
                 </p>
               </RevealSection>
 
               <RevealSection index={1} playback={playback}>
-                <ResultGroup compact={compact} title="선호 조건에 일치해요">
-                  <ResultItem>사용자 관점에서 문제를 정의한 경험</ResultItem>
-                  {!compact ? <ResultItem>디자인과 개발을 연결한 협업 경험</ResultItem> : null}
+                <ResultGroup compact={compact} title="핵심 내용">
+                  <ResultItem>문제의 배경과 목표가 명확하게 연결되어 있어요</ResultItem>
+                  {!compact ? <ResultItem>결론을 뒷받침하는 근거가 세 가지 있어요</ResultItem> : null}
                 </ResultGroup>
               </RevealSection>
 
               {!compact ? (
                 <RevealSection index={2} playback={playback}>
-                  <ResultGroup title="면접에서 확인해 보세요">
-                    <p className="text-xs leading-5 text-preview-muted">성과를 판단한 기준과 개선 이후의 변화를 확인해 보세요.</p>
+                  <ResultGroup title="더 살펴볼 내용">
+                    <p className="text-xs leading-5 text-preview-muted">본문에서 인용한 수치의 출처를 확인해 보세요.</p>
                   </ResultGroup>
                 </RevealSection>
               ) : null}
