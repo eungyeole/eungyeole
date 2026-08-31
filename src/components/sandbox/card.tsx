@@ -26,14 +26,12 @@ export const Card = ({ children, className, preview, previewClassName, ...props 
 
 interface CardCaptionProps {
   description: string;
-  eyebrow: string;
   link: React.ReactNode;
 }
 
-export const CardCaption = ({ description, eyebrow, link }: CardCaptionProps) => {
+export const CardCaption = ({ description, link }: CardCaptionProps) => {
   return (
     <div>
-      <p className="mb-1.5 text-xs font-medium text-gray-400">{eyebrow}</p>
       <h2 className="text-base font-medium">{link}</h2>
       <p className="mt-1 text-sm leading-6 text-gray-500">{description}</p>
     </div>
