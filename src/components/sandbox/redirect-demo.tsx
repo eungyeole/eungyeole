@@ -1,76 +1,152 @@
-import { ArrowDown, ArrowRight, Check, Database, LockKeyhole } from "lucide-react";
+"use client";
+
+import { ArrowRight, RotateCcw } from "lucide-react";
+import { useState } from "react";
+
+const REDIRECTS = [
+  { status: 308, label: "308 Permanent" },
+  { status: 307, label: "307 Temporary" },
+] as const;
+
+const DESTINATIONS = [
+  { id: "a", label: "A" },
+  { id: "b", label: "B" },
+] as const;
+
+type RedirectStatus = (typeof REDIRECTS)[number]["status"];
+type Destination = (typeof DESTINATIONS)[number]["id"];
+type ResultSource = "idle" | "server-307" | "server-308" | "cache";
 
 export function RedirectDemo() {
+  const [status, setStatus] = useState<RedirectStatus>(308);
+  const [serverDestination, setServerDestination] = useState<Destination>("a");
+  const [cachedDestination, setCachedDestination] = useState<Destination | null>(null);
+  const [result, setResult] = useState<Destination | null>(null);
+  const [resultSource, setResultSource] = useState<ResultSource>("idle");
+
+  const requestRedirect = () => {
+    if (cachedDestination) {
+      setResult(cachedDestination);
+      setResultSource("cache");
+      return;
+    }
+
+    setResult(serverDestination);
+    setResultSource(status === 308 ? "server-308" : "server-307");
+
+    if (status === 308) {
+      setCachedDestination(serverDestination);
+    }
+  };
+
+  const clearCache = () => {
+    setCachedDestination(null);
+    setResult(null);
+    setResultSource("idle");
+  };
+
   return (
     <section
-      aria-label="Permanent cached redirect illustration"
-      className="flex min-h-60 w-full items-center justify-center overflow-hidden rounded-2xl bg-preview-canvas p-4 text-preview-strong"
+      aria-label="Redirect cache playground"
+      className="w-full overflow-hidden rounded-lg border border-preview-border bg-preview-surface text-preview-strong"
     >
-      <div className="w-full max-w-sm overflow-hidden rounded-[1.15rem] border border-preview-border bg-preview-surface shadow-[0_24px_55px_-34px_rgba(0,0,0,0.38)]">
-        <div className="flex items-center gap-2 border-b border-preview-border bg-background/60 px-3 py-2.5">
-          <div aria-hidden="true" className="flex gap-1">
-            <span className="size-1.5 rounded-full bg-preview-muted" />
-            <span className="size-1.5 rounded-full bg-preview-muted" />
-            <span className="size-1.5 rounded-full bg-preview-muted" />
-          </div>
-          <div className="flex min-w-0 flex-1 items-center gap-1.5 rounded-md bg-preview-canvas px-2 py-1">
-            <LockKeyhole aria-hidden="true" className="size-2.5 shrink-0 text-preview-muted" />
-            <span className="truncate font-mono text-[9px] text-preview-muted">eungyeole.dev/article</span>
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-preview-border p-3">
+        <div aria-label="Redirect status" className="flex rounded-md bg-preview-canvas p-0.5" role="group">
+          {REDIRECTS.map((redirect) => (
+            <button
+              aria-pressed={status === redirect.status}
+              className={`rounded-[0.3rem] px-2.5 py-1.5 font-mono text-[11px] transition-colors ${
+                status === redirect.status
+                  ? "bg-preview-surface text-preview-strong shadow-sm"
+                  : "text-preview-muted hover:text-preview-strong"
+              }`}
+              key={redirect.status}
+              onClick={() => setStatus(redirect.status)}
+              type="button"
+            >
+              {redirect.label}
+            </button>
+          ))}
+        </div>
+
+        <button
+          className="inline-flex items-center gap-1.5 text-xs text-preview-muted transition-colors hover:text-preview-strong disabled:cursor-default disabled:opacity-40"
+          disabled={!cachedDestination}
+          onClick={clearCache}
+          type="button"
+        >
+          <RotateCcw aria-hidden="true" className="size-3" />
+          캐시 지우기
+        </button>
+      </div>
+
+      <div className="bg-preview-canvas p-4 sm:p-5">
+        <div className="flex items-center justify-between gap-4">
+          <span className="text-xs text-preview-muted">서버 목적지</span>
+          <div aria-label="Server destination" className="flex gap-1" role="group">
+            {DESTINATIONS.map((destination) => (
+              <button
+                aria-pressed={serverDestination === destination.id}
+                className={`grid size-7 place-items-center rounded-md text-xs font-medium transition-colors ${
+                  serverDestination === destination.id
+                    ? "bg-preview-strong text-preview-surface"
+                    : "bg-preview-surface text-preview-muted hover:text-preview-strong"
+                }`}
+                key={destination.id}
+                onClick={() => setServerDestination(destination.id)}
+                type="button"
+              >
+                {destination.label}
+              </button>
+            ))}
           </div>
         </div>
 
-        <div className="p-4">
-          <div className="flex items-center justify-between gap-2">
-            <p className="text-[9px] font-semibold uppercase tracking-[0.15em] text-preview-muted">
-              Browser navigation
-            </p>
-            <span className="rounded-full bg-preview-border px-2 py-1 font-mono text-[9px] font-semibold text-preview-strong">
-              308
-            </span>
-          </div>
-
-          <div className="mt-3 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2">
-            <RouteNode label="From" path="/article" tone="muted" />
-            <div className="flex flex-col items-center gap-1 text-preview-muted" aria-hidden="true">
-              <ArrowRight className="hidden size-4 sm:block" strokeWidth={1.8} />
-              <ArrowDown className="size-4 sm:hidden" strokeWidth={1.8} />
-            </div>
-            <RouteNode label="To" path="/sandbox" tone="accent" />
-          </div>
-
-          <div className="mt-3 flex items-center gap-2 rounded-xl border border-preview-border bg-preview-canvas px-3 py-2.5">
-            <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-preview-surface text-preview-muted shadow-sm">
-              <Database aria-hidden="true" className="size-3.5" strokeWidth={1.8} />
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-[10px] font-semibold">Stored in browser cache</p>
-              <p className="mt-0.5 truncate text-[9px] text-preview-muted">Next visit skips the network</p>
-            </div>
-            <span className="inline-flex shrink-0 items-center gap-1 text-[9px] font-semibold text-preview-strong">
-              <Check aria-hidden="true" className="size-3" strokeWidth={2.3} />0 ms
-            </span>
-          </div>
+        <div className="mt-4 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2">
+          <RouteNode label="요청" path="/login" />
+          <ArrowRight aria-hidden="true" className="size-4 text-preview-muted" strokeWidth={1.8} />
+          <RouteNode label={resultSourceLabel(resultSource)} path={result ? `/workspaces/${result}` : "—"} />
         </div>
+
+        <button
+          className="mt-4 w-full rounded-md bg-preview-strong px-3 py-2 text-xs font-medium text-preview-surface transition-opacity hover:opacity-80"
+          onClick={requestRedirect}
+          type="button"
+        >
+          요청 보내기
+        </button>
+      </div>
+
+      <div
+        aria-live="polite"
+        className="flex items-center justify-between gap-3 border-t border-preview-border px-4 py-3"
+      >
+        <span className="text-xs text-preview-muted">브라우저 캐시</span>
+        <code className="border-0 bg-transparent p-0 text-[11px] text-preview-strong">
+          {cachedDestination ? `/login → /workspaces/${cachedDestination}` : "비어 있음"}
+        </code>
       </div>
     </section>
   );
 }
 
+function resultSourceLabel(source: ResultSource) {
+  if (source === "cache") return "브라우저 캐시";
+  if (source === "server-308") return "서버 · 308";
+  if (source === "server-307") return "서버 · 307";
+  return "결과";
+}
+
 interface RouteNodeProps {
   label: string;
   path: string;
-  tone: "muted" | "accent";
 }
 
-function RouteNode({ label, path, tone }: RouteNodeProps) {
+function RouteNode({ label, path }: RouteNodeProps) {
   return (
-    <div
-      className={`min-w-0 rounded-xl border px-3 py-3 ${
-        tone === "accent" ? "border-preview-border bg-preview-canvas" : "border-preview-border bg-background"
-      }`}
-    >
-      <p className="text-[9px] font-medium text-preview-muted">{label}</p>
-      <p className="mt-1 truncate font-mono text-[11px] font-semibold">{path}</p>
+    <div className="min-w-0 rounded-lg border border-preview-border bg-preview-surface px-3 py-3">
+      <p className="text-[10px] text-preview-muted">{label}</p>
+      <p className="mt-1 truncate font-mono text-[11px] font-medium">{path}</p>
     </div>
   );
 }
