@@ -25,9 +25,10 @@ pnpm sandbox:new spring-tabs "Spring Tabs"
 - `createdAt`: 생성일 (`YYYY-MM-DD`)
 - `kind`: 기본값 `experiment`
 - `order`: 목록에서 사용할 정렬 우선순위
-- `layout`: 카드 크기. 새 글은 `half`로 시작
 - `draft`: `true`인 동안 공개 목록에서 제외
 - `tags`: 관련 기술이나 주제를 담는 문자열 배열
+
+공개 목록에서는 정렬된 첫 번째 항목만 전체 폭을 사용하고, 나머지는 한 칸씩 배치됩니다.
 
 도움말은 다음처럼 확인할 수 있습니다.
 
