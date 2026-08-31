@@ -1,5 +1,4 @@
-import { createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
-import { ArrowLeft } from "lucide-react";
+import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
 import { getSandboxComponent, getSandboxMetadata, resolveSandboxText } from "@/utils/sandbox";
 
 export const Route = createFileRoute("/$lang/sandbox/$")({
@@ -41,66 +40,15 @@ export const Route = createFileRoute("/$lang/sandbox/$")({
 });
 
 function SandboxDetail() {
-  const { lang } = Route.useParams();
   const metadata = Route.useLoaderData();
   const Content = getSandboxComponent(metadata.slug);
-  const title = resolveSandboxText(metadata.title, lang);
-  const description = resolveSandboxText(metadata.description, lang);
-  const backLabel = lang === "en" ? "Back to Sandbox" : "Sandbox로 돌아가기";
-  const visitLabel = lang === "en" ? "Visit project" : "프로젝트 보기";
-  const sourceLabel = lang === "en" ? "View source" : "소스 보기";
 
   if (!Content) {
     return null;
   }
 
   return (
-    <article className="w-full">
-      <nav aria-label={backLabel} className="mb-8">
-        <Link
-          to="/$lang/sandbox"
-          params={{ lang }}
-          aria-label={backLabel}
-          className="group inline-grid size-7 place-items-center text-gray-500 transition-colors hover:text-foreground"
-        >
-          <ArrowLeft
-            aria-hidden="true"
-            className="size-4 transition-transform group-hover:-translate-x-0.5 motion-reduce:transition-none"
-            strokeWidth={1.75}
-          />
-        </Link>
-      </nav>
-
-      <header className="mb-8">
-        <h1 className="text-lg font-medium">{title}</h1>
-        <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-500">{description}</p>
-
-        {metadata.href || metadata.source ? (
-          <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm">
-            {metadata.href ? (
-              <a
-                href={metadata.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="border-b border-dashed border-gray-500"
-              >
-                {visitLabel} ↗
-              </a>
-            ) : null}
-            {metadata.source && metadata.source !== metadata.href ? (
-              <a
-                href={metadata.source}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="border-b border-dashed border-gray-500"
-              >
-                {sourceLabel} ↗
-              </a>
-            ) : null}
-          </div>
-        ) : null}
-      </header>
-
+    <article aria-labelledby="content-title" className="w-full">
       <div className="article-prose [&_blockquote]:border-l-2 [&_blockquote]:border-border [&_blockquote]:pl-4 [&_li]:my-1 [&_ol]:my-5 [&_ol]:list-decimal [&_ol]:pl-6 [&_ul]:my-5 [&_ul]:list-disc [&_ul]:pl-6">
         <Content />
       </div>
