@@ -14,8 +14,8 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: src/routes/$lang/index.tsx:15
-msgid "<0>두들린 (그리팅)</0>에서 프론트엔드 엔지니어로, 사용자가 한눈에 이해하고 만족할 수 있는 경험을 설계합니다. 기능을 넘어, ‘쓰는 순간 좋은 느낌’을 만드는 데 집중하고 있습니다."
-msgstr "I work as a frontend engineer at <0>Doodlin (Greeting)</0>, designing experiences that users can understand and enjoy at a glance. Beyond functionality, I focus on creating that “feels good the moment you use it” experience."
+msgid "<0>두들린 (그리팅)</0>에서 프로덕트 엔지니어로, 사용자가 한눈에 이해하고 만족할 수 있는 경험을 설계합니다. 기능을 넘어, ‘쓰는 순간 좋은 느낌’을 만드는 데 집중하고 있습니다."
+msgstr "I work as a product engineer at <0>Doodlin (Greeting)</0>, designing experiences that users can understand and enjoy at a glance. Beyond functionality, I focus on creating that “feels good the moment you use it” experience."
 
 #: src/routes/$lang/route.tsx:32
 msgid "안은결"

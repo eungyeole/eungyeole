@@ -7,7 +7,7 @@ import { DEFAULT_LOCALE, isLocale } from "@/utils/i18n/i18n";
 const SITE_URL = "https://www.eungyeole.com";
 const SITE_TITLE = "안은결";
 const SITE_DESCRIPTION =
-  "두들린(그리팅)에서 프론트엔드 엔지니어로, 사용자가 한눈에 이해하고 만족할 수 있는 경험을 설계합니다.";
+  "두들린 (그리팅)에서 프로덕트 엔지니어로, 사용자가 한눈에 이해하고 만족할 수 있는 경험을 설계합니다.";
 const SITE_IMAGE = `${SITE_URL}/eungyeole.png`;
 
 export const Route = createRootRoute({

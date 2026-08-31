@@ -32,7 +32,7 @@ function DefaultHeader({ lang }: DynamicHeaderProps) {
         <h1 className="text-md font-semibold">
           {lang === "en" ? "Eungyeol An" : "안은결"}
         </h1>
-        <p className="text-sm font-medium text-gray-500">Frontend Engineer</p>
+        <p className="text-sm font-medium text-gray-500">Product Engineer</p>
       </div>
       <div className="-mx-1">
         <Navigation lang={lang} />
