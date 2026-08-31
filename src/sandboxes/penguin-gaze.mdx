@@ -1,24 +1,111 @@
-import { PenguinGazeDemo } from "@/components/sandbox";
+import {
+  MonaLisaEffectDemo,
+  MonaLisaGeometryDemo,
+  MonaLisaTuningDemo,
+} from "@/components/sandbox";
 
 export const metadata = {
-  title: "Penguin Gaze",
+  title: "Mona Lisa Effect",
   description: {
-    ko: "포인터를 조용히 따라보는 펭귄으로 만든 이 사이트의 작은 시그니처 인터랙션입니다.",
-    en: "A tiny pointer-following penguin interaction made as a signature detail for this site.",
+    ko: "포인터의 위치를 각도로 바꿔 푸터의 작은 펭귄이 나를 바라보는 듯 움직이게 만든 과정입니다.",
+    en: "How pointer coordinates become the subtle rotation that makes the penguin in this site's footer appear to watch you.",
   },
   createdAt: "2026-08-31",
-  kind: "experiment",
-  order: 70,
+  kind: "project",
+  order: 100,
   layout: "half",
-  tags: ["Pointer", "Character", "Motion"],
+  featured: true,
+  tags: ["Interaction", "Motion", "Math"],
 };
 
-export const Preview = PenguinGazeDemo;
+export const Preview = MonaLisaEffectDemo;
 
-<PenguinGazeDemo />
+<MonaLisaEffectDemo />
 
-## 시선이 만드는 작은 생동감
+어디로 움직여도 그림 속 인물이 나를 바라보는 것처럼 느껴질 때가 있습니다. 이른바 모나리자 효과입니다. 이 사이트에서는 푸터 오른쪽의 작은 펭귄에 같은 인상을 만들었습니다.
 
-포인터 위치를 영역 중심 기준의 좌표로 바꿔 캐릭터가 너무 멀리 움직이지 않으면서도 사용자를 바라보게 했습니다. 장식적인 효과라서 콘텐츠 탐색을 방해하지 않는 범위로 움직임을 제한했습니다.
+위 데모와 실제 푸터는 같은 컴포넌트를 사용합니다. 포인터를 움직이면 펭귄이 모든 움직임을 그대로 좇지 않고, 자신에게 자연스러운 범위 안에서 한 박자 늦게 방향을 바꿉니다.
 
-포인터가 영역을 떠나면 제자리로 돌아오고, 모션 감소 설정을 사용하면 차분한 정지 상태를 유지합니다.
+## 두 점이면 충분하다
+
+필요한 것은 포인터와 펭귄 중심의 위치입니다. 두 좌표를 빼면 중심에서 포인터까지의 벡터를 얻을 수 있습니다.
+
+```ts
+const centerX = left + width / 2;
+const centerY = top + height / 2;
+
+const deltaX = pointerX - centerX;
+const deltaY = pointerY - centerY;
+```
+
+아래 캔버스에서 포인터를 움직여보세요. 선은 두 점의 관계를, 숫자는 매 순간 계산되는 거리와 각도를 보여줍니다.
+
+<MonaLisaGeometryDemo />
+
+`atan2`는 `deltaX`와 `deltaY`로 포인터가 어느 사분면에 있는지까지 포함한 각도를 돌려줍니다. 라디안을 도로 바꾸고, SVG의 기본 방향에 맞추기 위해 90도를 더했습니다.
+
+```ts
+const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI) + 90;
+```
+
+## 각도의 경계를 연결하기
+
+CSS에서 `-90deg`와 `270deg`는 같은 방향입니다. 하지만 두 숫자를 그대로 보간하면 펭귄이 짧은 길 대신 거의 한 바퀴를 돌아갈 수 있습니다. 계산된 값을 `-180°`부터 `180°` 사이로 정규화합니다.
+
+```ts
+let normalizedAngle = angle % 360;
+
+if (normalizedAngle > 180) normalizedAngle -= 360;
+else if (normalizedAngle < -180) normalizedAngle += 360;
+```
+
+현재 각도와 목표 각도의 차이도 같은 방식으로 가장 짧은 회전 방향을 선택합니다.
+
+## 모든 방향을 따라보지 않기
+
+푸터의 펭귄은 화면 오른쪽에 있습니다. 포인터는 대부분 펭귄의 왼쪽에 있으므로, 왼쪽을 중심으로 한 60도 부채꼴만 새로운 목표로 받아들입니다.
+
+```tsx
+<MonaLisaEffect min={-120} max={-60} offset={90}>
+  <IconEungyeole />
+</MonaLisaEffect>
+```
+
+`offset={90}`을 더하면 실제 회전은 `-30°`에서 `30°` 사이가 됩니다. 범위를 벗어난 값을 경계에 붙이지는 않습니다. 마지막으로 자연스러웠던 시선을 그대로 유지합니다. 위 각도 데모에서 선이 진하게 보일 때가 실제로 새 목표를 받는 범위입니다.
+
+## 가까이에서는 멈추기
+
+포인터가 펭귄 중심에 가까우면 몇 픽셀의 이동만으로 각도가 크게 바뀝니다. 이 떨림을 숨기기 위해 중심 주위 20px을 `dead zone`으로 두었습니다.
+
+```ts
+if (Math.hypot(deltaX, deltaY) <= 20) return;
+```
+
+원 안에 들어왔을 때 정면으로 돌아가는 대신 목표 각도를 갱신하지 않습니다. 시선이 갑자기 리셋되지 않아 훨씬 차분하게 느껴집니다.
+
+## 한 박자 늦게 따라오기
+
+목표 각도를 즉시 적용하면 움직임이 커서처럼 보입니다. 현재 각도가 매 프레임 남은 차이의 8%만 이동하도록 하면 약간의 무게가 생깁니다.
+
+```ts
+let diff = targetRotation - currentRotation;
+
+if (diff > 180) diff -= 360;
+else if (diff < -180) diff += 360;
+
+currentRotation += diff * 0.08;
+```
+
+아래에서 세 값을 직접 바꿔보세요. `Smoothing`이 클수록 빠르게 반응하고, `Dead zone`은 중심의 점선을, `Range`는 새 각도를 받아들이는 범위를 바꿉니다.
+
+<MonaLisaTuningDemo />
+
+`0.08`은 시간이 아니라 프레임마다 적용되는 비율입니다. 디스플레이 주사율과 무관하게 완전히 같은 속도가 필요하다면 다음 단계는 delta time을 사용한 보간입니다. 이 작은 효과에는 단순한 계산이 더 잘 맞았습니다.
+
+## React를 다시 그리지 않기
+
+포인터가 움직일 때마다 React state를 바꿀 필요는 없습니다. 현재 각도와 목표 각도는 ref에 저장하고, 필요한 동안만 `requestAnimationFrame`을 실행해 DOM의 `transform`을 직접 갱신합니다. 목표에 도착하면 프레임 루프도 멈춥니다.
+
+모션 감소 설정이 켜져 있으면 포인터 이벤트를 받아도 회전하지 않습니다. 이 효과가 없어도 정보나 기능은 달라지지 않아야 하기 때문입니다.
+
+모나리자 효과는 페이지의 기능을 바꾸지 않습니다. 거의 눈에 띄지 않는 작은 반응이지만, 사이트를 떠날 때 한 번쯤 펭귄을 다시 움직여보게 만드는 정도면 충분합니다.

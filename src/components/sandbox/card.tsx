@@ -8,12 +8,12 @@ interface CardProps extends React.HTMLAttributes<HTMLElement> {
 export const Card = ({ children, className, preview, previewClassName, ...props }: CardProps) => {
   return (
     <article
-      className={cn("group w-full overflow-hidden rounded-lg bg-white shadow-sm dark:bg-neutral-900", className)}
+      className={cn("group w-full overflow-hidden rounded-xl bg-surface shadow-sm", className)}
       {...props}
     >
       <div
         className={cn(
-          "relative flex min-h-56 items-center justify-center overflow-hidden border-b border-gray-100 bg-stone-50 p-5 dark:border-neutral-800 dark:bg-neutral-900",
+          "relative flex min-h-56 items-center justify-center overflow-hidden bg-transparent p-5 [&>*]:!rounded-none",
           previewClassName,
         )}
       >
