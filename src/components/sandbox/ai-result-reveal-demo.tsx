@@ -63,6 +63,54 @@ export function AiGradientLayerDemo() {
   );
 }
 
+export function AiGradientInterpolationDemo() {
+  const [playing, setPlaying] = useState(true);
+  const canvases = [
+    { className: "ai-gradient-comparison-canvas--discrete", label: "background-image" },
+    { className: "ai-gradient-comparison-canvas--property", label: "@property" },
+  ];
+
+  return (
+    <section
+      aria-label="Gradient animation comparison"
+      className="relative overflow-hidden rounded-lg border border-preview-border bg-preview-canvas"
+    >
+      <button
+        aria-label={playing ? "Pause comparison" : "Play comparison"}
+        className="absolute top-3 right-3 z-10 grid size-8 place-items-center rounded-full text-preview-muted transition-[color,transform] hover:text-preview-strong active:scale-95"
+        onClick={() => setPlaying((value) => !value)}
+        type="button"
+      >
+        {playing ? (
+          <Pause aria-hidden="true" className="size-3.5" />
+        ) : (
+          <Play aria-hidden="true" className="size-3.5" />
+        )}
+      </button>
+
+      <div className="grid min-h-64 grid-cols-2 items-center gap-3 px-4 py-10 sm:gap-5 sm:px-8">
+        {canvases.map((canvas) => (
+          <div className="min-w-0" key={canvas.label}>
+            <div
+              aria-label={`${canvas.label} gradient result`}
+              className={`ai-gradient-comparison-canvas aspect-[4/3] w-full ${canvas.className} ${
+                playing ? "" : "ai-gradient-comparison-canvas--paused"
+              }`}
+              role="img"
+            >
+              <span
+                aria-hidden="true"
+                className="absolute inset-[2px] rounded-[11px] bg-preview-surface shadow-[inset_0_0_0_1px_var(--preview-border)]"
+              />
+            </div>
+            <p className="mt-2 text-center font-mono text-[10px] text-preview-muted">{canvas.label}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export function AiResultTimelineDemo() {
   const [elapsed, setElapsed] = useState(1200);
   const [open, setOpen] = useState(true);
