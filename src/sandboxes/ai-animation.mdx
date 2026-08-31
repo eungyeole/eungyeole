@@ -82,9 +82,30 @@ background: conic-gradient(
 
 `0deg`부터 `--fill-angle`까지만 색이 있고 이후는 투명합니다. 값이 `90deg`일 때는 짧은 호만 보입니다. 이 평면을 한 바퀴 돌린 뒤 값을 `360deg`까지 늘리면 투명한 영역이 사라지고 같은 빛이 완성된 테두리로 남습니다.
 
-## @property로 각도를 보간한다
+## @property로 움직일 각도만 분리한다
 
-등록하지 않은 CSS 변수는 값의 타입을 알 수 없는 토큰 묶음입니다. 브라우저는 `90deg`와 `360deg` 사이를 계산하지 못해 값을 즉시 전환합니다. `@property`로 변수의 타입을 등록하면 중간 각도를 만들 수 있습니다.
+처음에는 keyframe에서 `conic-gradient` 전체를 바꾸려고 했습니다.
+
+```css
+@keyframes fill {
+  from {
+    background-image: conic-gradient(
+      var(--line) 0deg 90deg,
+      transparent 90deg 360deg
+    );
+  }
+  to {
+    background-image: conic-gradient(
+      var(--line) 0deg 360deg,
+      transparent 360deg
+    );
+  }
+}
+```
+
+하지만 `conic-gradient()`는 하나의 배경 이미지입니다. `background-image`는 두 이미지 사이를 연속적으로 보간하지 않기 때문에 `90deg`에서 `360deg`로 채워지지 않고 끝 값으로 전환됐습니다. 브라우저는 두 그라디언트 안의 색상 경계가 같은 값의 이동이라는 사실을 알 수 없습니다.
+
+그래서 배경 전체가 아니라 실제로 변해야 하는 각도만 `--fill-angle`로 분리했습니다. 등록하지 않은 CSS 변수도 토큰 묶음으로 취급되어 중간값을 만들 수 없습니다. `@property`로 `<angle>` 타입을 등록하면 브라우저가 두 각도 사이를 계산할 수 있습니다.
 
 ```css
 @property --fill-angle {
@@ -94,7 +115,9 @@ background: conic-gradient(
 }
 ```
 
-`syntax: "<angle>"`은 값을 각도로 등록합니다. `inherits: false`는 진행 각도를 자식에게 물려주지 않고, `initial-value`는 별도 값이 없을 때 짧은 호로 시작하게 합니다. 이제 keyframe이 바뀔 때마다 `conic-gradient`의 색상 경계도 함께 이동합니다.
+`syntax: "<angle>"`은 값을 각도로 등록합니다. `inherits: false`는 진행 각도를 자식에게 물려주지 않고, `initial-value`는 별도 값이 없을 때 짧은 호로 시작하게 합니다.
+
+이제 keyframe은 이미지가 아니라 각도 하나를 움직입니다. 브라우저가 매 프레임 중간 각도를 계산하고, 그 값이 들어간 `conic-gradient`를 다시 그립니다.
 
 ```css
 @keyframes fill {
