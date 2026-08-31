@@ -1,16 +1,16 @@
-import { VelogStatsDemo } from "@/components/sandbox";
+import { VelogStatsDemo, VelogStatsPlayground } from "@/components/sandbox";
 
 export const metadata = {
   title: "Velog Readme Stats",
   description: {
-    ko: "Velog 글을 GitHub 프로필에 어울리는 카드로 만들어주는 오픈소스 프로젝트입니다.",
-    en: "An open-source project that turns Velog posts into cards designed for a GitHub profile.",
+    ko: "Velog의 최신 글을 GitHub README에서 바로 보여주는 SVG 카드 생성기입니다.",
+    en: "An SVG card generator that brings your latest Velog post directly into a GitHub README.",
   },
   createdAt: "2021-06-16",
   kind: "project",
   order: 60,
   layout: "half",
-  href: "https://github.com/eungyeole/velog-readme-stats",
+  href: "https://velog-readme-stats.vercel.app/api?name=eungyeole&tag=github",
   source: "https://github.com/eungyeole/velog-readme-stats",
   tags: ["Open Source", "GitHub", "Velog"],
 };
@@ -19,8 +19,45 @@ export const Preview = VelogStatsDemo;
 
 <VelogStatsDemo />
 
-## 글 쓰는 흐름을 프로필까지
+위 카드는 예시를 다시 그린 화면이 아닙니다. Velog Readme Stats의 프로덕션 API가 지금 반환한 SVG입니다. 새 글이 생기면 같은 주소에서 내용도 함께 바뀝니다.
 
-Velog에 쓴 글을 GitHub README에서 바로 소개할 수 있도록 카드 이미지로 바꿔주는 도구입니다. 프로필을 직접 고칠 필요 없이 최근 글과 활동을 한곳에 이어 보여줍니다.
+아래에서 사용자 이름과 태그를 바꾸거나 카드의 형태를 골라보세요. 결과는 실제 서비스에서 받아오며, 오른쪽 아래 버튼을 누르면 그대로 README에 붙일 수 있는 Markdown이 복사됩니다.
 
-작게 시작한 자동화지만, 개발자가 만드는 과정과 기록하는 과정을 자연스럽게 연결하는 방법을 실험했습니다.
+<VelogStatsPlayground />
+
+## 한 주소로 최신 글 보여주기
+
+가장 단순한 형태는 Velog 사용자 이름만 받습니다.
+
+```text
+https://velog-readme-stats.vercel.app/api?name=eungyeole
+```
+
+이 주소는 최신 글의 제목과 설명, 태그를 하나의 SVG 카드로 만듭니다. README는 같은 이미지 주소를 유지하고, 카드의 내용은 새 글에 맞춰 갱신됩니다.
+
+## 보여줄 글 고르기
+
+기본값은 가장 최근 글입니다. 특정 주제의 최신 글은 `tag`로 좁히고, 한 글을 계속 보여주고 싶다면 `slug`를 지정할 수 있습니다.
+
+```text
+/api?name=eungyeole&tag=github
+/api?name=eungyeole&slug=Velog-포스트로-Github를-꾸며보자
+```
+
+`tag`는 계속 쌓이는 주제에, `slug`는 오래 남겨둘 글에 어울립니다. 글을 고르는 조건이 URL에 그대로 드러나기 때문에 README 안에 별도의 설정을 둘 필요가 없습니다.
+
+## 카드와 글을 함께 연결하기
+
+SVG를 이미지로 넣고 `/api/redirect`를 링크로 사용하면, 카드를 클릭했을 때 같은 조건으로 선택된 글이 열립니다.
+
+```md
+[![Latest Velog post](https://velog-readme-stats.vercel.app/api?name=eungyeole&tag=github)](https://velog-readme-stats.vercel.app/api/redirect?name=eungyeole&tag=github)
+```
+
+카드가 보여주는 글과 링크가 향하는 글이 함께 바뀌므로 README에는 이 한 줄만 남습니다.
+
+## 자리에 맞는 형태 고르기
+
+글 하나를 강조할 때는 기본 카드, 최근 글을 모아 보여줄 때는 `/api/list`, 이름만 작게 연결할 때는 `/api/badge`를 사용할 수 있습니다.
+
+Velog Readme Stats가 만드는 것은 새로운 통계 화면이 아니라 두 공간 사이의 연결입니다. 글은 Velog에 남고, GitHub README에는 그 글을 보여주는 작은 창만 놓입니다.
