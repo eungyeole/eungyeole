@@ -9,6 +9,7 @@ Apply these rules whenever creating or editing `src/sandboxes/**/*.mdx` or legac
 - Teach one observable problem at a time. Prefer this sequence: observation → smallest useful model → short code → interactive example → judgment or tradeoff.
 - Explain what each value changes on screen. Invite the reader to move, type, or tune something when a demo can make the idea tangible.
 - Build explanations from first principles with short, declarative Korean sentences. Keep headings concrete and descriptive.
+- Keep Sandbox metadata descriptions as compact noun phrases. Avoid explanatory endings such as `과정입니다`.
 - Prefer real product output over a recreated mock when the product can be embedded safely.
 - Remove marketing copy, decorative setup, and generic retrospective language.
 - Leave out framework-specific optimization and incidental implementation details unless the concept depends on them.

@@ -112,35 +112,58 @@ export function AiGradientInterpolationDemo() {
 }
 
 export function AiGradientMaskDemo() {
-  const [cardOpacity, setCardOpacity] = useState(100);
+  const [stack, setStack] = useState(45);
+  const separation = 1 - stack / 100;
+  const backgroundStyle = {
+    transform: `translate3d(${-10 * separation}px, ${10 * separation}px, 0)`,
+  };
+  const cardStyle = {
+    transform: `translate3d(${20 * separation}px, ${-24 * separation}px, ${76 * separation}px)`,
+  };
 
   return (
     <section
       aria-label="Gradient background and card layer"
       className="overflow-hidden rounded-lg border border-preview-border bg-preview-surface text-preview-strong"
     >
-      <div className="grid min-h-64 place-items-center bg-preview-canvas p-7 sm:p-10">
-        <div className="ai-gradient-layer-canvas aspect-[8/5] w-full max-w-sm">
-          <span
-            aria-hidden="true"
-            className="absolute inset-[2px] rounded-[13px] bg-preview-surface shadow-[inset_0_0_0_1px_var(--preview-border)]"
-            style={{ opacity: cardOpacity / 100 }}
-          />
+      <div className="grid min-h-80 place-items-center overflow-hidden bg-preview-canvas px-8 py-12 [perspective:900px]">
+        <div
+          className="relative aspect-[8/5] w-full max-w-xs"
+          style={{ transform: "rotateX(52deg) rotateZ(-10deg)", transformStyle: "preserve-3d" }}
+        >
+          <div className="absolute inset-0" style={backgroundStyle}>
+            <div className="ai-gradient-layer-canvas size-full" />
+          </div>
+
+          <div
+            className="absolute inset-[2px] overflow-hidden rounded-[13px] bg-preview-surface shadow-[0_28px_40px_-24px_rgba(43,42,40,0.5)]"
+            style={cardStyle}
+          >
+            <div className="flex items-center gap-2 border-b border-preview-border/70 px-4 py-3">
+              <span className="size-3 rounded-full bg-accent/80" />
+              <span className="h-2 w-20 rounded-full bg-preview-strong/20" />
+            </div>
+            <div className="space-y-3 p-4">
+              <span className="block h-2 w-full rounded-full bg-preview-strong/12" />
+              <span className="block h-2 w-4/5 rounded-full bg-preview-strong/12" />
+              <span className="block h-2 w-3/5 rounded-full bg-preview-strong/12" />
+            </div>
+          </div>
         </div>
       </div>
 
       <label className="flex items-center gap-4 border-t border-preview-border px-4 py-3 text-xs text-preview-muted">
-        <span>Card layer</span>
+        <span>Stack</span>
         <input
-          aria-label="Card layer opacity"
+          aria-label="Layer stack"
           className="min-w-0 flex-1 accent-preview-strong"
           max={100}
           min={0}
-          onChange={(event) => setCardOpacity(Number(event.currentTarget.value))}
+          onChange={(event) => setStack(Number(event.currentTarget.value))}
           type="range"
-          value={cardOpacity}
+          value={stack}
         />
-        <output className="w-9 text-right font-mono tabular-nums">{cardOpacity}%</output>
+        <output className="w-9 text-right font-mono tabular-nums">{stack}%</output>
       </label>
     </section>
   );
