@@ -185,6 +185,19 @@
   animation-play-state: paused;
 }
 
+.ai-gradient-fill-canvas {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--preview-border);
+  border-radius: 16px;
+  background-color: var(--preview-surface);
+  background-image: conic-gradient(
+    color-mix(in srgb, var(--accent) 72%, #86efac) 0deg 60deg,
+    color-mix(in srgb, var(--accent) 34%, var(--preview-border)) 60deg var(--ai-demo-fill-angle),
+    transparent var(--ai-demo-fill-angle) 360deg
+  );
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ai-result-frame::before {
     --ai-reveal-fill-angle: 360deg;

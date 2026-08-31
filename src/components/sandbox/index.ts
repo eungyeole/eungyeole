@@ -1,7 +1,9 @@
 export { GajiPreview } from "./gaji-preview";
 export {
+  AiGradientFillDemo,
   AiGradientInterpolationDemo,
   AiGradientLayerDemo,
+  AiGradientMaskDemo,
   AiResultRevealDemo,
   AiResultRevealPreview,
   AiResultTimelineDemo,
