@@ -139,20 +139,14 @@ function AiSummaryCard({ compact = false, onToggle, open, playback }: AiSummaryC
           <span className="flex min-w-0 items-center gap-1.5">
             <Sparkles aria-hidden="true" className="size-3.5 shrink-0 text-accent" strokeWidth={1.8} />
             <span className="truncate text-xs font-semibold">AI 문서 요약</span>
-            <span className="rounded-full bg-accent-soft px-1.5 py-0.5 text-[8px] font-semibold tracking-wide text-accent">
-              BETA
-            </span>
           </span>
 
-          <span className="flex shrink-0 items-center gap-1.5">
-            <span className="rounded-md border border-preview-border px-1.5 py-0.5 text-[9px] text-preview-muted">
-              요약 완료
-            </span>
-            <ChevronDown
-              aria-hidden="true"
-              className={`size-3.5 text-preview-muted transition-transform duration-300 ${open ? "rotate-180" : ""}`}
-            />
-          </span>
+          <ChevronDown
+            aria-hidden="true"
+            className={`size-3.5 shrink-0 text-preview-muted transition-transform duration-300 ${
+              open ? "rotate-180" : ""
+            }`}
+          />
         </button>
 
         <div
