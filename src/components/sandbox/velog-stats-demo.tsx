@@ -224,7 +224,7 @@ export function VelogTagWidthDemo() {
           </svg>
 
           <p className="mt-5 font-mono text-[11px] tabular-nums text-preview-muted">
-            {textWidth.toFixed(1)}px + 20px = {tagWidth.toFixed(1)}px
+            text width {textWidth.toFixed(1)}px
           </p>
         </div>
       </div>
