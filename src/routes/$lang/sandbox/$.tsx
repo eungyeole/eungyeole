@@ -1,8 +1,17 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { getSandboxComponent, getSandboxMetadata, resolveSandboxText } from "@/utils/sandbox";
 
 export const Route = createFileRoute("/$lang/sandbox/$")({
+  beforeLoad: ({ params }) => {
+    if (params._splat === "penguin-gaze") {
+      throw redirect({
+        to: "/$lang/sandbox/$",
+        params: { lang: params.lang, _splat: "mona-lisa-effect" },
+        replace: true,
+      });
+    }
+  },
   loader: ({ params }) => {
     const metadata = getSandboxMetadata(params._splat ?? "");
 
