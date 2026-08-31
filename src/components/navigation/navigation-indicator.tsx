@@ -44,18 +44,19 @@ export const NavigationIndicator = ({ lang }: NavigationIndicatorProps) => {
       aria-hidden
       inert
       className={cn(
-        "pointer-events-none absolute top-0 left-0 z-10 h-full w-full p-0.5",
-        "transition-opacity duration-200",
+        "pointer-events-none absolute top-0 left-0 h-full w-full",
+        "transition-all duration-300",
         isClient ? "opacity-100" : "opacity-0",
       )}
     >
-      <div className="flex h-full w-full rounded-full bg-accent text-accent-foreground shadow-[0_1px_2px_rgba(0,0,0,0.08)]">
+      <div className="flex h-full w-full rounded-[17px] bg-emerald-950 text-white">
         {NAVIGATION_TABS.map((tab) => (
           <span
             key={tab.value}
-            className="flex cursor-pointer items-center rounded-full px-3 py-1 text-[13px] font-medium"
+            className="flex cursor-pointer items-center gap-1 px-2 py-1 pr-2.5 text-sm font-medium [&_svg]:h-3 [&_svg]:w-3"
             ref={tab.value === value ? activeTabElementRef : null}
           >
+            <tab.icon />
             {tab.label}
           </span>
         ))}

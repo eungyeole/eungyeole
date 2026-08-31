@@ -5,14 +5,12 @@ import { getAllSandboxMetadata, getSandboxPreview, resolveSandboxText, type Sand
 
 const copy = {
   en: {
-    eyebrow: "Playground · Archive",
     title: "Sandbox",
     intro: "A home for finished products, tools in progress, interface experiments, and short technical notes.",
     kinds: { project: "Project", experiment: "Experiment", note: "Note" },
     openExternal: "Open external link",
   },
   ko: {
-    eyebrow: "Playground · Archive",
     title: "Sandbox",
     intro: "완성한 제품, 만드는 중인 도구, 인터페이스 실험과 짧은 기술 메모를 한곳에 모았습니다.",
     kinds: { project: "Project", experiment: "Experiment", note: "Note" },
@@ -45,14 +43,13 @@ function Sandbox() {
 
   return (
     <div>
-      <header className="max-w-2xl">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-subtle">{content.eyebrow}</p>
-        <h1 className="mt-3 text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">{content.title}</h1>
-        <p className="mt-4 max-w-xl text-[16px] leading-7 text-muted">{content.intro}</p>
-        <p className="mt-4 font-mono text-[11px] text-subtle">{formatCollectionCount(entries, lang)}</p>
+      <header className="max-w-xl">
+        <h1 className="text-lg font-medium">{content.title}</h1>
+        <p className="mt-2 text-sm leading-6 text-gray-500">{content.intro}</p>
+        <p className="mt-2 text-xs text-gray-400">{formatCollectionCount(entries, lang)}</p>
       </header>
 
-      <div className="mt-10 grid grid-cols-1 gap-5 sm:mt-14 sm:grid-cols-2">
+      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
         {entries.map((entry) => {
           const Preview = getSandboxPreview(entry.slug);
           const title = resolveSandboxText(entry.title, lang);

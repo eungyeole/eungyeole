@@ -8,21 +8,18 @@ interface CardProps extends React.HTMLAttributes<HTMLElement> {
 export const Card = ({ children, className, preview, previewClassName, ...props }: CardProps) => {
   return (
     <article
-      className={cn(
-        "group overflow-hidden rounded-[20px] border border-border bg-surface transition-[border-color,transform] duration-300 hover:-translate-y-0.5",
-        className,
-      )}
+      className={cn("group w-full overflow-hidden rounded-lg bg-white shadow-sm dark:bg-neutral-900", className)}
       {...props}
     >
       <div
         className={cn(
-          "relative flex min-h-56 items-center justify-center overflow-hidden border-b border-border bg-surface-muted p-5",
+          "relative flex min-h-56 items-center justify-center overflow-hidden border-b border-gray-100 bg-stone-50 p-5 dark:border-neutral-800 dark:bg-neutral-900",
           previewClassName,
         )}
       >
         {preview}
       </div>
-      <div className="p-5 sm:p-6">{children}</div>
+      <div className="px-[23px] py-[17px]">{children}</div>
     </article>
   );
 };
@@ -36,9 +33,9 @@ interface CardCaptionProps {
 export const CardCaption = ({ description, eyebrow, link }: CardCaptionProps) => {
   return (
     <div>
-      <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-subtle">{eyebrow}</p>
-      <h2 className="text-[16px] font-semibold tracking-[-0.01em]">{link}</h2>
-      <p className="mt-1.5 text-[14px] leading-6 text-muted">{description}</p>
+      <p className="mb-1.5 text-xs font-medium text-gray-400">{eyebrow}</p>
+      <h2 className="text-base font-medium">{link}</h2>
+      <p className="mt-1 text-sm leading-6 text-gray-500">{description}</p>
     </div>
   );
 };

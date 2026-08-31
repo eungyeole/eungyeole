@@ -42,70 +42,61 @@ function Home() {
   const content = lang === "en" ? copy.en : copy.ko;
 
   return (
-    <div className="pb-16 sm:pb-24">
-      <section className="max-w-2xl space-y-5 py-4 sm:py-8">
+    <div>
+      <section className="max-w-xl space-y-4">
         {content.intro.map((paragraph) => (
-          <p
-            key={paragraph}
-            className="text-xl leading-[1.65] font-medium tracking-[-0.018em] text-foreground sm:text-2xl"
-          >
+          <p key={paragraph} className="text-base leading-7">
             {paragraph}
           </p>
         ))}
       </section>
 
-      <section className="mt-14 border-t border-border sm:mt-20">
-        <div className="grid gap-3 border-b border-border py-5 sm:grid-cols-[8rem_1fr] sm:items-center">
-          <h2 className="text-xs font-medium tracking-[0.12em] text-subtle uppercase">{content.currently}</h2>
-          <a
-            href="https://www.greetinghr.com"
-            target="_blank"
-            rel="noreferrer"
-            className="group flex items-center justify-between gap-4 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-accent"
-          >
-            <span>
-              <span className="block text-sm font-medium text-foreground">{content.role}</span>
-              <span className="mt-0.5 block text-sm text-muted">{content.company}</span>
-            </span>
-            <span
-              aria-hidden="true"
-              className="text-sm text-subtle transition-transform duration-200 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent"
-            >
-              ↗
-            </span>
-          </a>
-        </div>
+      <section className="mt-10">
+        <h2 className="mb-2 text-sm font-medium">{content.currently}</h2>
+        <a
+          href="https://www.greetinghr.com"
+          target="_blank"
+          rel="noreferrer"
+          className="group -mx-3 flex items-center justify-between gap-4 rounded-md p-3 transition-colors hover:bg-neutral-200 focus-visible:bg-neutral-200 dark:hover:bg-neutral-800 dark:focus-visible:bg-neutral-800"
+        >
+          <span>
+            <span className="block text-sm font-medium">{content.role}</span>
+            <span className="mt-0.5 block text-sm text-gray-500">{content.company}</span>
+          </span>
+          <span aria-hidden="true" className="text-sm text-gray-400 transition-transform group-hover:-translate-y-0.5">
+            ↗
+          </span>
+        </a>
       </section>
 
-      <section className="mt-16 sm:mt-24" aria-labelledby="selected-work">
-        <div className="mb-5 flex items-end justify-between gap-6">
-          <div>
-            <h2 id="selected-work" className="text-sm font-semibold tracking-[-0.01em] text-foreground">
-              {content.selected}
-            </h2>
-            <p className="mt-1 text-sm leading-6 text-muted">{content.selectedDescription}</p>
-          </div>
-          <span className="hidden font-mono text-[11px] text-subtle sm:block">
-            01—{String(selectedEntries.length).padStart(2, "0")}
-          </span>
+      <section className="mt-10" aria-labelledby="selected-work">
+        <div className="mb-2">
+          <h2 id="selected-work" className="text-sm font-medium">
+            {content.selected}
+          </h2>
+          <p className="mt-0.5 text-sm text-gray-500">{content.selectedDescription}</p>
         </div>
 
-        <div className="border-t border-border">
+        <div className="flex flex-col gap-1">
           {selectedEntries.map((entry, index) => (
             <Link
               key={entry.slug}
               to="/$lang/sandbox/$"
               params={{ lang, _splat: entry.slug }}
-              className="group -mx-3 grid gap-2 border-b border-border px-3 py-5 outline-none transition-colors duration-200 hover:bg-surface-muted focus-visible:bg-surface-muted sm:grid-cols-[2rem_11rem_1fr_auto] sm:items-baseline sm:gap-4"
+              className="group -mx-3 flex items-center gap-3 rounded-md p-3 transition-colors hover:bg-neutral-200 focus-visible:bg-neutral-200 dark:hover:bg-neutral-800 dark:focus-visible:bg-neutral-800"
             >
-              <span className="hidden font-mono text-[11px] tabular-nums text-subtle sm:block">
+              <span className="w-5 shrink-0 font-mono text-[11px] tabular-nums text-gray-400">
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <span className="text-sm font-medium text-foreground">{resolveSandboxText(entry.title, lang)}</span>
-              <span className="text-sm leading-6 text-muted">{resolveSandboxText(entry.description, lang)}</span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-medium">{resolveSandboxText(entry.title, lang)}</span>
+                <span className="mt-0.5 block text-sm text-gray-500">
+                  {resolveSandboxText(entry.description, lang)}
+                </span>
+              </span>
               <span
                 aria-hidden="true"
-                className="self-center text-sm text-subtle transition-transform duration-200 ease-out group-hover:translate-x-1 group-hover:text-accent"
+                className="text-sm text-gray-400 transition-transform group-hover:translate-x-0.5"
               >
                 →
               </span>
@@ -116,7 +107,7 @@ function Home() {
         <Link
           to="/$lang/sandbox"
           params={{ lang }}
-          className="group mt-6 inline-flex items-center gap-2 text-sm font-medium text-muted outline-none transition-colors hover:text-accent focus-visible:text-accent"
+          className="group mt-4 inline-flex items-center gap-2 border-b border-dashed border-gray-400 text-sm text-gray-500"
         >
           {content.allSandbox}
           <span aria-hidden="true" className="transition-transform duration-200 ease-out group-hover:translate-x-1">

@@ -8,7 +8,7 @@ interface NavigationProps {
 
 export const Navigation = ({ lang }: NavigationProps) => {
   return (
-    <nav className="relative w-fit rounded-full bg-surface-muted p-0.5" aria-label="Primary navigation">
+    <nav className="relative w-fit" aria-label="Primary navigation">
       <div className="flex w-full">
         {NAVIGATION_TABS.map((tab) => (
           <Link
@@ -16,8 +16,9 @@ export const Navigation = ({ lang }: NavigationProps) => {
             to={tab.to}
             params={{ lang }}
             activeOptions={{ exact: tab.value === "/" }}
-            className="relative z-0 flex cursor-pointer items-center rounded-full px-3 py-1.5 text-[13px] font-medium text-muted transition-colors duration-200 hover:text-foreground"
+            className="flex cursor-pointer items-center gap-1 px-2 py-1 pr-2.5 text-sm font-medium [&_svg]:h-3 [&_svg]:w-3"
           >
+            <tab.icon />
             {tab.label}
           </Link>
         ))}
