@@ -13,8 +13,8 @@ const copy = {
     experience: "Experience",
     company: "Doodlin · Greeting",
     roles: [
-      { title: "Product Engineer", period: "Present" },
-      { title: "Frontend Engineer", period: "Previously" },
+      { title: "Product Engineer", period: "2026.04 — Present" },
+      { title: "Frontend Engineer", period: "2022.01 — 2026.03" },
     ],
   },
   ko: {
@@ -25,8 +25,8 @@ const copy = {
     experience: "경력",
     company: "두들린 · 그리팅",
     roles: [
-      { title: "Product Engineer", period: "현재" },
-      { title: "Frontend Engineer", period: "이전" },
+      { title: "Product Engineer", period: "2026.04 — 현재" },
+      { title: "Frontend Engineer", period: "2022.01 — 2026.03" },
     ],
   },
 } as const;
