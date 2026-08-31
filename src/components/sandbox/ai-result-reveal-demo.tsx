@@ -130,25 +130,27 @@ function AiSummaryCard({ compact = false, onToggle, open, playback }: AiSummaryC
       <div className="ai-result-card shadow-[0_20px_55px_-35px_rgba(43,42,40,0.55)]">
         <button
           aria-expanded={open}
-          className={`flex w-full items-center justify-between gap-3 text-left ${compact ? "p-3" : "p-4"}`}
+          className={`flex w-full items-center justify-between gap-2 text-left ${
+            compact ? "px-3 py-2.5" : "px-4 py-3"
+          }`}
           onClick={onToggle}
           type="button"
         >
-          <span className="flex min-w-0 items-center gap-2">
-            <Sparkles aria-hidden="true" className="size-4 shrink-0 text-accent" strokeWidth={1.8} />
-            <span className="truncate text-sm font-semibold">AI 문서 요약</span>
-            <span className="rounded-full bg-accent-soft px-1.5 py-0.5 text-[9px] font-semibold tracking-wide text-accent">
+          <span className="flex min-w-0 items-center gap-1.5">
+            <Sparkles aria-hidden="true" className="size-3.5 shrink-0 text-accent" strokeWidth={1.8} />
+            <span className="truncate text-xs font-semibold">AI 문서 요약</span>
+            <span className="rounded-full bg-accent-soft px-1.5 py-0.5 text-[8px] font-semibold tracking-wide text-accent">
               BETA
             </span>
           </span>
 
-          <span className="flex shrink-0 items-center gap-2">
-            <span className="rounded-md border border-preview-border px-2 py-1 text-[10px] text-preview-muted">
+          <span className="flex shrink-0 items-center gap-1.5">
+            <span className="rounded-md border border-preview-border px-1.5 py-0.5 text-[9px] text-preview-muted">
               요약 완료
             </span>
             <ChevronDown
               aria-hidden="true"
-              className={`size-4 text-preview-muted transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+              className={`size-3.5 text-preview-muted transition-transform duration-300 ${open ? "rotate-180" : ""}`}
             />
           </span>
         </button>
