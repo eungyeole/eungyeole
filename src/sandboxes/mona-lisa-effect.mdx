@@ -1,0 +1,99 @@
+import {
+  MonaLisaEffectDemo,
+  MonaLisaGeometryDemo,
+  MonaLisaTuningDemo,
+} from "@/components/sandbox";
+
+export const metadata = {
+  title: "Mona Lisa Effect",
+  description: {
+    ko: "포인터와 펭귄 사이의 방향, 반응 범위와 움직임의 속도를 조율해 작은 시선을 만든 과정입니다.",
+    en: "How direction, range, and motion come together to make a small penguin appear to watch you.",
+  },
+  createdAt: "2026-08-31",
+  kind: "project",
+  order: 100,
+  layout: "half",
+  featured: true,
+  tags: ["Interaction", "Motion", "Math"],
+};
+
+export const Preview = MonaLisaEffectDemo;
+
+<MonaLisaEffectDemo />
+
+어디로 움직여도 그림 속 인물이 나를 바라보는 것처럼 느껴질 때가 있습니다. 이른바 모나리자 효과입니다. 이 사이트 어딘가에도 같은 인상을 주는 작은 펭귄을 숨겨두었습니다. 글을 읽고 나서 직접 찾아보세요.
+
+위 데모는 숨겨둔 펭귄과 같은 움직임을 사용합니다. 포인터를 그대로 좇는 대신, 펭귄이 바라볼 수 있는 범위 안에서 조금 늦게 방향을 바꿉니다. 이 작은 차이가 커서를 따라가는 아이콘과 나를 바라보는 캐릭터를 구분합니다.
+
+## 시선은 두 점 사이에서 시작한다
+
+필요한 것은 포인터와 펭귄 중심의 위치입니다. 두 좌표를 빼면 펭귄에서 포인터로 향하는 벡터를 얻을 수 있습니다.
+
+```ts
+const centerX = left + width / 2;
+const centerY = top + height / 2;
+
+const deltaX = pointerX - centerX;
+const deltaY = pointerY - centerY;
+```
+
+아래 캔버스에서 포인터를 움직여보세요. 선은 두 점의 관계를, 숫자는 매 순간 바뀌는 방향을 보여줍니다.
+
+<MonaLisaGeometryDemo />
+
+`atan2`를 사용하면 포인터가 어느 사분면에 있는지까지 포함한 방향을 얻을 수 있습니다.
+
+```ts
+const direction = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+```
+
+절대적인 각도보다 중요한 것은 방향이 얼마나 바뀌었는지입니다. 이 변화량을 펭귄이 움직일 수 있는 범위 안에 투영하면 포인터의 위치가 시선의 방향으로 바뀝니다.
+
+## 회전은 경계에서 끊기지 않아야 한다
+
+각도에서 `-180°`와 `180°`는 같은 방향입니다. 두 값을 숫자 그대로 보간하면 경계를 지날 때 펭귄이 짧은 길을 두고 거의 한 바퀴를 돌아갈 수 있습니다. 각도와 두 각도의 차이를 항상 `-180°`부터 `180°` 사이로 정규화하면 가장 짧은 회전 방향을 유지할 수 있습니다.
+
+```ts
+let normalizedAngle = angle % 360;
+
+if (normalizedAngle > 180) normalizedAngle -= 360;
+else if (normalizedAngle < -180) normalizedAngle += 360;
+```
+
+## 시선에는 범위가 있다
+
+펭귄이 놓인 자리에서는 포인터가 특정 방향에 머무는 시간이 훨씬 깁니다. 화면 전체를 시야로 삼지 않고, 실제로 자주 마주치는 방향을 중심으로 약 60도의 범위만 새로운 목표로 받아들입니다.
+
+범위를 벗어난 방향을 가장 가까운 경계에 붙이지는 않습니다. 대신 마지막으로 자연스러웠던 시선을 유지합니다. 아래 각도 데모에서 선이 진하게 보일 때가 펭귄이 새 목표를 받아들이는 범위입니다.
+
+## 가까운 움직임은 무시한다
+
+포인터가 펭귄 중심에 가까우면 몇 픽셀의 이동만으로 방향이 크게 바뀝니다. 이 떨림을 숨기기 위해 중심 주위 20px을 `dead zone`으로 두었습니다.
+
+```ts
+if (Math.hypot(deltaX, deltaY) <= 20) return;
+```
+
+원 안에 들어왔다고 정면으로 돌아가지는 않습니다. 목표를 갱신하지 않고 직전 시선을 유지해야 움직임이 갑자기 리셋되지 않습니다.
+
+## 한 박자 늦게 따라온다
+
+목표 각도를 즉시 적용하면 펭귄이 캐릭터보다 커서처럼 보입니다. 현재 각도가 매 프레임 남은 차이의 일부만 이동하도록 하면 움직임에 약간의 무게가 생깁니다.
+
+```ts
+let difference = targetRotation - currentRotation;
+
+if (difference > 180) difference -= 360;
+else if (difference < -180) difference += 360;
+
+currentRotation += difference * smoothing;
+```
+
+아래에서 세 값을 직접 바꿔보세요. `Smoothing`이 클수록 빠르게 반응하고, `Dead zone`은 가까운 움직임을 무시하는 반경을, `Range`는 새 시선을 받아들이는 범위를 바꿉니다.
+
+<MonaLisaTuningDemo />
+
+범위가 너무 넓으면 펭귄이 포인터에 끌려다니고, `dead zone`이 너무 작으면 중심에서 떨립니다. 반응이 지나치게 빠르면 커서처럼 보이고, 너무 느리면 시선이 뒤늦게 도착합니다.
+
+자연스러움은 더 많이 움직이는 데서 나오지 않았습니다. 움직일 범위를 제한하고, 불필요한 변화를 버리고, 목표에 도착하는 속도를 조율했을 때 비로소 작은 아이콘이 시선을 가진 것처럼 느껴졌습니다.
