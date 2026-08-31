@@ -8,6 +8,7 @@
     "build": "vite build",
     "lingui:extract": "lingui extract --clean",
     "localize": "tsx scripts/localize.ts",
+    "sandbox:new": "tsx scripts/new-sandbox.ts",
     "start": "node .output/server/index.mjs",
     "lint": "biome check src"
   },

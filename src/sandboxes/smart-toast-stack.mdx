@@ -1,0 +1,24 @@
+import { ToastStackDemo } from "@/components/sandbox";
+
+export const metadata = {
+  title: "Smart Toast Stack",
+  description: {
+    ko: "맥락을 가리지 않으면서 여러 알림을 차곡차곡 보여주는 토스트 스택입니다.",
+    en: "An interruptible toast stack that keeps multiple notifications visible without losing context.",
+  },
+  createdAt: "2026-08-31",
+  kind: "experiment",
+  order: 80,
+  layout: "half",
+  tags: ["Feedback", "Motion", "UI"],
+};
+
+export const Preview = ToastStackDemo;
+
+<ToastStackDemo />
+
+## 알림이 많아져도 차분하게
+
+새 알림은 기존 알림 위에 쌓이고, 오래된 항목은 뒤로 물러나 현재 상태를 한눈에 읽을 수 있습니다. 최대 개수를 제한해 화면을 계속 점유하지 않도록 했습니다.
+
+각 토스트는 바로 닫을 수 있으며 추가와 제거 도중에도 나머지 스택이 자연스럽게 자리를 다시 잡습니다.

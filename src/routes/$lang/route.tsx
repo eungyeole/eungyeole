@@ -1,6 +1,6 @@
 import { I18nProvider } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, redirect } from "@tanstack/react-router";
 import { Footer } from "@/components/footer";
 import { Navigation } from "@/components/navigation/navigation";
 import { getI18n, isLocale } from "@/utils/i18n/i18n";
@@ -26,20 +26,20 @@ function LangLayout() {
 
   return (
     <I18nProvider i18n={i18n}>
-      <header className="flex flex-col gap-6">
-        <div className="flex flex-col">
-          <h1 className="text-md font-semibold">
+      <header className="flex items-start justify-between gap-6">
+        <Link to="/$lang" params={{ lang }} className="group flex min-w-0 flex-col gap-0.5">
+          <span className="text-[15px] font-semibold tracking-[-0.01em] transition-colors group-hover:text-accent">
             <Trans>안은결</Trans>
-          </h1>
-          <p className="text-sm font-medium text-gray-500">Frontend Engineer</p>
-        </div>
-        <div className="-mx-1">
+          </span>
+          <span className="text-[13px] font-medium text-muted">Frontend Engineer</span>
+        </Link>
+        <div className="shrink-0">
           <Navigation lang={lang} />
         </div>
       </header>
-      <div className="mt-8">
+      <main className="mt-12 sm:mt-16">
         <Outlet />
-      </div>
+      </main>
       <Footer />
     </I18nProvider>
   );

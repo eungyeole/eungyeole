@@ -1,0 +1,25 @@
+import { MorphingTabsDemo } from "@/components/sandbox";
+
+export const metadata = {
+  title: "Morphing Tabs",
+  description: {
+    ko: "선택한 영역이 상태 사이를 매끄럽게 이동하는 키보드 친화적인 탭 실험입니다.",
+    en: "A keyboard-friendly segmented control whose selection glides smoothly between states.",
+  },
+  createdAt: "2026-08-31",
+  kind: "experiment",
+  order: 90,
+  layout: "half",
+  featured: true,
+  tags: ["Motion", "Interaction", "Accessibility"],
+};
+
+export const Preview = MorphingTabsDemo;
+
+<MorphingTabsDemo />
+
+## 상태가 이어져 보이도록
+
+탭이 바뀔 때 배경을 새로 그리지 않고 하나의 선택 표시가 다음 위치로 이동하게 만들었습니다. 작은 움직임이지만 화면의 전후 관계를 놓치지 않게 도와줍니다.
+
+마우스뿐 아니라 방향키, Home, End 키로도 탐색할 수 있고 모션 감소 설정에서는 전환 효과를 줄였습니다.

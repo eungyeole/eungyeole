@@ -1,0 +1,24 @@
+import { PenguinGazeDemo } from "@/components/sandbox";
+
+export const metadata = {
+  title: "Penguin Gaze",
+  description: {
+    ko: "포인터를 조용히 따라보는 펭귄으로 만든 이 사이트의 작은 시그니처 인터랙션입니다.",
+    en: "A tiny pointer-following penguin interaction made as a signature detail for this site.",
+  },
+  createdAt: "2026-08-31",
+  kind: "experiment",
+  order: 70,
+  layout: "half",
+  tags: ["Pointer", "Character", "Motion"],
+};
+
+export const Preview = PenguinGazeDemo;
+
+<PenguinGazeDemo />
+
+## 시선이 만드는 작은 생동감
+
+포인터 위치를 영역 중심 기준의 좌표로 바꿔 캐릭터가 너무 멀리 움직이지 않으면서도 사용자를 바라보게 했습니다. 장식적인 효과라서 콘텐츠 탐색을 방해하지 않는 범위로 움직임을 제한했습니다.
+
+포인터가 영역을 떠나면 제자리로 돌아오고, 모션 감소 설정을 사용하면 차분한 정지 상태를 유지합니다.
