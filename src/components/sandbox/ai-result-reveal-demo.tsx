@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, ChevronDown, RefreshCw, Sparkles } from "lucide-react";
+import { Check, ChevronDown, Pause, Play, RefreshCw, Sparkles } from "lucide-react";
 import { type CSSProperties, useState } from "react";
 import "./ai-result-reveal-demo.css";
 
@@ -28,6 +28,39 @@ export function AiResultRevealPreview() {
 
 export function AiResultRevealDemo() {
   return <AiResultRevealExperience />;
+}
+
+export function AiGradientLayerDemo() {
+  const [playing, setPlaying] = useState(true);
+
+  return (
+    <section
+      aria-label="Rotating gradient background layer"
+      className="relative overflow-hidden rounded-lg border border-preview-border bg-preview-canvas"
+    >
+      <button
+        aria-label={playing ? "Pause gradient" : "Play gradient"}
+        className="absolute top-3 right-3 z-10 grid size-8 place-items-center rounded-full text-preview-muted transition-[color,transform] hover:text-preview-strong active:scale-95"
+        onClick={() => setPlaying((value) => !value)}
+        type="button"
+      >
+        {playing ? (
+          <Pause aria-hidden="true" className="size-3.5" />
+        ) : (
+          <Play aria-hidden="true" className="size-3.5" />
+        )}
+      </button>
+
+      <div className="grid min-h-64 place-items-center p-7 sm:p-10">
+        <div
+          aria-hidden="true"
+          className={`ai-gradient-layer-canvas aspect-[8/5] w-full max-w-sm ${
+            playing ? "" : "ai-gradient-layer-canvas--paused"
+          }`}
+        />
+      </div>
+    </section>
+  );
 }
 
 export function AiResultTimelineDemo() {
