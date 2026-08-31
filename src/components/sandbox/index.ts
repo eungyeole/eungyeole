@@ -3,4 +3,4 @@ export { MonaLisaEffectDemo, MonaLisaGeometryDemo, MonaLisaTuningDemo } from "./
 export { MorphingTabsDemo } from "./morphing-tabs-demo";
 export { RedirectDemo } from "./redirect-demo";
 export { ToastStackDemo } from "./toast-stack-demo";
-export { VelogStatsDemo } from "./velog-stats-demo";
+export { VelogStatsDemo, VelogStatsPlayground } from "./velog-stats-demo";
