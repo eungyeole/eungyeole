@@ -5,6 +5,8 @@
  */
 @import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 /*
  * Pretendard와 동일한 수직 메트릭으로 보정한 시스템 폰트 fallback.
  * 웹폰트 로드 전후의 레이아웃 시프트(CLS)를 방지한다.
@@ -19,17 +21,16 @@
 }
 
 :root {
-  color-scheme: light;
-  --background: #fafaf8;
-  --foreground: #242421;
+  --background: #faf9f6;
+  --foreground: #2b2a28;
   --surface: #ffffff;
-  --surface-muted: #f1f1ed;
-  --border: rgba(36, 36, 33, 0.1);
-  --muted: #706f69;
-  --subtle: #9c9b94;
-  --accent: #155e49;
+  --surface-muted: #f5f5f4;
+  --border: #e5e7eb;
+  --muted: #6b7280;
+  --subtle: #9ca3af;
+  --accent: #022c22;
   --accent-foreground: #ffffff;
-  --accent-soft: #e6f1ec;
+  --accent-soft: #ecfdf5;
 }
 
 @theme inline {
@@ -46,33 +47,16 @@
 }
 
 .dark {
-  color-scheme: dark;
-  --background: #151613;
-  --foreground: #eeeeea;
-  --surface: #1d1e1a;
-  --surface-muted: #242520;
-  --border: rgba(238, 238, 234, 0.11);
-  --muted: #aaa9a1;
-  --subtle: #77776f;
-  --accent: #9ed9bd;
-  --accent-foreground: #11261f;
-  --accent-soft: #20352b;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not(.light) {
-    color-scheme: dark;
-    --background: #151613;
-    --foreground: #eeeeea;
-    --surface: #1d1e1a;
-    --surface-muted: #242520;
-    --border: rgba(238, 238, 234, 0.11);
-    --muted: #aaa9a1;
-    --subtle: #77776f;
-    --accent: #9ed9bd;
-    --accent-foreground: #11261f;
-    --accent-soft: #20352b;
-  }
+  --background: #1f1e1c;
+  --foreground: #eae6e1;
+  --surface: #292825;
+  --surface-muted: #34322f;
+  --border: #45423e;
+  --muted: #a8a29e;
+  --subtle: #78716c;
+  --accent: #d1fae5;
+  --accent-foreground: #022c22;
+  --accent-soft: #12372d;
 }
 
 html {
@@ -84,11 +68,6 @@ body {
   background: var(--background);
   color: var(--foreground);
   text-rendering: optimizeLegibility;
-}
-
-::selection {
-  color: var(--foreground);
-  background: var(--accent-soft);
 }
 
 a,
@@ -128,10 +107,9 @@ a {
 }
 
 .article-prose a {
-  color: var(--accent);
-  text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, var(--accent), transparent 65%);
-  text-underline-offset: 3px;
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px dashed var(--muted);
 }
 
 .article-prose hr {
@@ -151,7 +129,7 @@ a {
 .article-prose pre {
   overflow-x: auto;
   border: 1px solid var(--border);
-  border-radius: 0.9rem;
+  border-radius: 0.5rem;
   background: var(--surface-muted);
   padding: 1rem;
   font-size: 0.875rem;

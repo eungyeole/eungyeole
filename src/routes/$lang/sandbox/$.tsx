@@ -1,5 +1,4 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowUpRight, Code2 } from "lucide-react";
 import { getSandboxComponent, getSandboxMetadata, resolveSandboxText } from "@/utils/sandbox";
 
 export const Route = createFileRoute("/$lang/sandbox/$")({
@@ -51,12 +50,12 @@ function SandboxDetail() {
   }
 
   return (
-    <article className="mx-auto w-full max-w-2xl">
-      <nav aria-label={backLabel} className="mb-10">
+    <article className="w-full">
+      <nav aria-label={backLabel} className="mb-8">
         <Link
           to="/$lang/sandbox"
           params={{ lang }}
-          className="group inline-flex items-center gap-2 text-sm font-medium text-muted transition-colors hover:text-foreground"
+          className="group inline-flex items-center gap-1.5 text-sm text-gray-500 transition-colors hover:text-gray-700 dark:hover:text-gray-300"
         >
           <span aria-hidden="true" className="transition-transform group-hover:-translate-x-0.5">
             ←
@@ -65,19 +64,20 @@ function SandboxDetail() {
         </Link>
       </nav>
 
-      <header className="mb-10 border-b border-border pb-9">
-        <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-subtle">
+      <header className="mb-8">
+        <div className="flex items-center gap-2 text-sm text-gray-500">
           <span>{kindLabel}</span>
           <span aria-hidden="true">·</span>
           <time dateTime={metadata.createdAt}>{metadata.createdAt}</time>
         </div>
-        <h1 className="mt-3 text-3xl font-semibold leading-tight tracking-[-0.035em] sm:text-4xl">{title}</h1>
-        <p className="mt-4 text-base leading-7 text-muted">{description}</p>
+        <h1 className="mt-2 text-lg font-medium">{title}</h1>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-500">{description}</p>
 
         {metadata.tags?.length ? (
-          <ul className="mt-5 flex flex-wrap gap-1.5" aria-label="Tags">
-            {metadata.tags.map((tag) => (
-              <li className="rounded-full bg-surface-muted px-2.5 py-1 text-[11px] font-medium text-muted" key={tag}>
+          <ul className="mt-3 flex flex-wrap gap-x-2 text-xs text-gray-400" aria-label="Tags">
+            {metadata.tags.map((tag, index) => (
+              <li key={tag}>
+                {index > 0 ? <span aria-hidden="true">· </span> : null}
                 {tag}
               </li>
             ))}
@@ -85,16 +85,15 @@ function SandboxDetail() {
         ) : null}
 
         {metadata.href || metadata.source ? (
-          <div className="mt-6 flex flex-wrap gap-2">
+          <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm">
             {metadata.href ? (
               <a
                 href={metadata.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-full bg-accent px-3 py-1.5 text-[12px] font-semibold text-accent-foreground outline-none transition-transform hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-accent"
+                className="border-b border-dashed border-gray-500"
               >
-                {visitLabel}
-                <ArrowUpRight aria-hidden="true" className="size-3.5" />
+                {visitLabel} ↗
               </a>
             ) : null}
             {metadata.source && metadata.source !== metadata.href ? (
@@ -102,10 +101,9 @@ function SandboxDetail() {
                 href={metadata.source}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1.5 text-[12px] font-semibold text-muted outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-accent"
+                className="border-b border-dashed border-gray-500"
               >
-                <Code2 aria-hidden="true" className="size-3.5" />
-                {sourceLabel}
+                {sourceLabel} ↗
               </a>
             ) : null}
           </div>
