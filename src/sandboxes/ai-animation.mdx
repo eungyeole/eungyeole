@@ -11,8 +11,8 @@ import {
 export const metadata = {
   title: "AI Animation",
   description: {
-    ko: "절제된 UI에서 AI 결과에 짧은 임팩트를 주기 위해, 회전하는 그라데이션 배경을 테두리로 만든 과정입니다.",
-    en: "How a rotating gradient border gives an AI result a moment of emphasis within a restrained interface.",
+    ko: "절제된 UI 속 AI 결과에 짧은 임팩트를 남기는 회전형 그라데이션 테두리",
+    en: "A rotating gradient border that gives AI results a moment of emphasis within a restrained interface",
   },
   createdAt: "2026-08-31",
   kind: "experiment",
@@ -41,6 +41,8 @@ export const Preview = AiResultRevealPreview;
 ## 배경 위에 카드를 올려 선으로 만든다
 
 실제 카드에서는 그라데이션 배경 위를 불투명한 요소로 덮습니다. 부모의 `2px` 여백으로 드러난 배경만 테두리처럼 보입니다.
+
+`Stack`을 오른쪽으로 옮기면 카드가 z축을 따라 내려가며 배경 위에 포개집니다.
 
 <AiGradientMaskDemo />
 
