@@ -1,4 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { ArrowLeft } from "lucide-react";
 import { getSandboxComponent, getSandboxMetadata, resolveSandboxText } from "@/utils/sandbox";
 
 export const Route = createFileRoute("/$lang/sandbox/$")({
@@ -50,12 +51,14 @@ function SandboxDetail() {
         <Link
           to="/$lang/sandbox"
           params={{ lang }}
-          className="group inline-flex items-center gap-1.5 text-sm text-gray-500 transition-colors hover:text-gray-700 dark:hover:text-gray-300"
+          aria-label={backLabel}
+          className="group inline-grid size-7 place-items-center text-gray-500 transition-colors hover:text-foreground"
         >
-          <span aria-hidden="true" className="transition-transform group-hover:-translate-x-0.5">
-            ←
-          </span>
-          {backLabel}
+          <ArrowLeft
+            aria-hidden="true"
+            className="size-4 transition-transform group-hover:-translate-x-0.5 motion-reduce:transition-none"
+            strokeWidth={1.75}
+          />
         </Link>
       </nav>
 
