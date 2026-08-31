@@ -111,6 +111,76 @@ export function AiGradientInterpolationDemo() {
   );
 }
 
+export function AiGradientMaskDemo() {
+  const [cardOpacity, setCardOpacity] = useState(100);
+
+  return (
+    <section
+      aria-label="Gradient background and card layer"
+      className="overflow-hidden rounded-lg border border-preview-border bg-preview-surface text-preview-strong"
+    >
+      <div className="grid min-h-64 place-items-center bg-preview-canvas p-7 sm:p-10">
+        <div className="ai-gradient-layer-canvas aspect-[8/5] w-full max-w-sm">
+          <span
+            aria-hidden="true"
+            className="absolute inset-[2px] rounded-[13px] bg-preview-surface shadow-[inset_0_0_0_1px_var(--preview-border)]"
+            style={{ opacity: cardOpacity / 100 }}
+          />
+        </div>
+      </div>
+
+      <label className="flex items-center gap-4 border-t border-preview-border px-4 py-3 text-xs text-preview-muted">
+        <span>Card layer</span>
+        <input
+          aria-label="Card layer opacity"
+          className="min-w-0 flex-1 accent-preview-strong"
+          max={100}
+          min={0}
+          onChange={(event) => setCardOpacity(Number(event.currentTarget.value))}
+          type="range"
+          value={cardOpacity}
+        />
+        <output className="w-9 text-right font-mono tabular-nums">{cardOpacity}%</output>
+      </label>
+    </section>
+  );
+}
+
+export function AiGradientFillDemo() {
+  const [angle, setAngle] = useState(90);
+  const style = { "--ai-demo-fill-angle": `${angle}deg` } as CSSProperties;
+
+  return (
+    <section
+      aria-label="Gradient fill angle"
+      className="overflow-hidden rounded-lg border border-preview-border bg-preview-surface text-preview-strong"
+    >
+      <div className="grid min-h-64 place-items-center bg-preview-canvas p-7 sm:p-10">
+        <div className="ai-gradient-fill-canvas aspect-[8/5] w-full max-w-sm" style={style}>
+          <span
+            aria-hidden="true"
+            className="absolute inset-[2px] rounded-[13px] bg-preview-surface shadow-[inset_0_0_0_1px_var(--preview-border)]"
+          />
+        </div>
+      </div>
+
+      <label className="flex items-center gap-4 border-t border-preview-border px-4 py-3 text-xs text-preview-muted">
+        <span>Fill angle</span>
+        <input
+          aria-label="Gradient fill angle"
+          className="min-w-0 flex-1 accent-preview-strong"
+          max={360}
+          min={90}
+          onChange={(event) => setAngle(Number(event.currentTarget.value))}
+          type="range"
+          value={angle}
+        />
+        <output className="w-10 text-right font-mono tabular-nums">{angle}°</output>
+      </label>
+    </section>
+  );
+}
+
 export function AiResultTimelineDemo() {
   const [elapsed, setElapsed] = useState(1200);
   const [open, setOpen] = useState(true);
