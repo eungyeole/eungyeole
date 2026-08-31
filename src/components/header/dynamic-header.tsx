@@ -17,7 +17,7 @@ export function DynamicHeader({ lang }: DynamicHeaderProps) {
   return (
     <header
       className={
-        metadata ? "sticky top-0 z-30 -mx-4 bg-background/90 px-4 py-2 backdrop-blur-md" : undefined
+        metadata ? "sticky top-0 z-30 -mx-4 bg-background/95 px-4 py-2 backdrop-blur-lg" : undefined
       }
     >
       {metadata ? <DetailNavigation lang={lang} /> : <DefaultHeader lang={lang} />}
